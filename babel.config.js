@@ -3,7 +3,7 @@ module.exports = {
   plugins: ['nativewind/babel'],
   env: {
     production: {
-      plugins: ['nativewind/babel', 'react-native-paper/babel'],
+      plugins: ['nativewind/babel', 'react-native-paper/babel', 'react-native-reanimated/plugin'],
     },
   },
 }
