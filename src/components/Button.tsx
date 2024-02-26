@@ -9,7 +9,16 @@ interface ButtonProps extends TouchableOpacityProps {
   icon?: ImageSourcePropType | string
   IconProvider?: typeof Icon
 }
-export const Button: React.FC<ButtonProps> = ({onPress, title, variant, classNames, icon, IconProvider, ...rest}) => {
+export const Button: React.FC<ButtonProps> = ({
+  onPress,
+  title,
+  variant,
+  style,
+  classNames,
+  icon,
+  IconProvider,
+  ...rest
+}) => {
   const isOutline = variant === 'outline'
   const iconSize = icon ? 20 : 0
   const iconColor = isOutline ? 'black' : 'white'
@@ -22,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({onPress, title, variant, classNam
     <TouchableOpacity
       activeOpacity={activeOpacity}
       className={`flex w-full flex-row items-center justify-center rounded-2xl border-black ${bg} ${classNames}`}
-      style={{padding: 15, borderWidth: 1.5}}
+      style={[{padding: 15, borderWidth: 1.5}, style]}
       onPress={onPress}
       {...rest}>
       {IconProvider && icon ? (

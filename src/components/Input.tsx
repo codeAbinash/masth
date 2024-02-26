@@ -12,14 +12,15 @@ export const Input: React.FC<InputProps> = ({
   icon,
   IconProvider,
   placeholder = 'Sample Placeholder',
+  style,
   className,
   ...rest
 }) => {
   const iconSize = icon ? 20 : 0
   return (
     <View
-      className={`flex flex-row items-center justify-center rounded-2xl border-neutral-300 bg-neutral-100 ${className}`}
-      style={{borderWidth: 1.5, paddingVertical: 2, paddingLeft: 15, paddingRight: 10}}>
+      className={`flex flex-shrink flex-row items-center justify-center rounded-2xl border-neutral-300 bg-neutral-100 ${className}`}
+      style={[{borderWidth: 1.5, paddingVertical: 2, paddingLeft: 15, paddingRight: 10}, style]}>
       {IconProvider && icon ? (
         <IconProvider
           name={icon as string}

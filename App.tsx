@@ -1,11 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack'
+import Login from '@screens/Login/Login'
+import SignUp from '@screens/Login/SignUp'
+import Notifications from '@screens/Notifications'
 import React, {useEffect} from 'react'
 import {Dimensions, SafeAreaView, StatusBar, Text} from 'react-native'
 import NavigationBarColor from 'react-native-navigation-bar-color'
 import {PaperProvider} from 'react-native-paper'
-import Home from './src/screens/Home'
-import Notifications from './src/screens/Notifications'
 
 const Stack = createStackNavigator()
 
@@ -62,13 +63,14 @@ function Navigation() {
   return (
     <Stack.Navigator
       screenOptions={{
-        gestureEnabled: true,
-        gestureDirection: 'horizontal',
+        // gestureEnabled: true,
+        // gestureDirection: 'horizontal',
         headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        gestureResponseDistance: width,
+        // gestureResponseDistance: width,
       }}>
-      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='Notifications' component={Notifications} />
       <Stack.Screen name='Profile' component={Profile} options={{headerShown: false}} />
       <Stack.Screen name='Settings' component={Settings} options={{headerShown: false}} />
