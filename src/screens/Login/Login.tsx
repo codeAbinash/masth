@@ -42,7 +42,7 @@ export default function Login({navigation}: {navigation: StackNav}) {
             IconProvider={Icon}
             icon='creation'
             className='mt-1'
-            onPress={() => navigation.replace('SignUp')}
+            onPress={() => navigation.navigate('SignUp')}
           />
         </View>
       </View>

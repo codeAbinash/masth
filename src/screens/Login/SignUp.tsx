@@ -13,7 +13,7 @@ const appIconSize = 0.5
 
 const {width} = Dimensions.get('window')
 
-export default function SignUp0({navigation}: {navigation: StackNav}) {
+export default function SignUp({navigation}: {navigation: StackNav}) {
   return (
     <ScrollView className='bg-white'>
       <View className='flex h-full flex-1 justify-between bg-white p-4 pb-2'>
