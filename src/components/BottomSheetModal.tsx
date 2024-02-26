@@ -12,12 +12,12 @@ const BottomSheet = ({
   onDismiss: () => void
   closeFn?: () => void
 }) => {
-  const scrollViewRef = useRef(null)
-  const [isScrollAtTop, setIsScrollAtTop] = useState(true)
-  const onScroll = (event: {nativeEvent: {contentOffset: {y: any}}}) => {
-    const offsetY = event.nativeEvent.contentOffset.y
-    setIsScrollAtTop(offsetY === 0)
-  }
+  // const scrollViewRef = useRef(null)
+  const [isScrollAtTop, _] = useState(true)
+  // const onScroll = (event: {nativeEvent: {contentOffset: {y: any}}}) => {
+  //   const offsetY = event.nativeEvent.contentOffset.y
+  //   setIsScrollAtTop(offsetY === 0)
+  // }
 
   const screenHeight = Dimensions.get('screen').height
   const panY = useRef(new Animated.Value(screenHeight)).current

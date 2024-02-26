@@ -8,11 +8,12 @@ import WalletIconSvgOutline from '@icons/wallet-outline.svg'
 import WalletIconSvg from '@icons/wallet.svg'
 import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import React from 'react'
-import {TouchableOpacity, View} from 'react-native'
+import {StatusBar, TouchableOpacity, View} from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
 import Profile from './Profile'
 import Wallet from './Wallet'
+import {colors} from '@utils/colors'
 
 function HomeIcon(props: {focused: boolean; color: string; size: number}) {
   return props.focused ? (
@@ -49,16 +50,15 @@ const Tab = createBottomTabNavigator()
 
 function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
   return (
-    <View style={{flexDirection: 'row', padding: 10, backgroundColor: 'white', paddingBottom: 12, paddingTop: 12}}>
+    <View style={{flexDirection: 'row', backgroundColor: 'white', paddingHorizontal: 10}}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key]
-        console.log('options', options)
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name
+        // const label =
+        //   options.tabBarLabel !== undefined
+        //     ? options.tabBarLabel
+        //     : options.title !== undefined
+        //       ? options.title
+        //       : route.name
 
         const isFocused = state.index === index
 
@@ -92,7 +92,7 @@ function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
             onPress={onPress}
             onLongPress={onLongPress}
             className='flex items-center justify-center p-1'
-            style={{flex: 1}}>
+            style={{flex: 1, paddingTop: 17, paddingBottom: 17}}>
             {options.tabBarIcon && options.tabBarIcon({focused: isFocused, color: 'black', size: 24})}
             {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>{label as ReactNode}</Text> */}
           </TouchableOpacity>
@@ -104,44 +104,47 @@ function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
 
 const Home = () => {
   return (
-    <Tab.Navigator tabBar={MyTabBar}>
-      <Tab.Screen
-        name='HomeScreen'
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'HomeScreen',
-          headerShown: false,
-          tabBarIcon: HomeIcon,
-        }}
-      />
-      <Tab.Screen
-        name='Wallet'
-        component={Wallet}
-        options={{
-          tabBarLabel: 'Wallet',
-          headerShown: false,
-          tabBarIcon: WalletIcon,
-        }}
-      />
-      <Tab.Screen
-        name='GameZone'
-        component={GameZone}
-        options={{
-          tabBarLabel: 'GameZone',
-          headerShown: false,
-          tabBarIcon: GameZoneIcon,
-        }}
-      />
-      <Tab.Screen
-        name='Profile'
-        component={Profile}
-        options={{
-          tabBarLabel: 'Profile',
-          headerShown: false,
-          tabBarIcon: ProfileIcon,
-        }}
-      />
-    </Tab.Navigator>
+    <>
+      <StatusBar barStyle={'dark-content'} backgroundColor={colors.bgSecondary} />
+      <Tab.Navigator tabBar={MyTabBar}>
+        <Tab.Screen
+          name='HomeScreen'
+          component={HomeScreen}
+          options={{
+            tabBarLabel: 'HomeScreen',
+            headerShown: false,
+            tabBarIcon: HomeIcon,
+          }}
+        />
+        <Tab.Screen
+          name='Wallet'
+          component={Wallet}
+          options={{
+            tabBarLabel: 'Wallet',
+            headerShown: false,
+            tabBarIcon: WalletIcon,
+          }}
+        />
+        <Tab.Screen
+          name='GameZone'
+          component={GameZone}
+          options={{
+            tabBarLabel: 'GameZone',
+            headerShown: false,
+            tabBarIcon: GameZoneIcon,
+          }}
+        />
+        <Tab.Screen
+          name='Profile'
+          component={Profile}
+          options={{
+            tabBarLabel: 'Profile',
+            headerShown: false,
+            tabBarIcon: ProfileIcon,
+          }}
+        />
+      </Tab.Navigator>
+    </>
   )
 }
 

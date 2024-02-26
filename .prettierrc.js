@@ -10,4 +10,4 @@ module.exports = {
   endOfLine: 'auto',
   jsxSingleQuote: true,
   plugins: ['prettier-plugin-tailwindcss'],
-};
+}
