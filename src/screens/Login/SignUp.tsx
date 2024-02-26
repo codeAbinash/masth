@@ -1,4 +1,4 @@
-import icons from '@assets/icons'
+import icons from '@assets/icons/icons'
 import {Button} from '@components/Button'
 import {Input} from '@components/Input'
 import {Select} from '@components/Select'

@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack'
+import Home from '@screens/Home'
 import Login from '@screens/Login/Login'
 import SignUp from '@screens/Login/SignUp'
 import Notifications from '@screens/Notifications'
@@ -63,15 +64,16 @@ function Navigation() {
   return (
     <Stack.Navigator
       screenOptions={{
-        // gestureEnabled: true,
-        // gestureDirection: 'horizontal',
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
         headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        // gestureResponseDistance: width,
+        gestureResponseDistance: width,
       }}>
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='Notifications' component={Notifications} />
+      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Profile' component={Profile} options={{headerShown: false}} />
       <Stack.Screen name='Settings' component={Settings} options={{headerShown: false}} />
     </Stack.Navigator>

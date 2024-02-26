@@ -1,4 +1,4 @@
-import icons from '@assets/icons'
+import icons from '@assets/icons/icons'
 import {Button} from '@components/Button'
 import {Input} from '@components/Input'
 import {Select} from '@components/Select'
@@ -30,12 +30,7 @@ export default function Login({navigation}: {navigation: StackNav}) {
             <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
           </View>
           <View className='mt-3' />
-          <Button
-            title='Log In'
-            onPress={() => navigation.navigate('Notifications')}
-            IconProvider={Icon}
-            icon='account'
-          />
+          <Button title='Log In' onPress={() => navigation.replace('Home')} IconProvider={Icon} icon='account' />
           <Button
             title='Create Account'
             variant='outline'
