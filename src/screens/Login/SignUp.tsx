@@ -9,7 +9,7 @@ import {ScrollView} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 
-const appIconSize = 0.5
+const appIconSize = 0.45
 
 const {width} = Dimensions.get('window')
 
