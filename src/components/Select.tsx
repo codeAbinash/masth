@@ -8,10 +8,20 @@ interface SelectProps extends TouchableOpacityProps {
   title: string
   classNames?: string
   icon?: ImageSourcePropType | string
+  space?: number
   IconProvider?: typeof Icon
 }
 
-export const Select: React.FC<SelectProps> = ({onPress, style, title, classNames, icon, IconProvider, ...rest}) => {
+export const Select: React.FC<SelectProps> = ({
+  onPress,
+  style,
+  title,
+  classNames,
+  icon,
+  IconProvider,
+  space = 5,
+  ...rest
+}) => {
   const iconSize = icon ? 20 : 0
   return (
     <TouchableOpacity
@@ -26,7 +36,7 @@ export const Select: React.FC<SelectProps> = ({onPress, style, title, classNames
           size={20}
           color='black'
           style={{
-            marginRight: 10,
+            marginRight: space,
           }}
         />
       ) : (

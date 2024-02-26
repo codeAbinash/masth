@@ -32,8 +32,8 @@ export default function SignUp({navigation}: {navigation: StackNav}) {
               <Select title='+91' icon='phone-outline' IconProvider={Icon} style={{flex: 0.45}} />
               <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
             </View>
-            <Select title='DOB' icon='calendar-month-outline' IconProvider={Icon} />
-            <Select title='Language' icon='language' IconProvider={IconM} />
+            <Select title='DOB' icon='calendar-month-outline' IconProvider={Icon} space={15} />
+            <Select title='Language' icon='language' IconProvider={IconM} space={15} />
             <Button title='Create Account' IconProvider={Icon} icon='creation' onPress={() => {}} className='mt-4' />
             <Button
               title='Log In'
