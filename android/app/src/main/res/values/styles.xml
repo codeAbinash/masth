@@ -9,7 +9,5 @@
         <item name="android:statusBarColor">#ffffff</item>
         <item name="android:navigationBarColor">#ffffff</item>
         <item name="android:windowBackground">#ffffff</item>   
-        <item name="android:forceDarkAllowed">false</item> <!-- Add this line -->
     </style>
-
 </resources>

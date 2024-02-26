@@ -111,7 +111,7 @@ function Demo({navigation}: {navigation: NavigationProp<ParamListBase>}) {
           </Text>
         </View>
         <View className='w-full p-4'>
-          <Button title='Sign In' onPress={() => navigation.navigate('Notifications')} icon={icons.appIcon} />
+          <Button title='Sign In' onPress={() => navigation.navigate('Notifications')} />
           <Button
             title='Create Account'
             variant='outline'
