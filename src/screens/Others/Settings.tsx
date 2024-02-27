@@ -1,10 +1,10 @@
-import BackHeader, {RightSettingIcon} from '@components/BackHeader'
-import {PaddingBottom} from '@components/SafePadding'
-import {StackNav} from '@utils/types'
+import BackHeader, { RightSettingIcon } from '@components/BackHeader'
+import { PaddingBottom } from '@components/SafePadding'
+import { StackNav } from '@utils/types'
 import React from 'react'
-import {ScrollView, Text, View} from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 
-export default function Settings({navigation}: {navigation: StackNav}) {
+export default function Settings({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex-1 bg-bgSecondary'>
       <BackHeader
@@ -13,7 +13,7 @@ export default function Settings({navigation}: {navigation: StackNav}) {
         RightComponent={<RightSettingIcon navigation={navigation} />}
       />
       <ScrollView className='px-5'>
-        <Text style={{fontSize: 30}}>Settings</Text>
+        <Text style={{ fontSize: 30 }}>Settings</Text>
 
         <Text className='mt-10'>
           This is the settings page. You can change your password, update your profile, and more.

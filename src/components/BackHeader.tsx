@@ -1,10 +1,10 @@
 import BackIcon from '@icons/arrow-left.svg'
 import SettingIcon from '@icons/setting.svg'
-import {StackNav} from '@utils/types'
+import { StackNav } from '@utils/types'
 import React from 'react'
-import {Text, View} from 'react-native'
-import {TouchableOpacity} from 'react-native-gesture-handler'
-import {PaddingTop} from './SafePadding'
+import { Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { PaddingTop } from './SafePadding'
 
 export default function BackHeader({
   navigation,
@@ -23,7 +23,7 @@ export default function BackHeader({
           <TouchableOpacity className='p-2.5' onPress={() => navigation.goBack()}>
             <BackIcon height={20} width={20} />
           </TouchableOpacity>
-          <Text className='font-medium' style={{fontSize: 21}}>
+          <Text className='font-medium' style={{ fontSize: 21 }}>
             {title}
           </Text>
         </View>
@@ -33,7 +33,7 @@ export default function BackHeader({
   )
 }
 
-export function RightSettingIcon({navigation}: {navigation: StackNav}) {
+export function RightSettingIcon({ navigation }: { navigation: StackNav }) {
   return (
     <TouchableOpacity className='p-2' onPress={() => navigation.navigate('Settings')}>
       <SettingIcon height={22} width={22} />

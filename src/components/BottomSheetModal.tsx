@@ -1,5 +1,13 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {Animated, Dimensions, Modal, PanResponder, ScrollView, StyleSheet, TouchableWithoutFeedback} from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  Animated,
+  Dimensions,
+  Modal,
+  PanResponder,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native'
 
 const BottomSheet = ({
   visible,
@@ -42,7 +50,7 @@ const BottomSheet = ({
   const panResponders = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: (e, gs) => isScrollAtTop && gs.dy > 0,
-    onPanResponderMove: Animated.event([null, {dy: panY}], {useNativeDriver: false}),
+    onPanResponderMove: Animated.event([null, { dy: panY }], { useNativeDriver: false }),
     onPanResponderRelease: (e, gs) => {
       if (gs.dy > 0 && gs.vy > 2) {
         return closeAnim.start(dismissFunc)
@@ -79,12 +87,14 @@ const BottomSheet = ({
       transparent
       onRequestClose={dismissFunc}
       hardwareAccelerated
-      statusBarTranslucent>
+      statusBarTranslucent
+    >
       <TouchableWithoutFeedback onPress={() => closeAnim.start(dismissFunc)}>
-        <Animated.View style={[styles.overlay, {backgroundColor}]}>
+        <Animated.View style={[styles.overlay, { backgroundColor }]}>
           <Animated.View
-            style={[styles.container, {top, backgroundColor: 'transparent'}]}
-            {...panResponders.panHandlers}>
+            style={[styles.container, { top, backgroundColor: 'transparent' }]}
+            {...panResponders.panHandlers}
+          >
             <ScrollView>{children}</ScrollView>
           </Animated.View>
         </Animated.View>

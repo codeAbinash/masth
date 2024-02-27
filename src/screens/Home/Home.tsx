@@ -1,16 +1,16 @@
-import {PaddingTop} from '@components/SafePadding'
-import SmallProfile, {RightSideSmallProfile} from '@components/SmallProfile'
+import { PaddingTop } from '@components/SafePadding'
+import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import NewsFeedImage from '@images/feeds.svg'
-import {colors} from '@utils/colors'
-import {StackNav} from '@utils/types'
-import {Dimensions, Text, View} from 'react-native'
+import { colors } from '@utils/colors'
+import { StackNav } from '@utils/types'
+import { Dimensions, Text, View } from 'react-native'
 
-const {width} = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
-export default function Home({navigation}: {navigation: StackNav}) {
+export default function Home({ navigation }: { navigation: StackNav }) {
   return (
     <>
-      <View style={{backgroundColor: colors.bgSecondary, flex: 1}} className='p-5'>
+      <View style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
         <PaddingTop />
         <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
         <View className='mt-5 flex-1 justify-between'>

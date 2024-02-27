@@ -1,4 +1,4 @@
-import {PaddingBottom} from '@components/SafePadding'
+import { PaddingBottom } from '@components/SafePadding'
 import GameZoneIconSvgOutline from '@icons/game-outline.svg'
 import GameZoneIconSvg from '@icons/game.svg'
 import HomeIconSvgOutline from '@icons/home-outline.svg'
@@ -7,15 +7,15 @@ import ProfileIconSvgOutline from '@icons/profile-outline.svg'
 import ProfileIconSvg from '@icons/profile.svg'
 import WalletIconSvgOutline from '@icons/wallet-outline.svg'
 import WalletIconSvg from '@icons/wallet.svg'
-import {BottomTabBarProps, createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
-import {TouchableOpacity, View} from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
 import Profile from './Profile'
 import Wallet from './Wallet'
 
-function HomeIcon(props: {focused: boolean; color: string; size: number}) {
+function HomeIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
     <HomeIconSvg {...props} height={props.size} width={props.size} />
   ) : (
@@ -23,7 +23,7 @@ function HomeIcon(props: {focused: boolean; color: string; size: number}) {
   )
 }
 
-function GameZoneIcon(props: {focused: boolean; color: string; size: number}) {
+function GameZoneIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
     <GameZoneIconSvg {...props} height={props.size} width={props.size} />
   ) : (
@@ -31,7 +31,7 @@ function GameZoneIcon(props: {focused: boolean; color: string; size: number}) {
   )
 }
 
-function ProfileIcon(props: {focused: boolean; color: string; size: number}) {
+function ProfileIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
     <ProfileIconSvg {...props} height={props.size} width={props.size} />
   ) : (
@@ -39,7 +39,7 @@ function ProfileIcon(props: {focused: boolean; color: string; size: number}) {
   )
 }
 
-function WalletIcon(props: {focused: boolean; color: string; size: number}) {
+function WalletIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
     <WalletIconSvg {...props} height={props.size} width={props.size} />
   ) : (
@@ -48,12 +48,12 @@ function WalletIcon(props: {focused: boolean; color: string; size: number}) {
 }
 const Tab = createBottomTabNavigator()
 
-function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
+function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <View className='bg-white'>
-      <View style={{flexDirection: 'row', paddingHorizontal: 10}}>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
         {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key]
+          const { options } = descriptors[route.key]
           // const label =
           //   options.tabBarLabel !== undefined
           //     ? options.tabBarLabel
@@ -86,14 +86,15 @@ function MyTabBar({state, descriptors, navigation}: BottomTabBarProps) {
               key={route.key}
               activeOpacity={0.6}
               accessibilityRole='button'
-              accessibilityState={isFocused ? {selected: true} : {}}
+              accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
               className='flex items-center justify-center p-1'
-              style={{flex: 1, paddingTop: 17, paddingBottom: 17}}>
-              {options.tabBarIcon && options.tabBarIcon({focused: isFocused, color: 'black', size: 24})}
+              style={{ flex: 1, paddingTop: 17, paddingBottom: 17 }}
+            >
+              {options.tabBarIcon && options.tabBarIcon({ focused: isFocused, color: 'black', size: 24 })}
               {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>{label as ReactNode}</Text> */}
             </TouchableOpacity>
           )
