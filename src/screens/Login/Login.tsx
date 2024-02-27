@@ -1,6 +1,7 @@
 import icons from '@assets/icons/icons'
 import {Button} from '@components/Button'
 import {Input} from '@components/Input'
+import {PaddingBottom, PaddingTop} from '@components/SafePadding'
 import {Select} from '@components/Select'
 import {StackNav} from '@utils/types'
 import React from 'react'
@@ -14,7 +15,7 @@ const appIconSize = 0.5
 export default function Login({navigation}: {navigation: StackNav}) {
   return (
     <View className='flex h-full flex-1 justify-between bg-white p-4 pb-2'>
-      <View />
+      <PaddingTop />
       <View />
       <View>
         <View className='flex items-center justify-center'>
@@ -44,7 +45,10 @@ export default function Login({navigation}: {navigation: StackNav}) {
       <View />
       <View />
       <View />
-      <Text className='text-center text-gray-600'>By continuing you are accepting our Terms and Conditions</Text>
+      <View>
+        <Text className='text-center text-gray-600'>By continuing you are accepting our Terms and Conditions</Text>
+        <PaddingBottom />
+      </View>
     </View>
   )
 }

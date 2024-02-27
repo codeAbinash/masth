@@ -6,6 +6,9 @@ module.exports = {
       borderRadius: {
         btn: 25,
       },
+      colors: {
+        bgSecondary: '#f7f7f7',
+      },
     },
   },
   plugins: [],

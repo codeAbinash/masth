@@ -1,10 +1,16 @@
+import {PaddingTop} from '@components/SafePadding'
+import SmallProfile, {RightSideSmallProfile} from '@components/SmallProfile'
 import {colors} from '@utils/colors'
-import {View, Text} from 'react-native'
+import {StackNav} from '@utils/types'
+import {View} from 'react-native'
 
-export default function Home() {
+export default function Home({navigation}: {navigation: StackNav}) {
   return (
-    <View style={{backgroundColor: colors.bgSecondary, flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home</Text>
-    </View>
+    <>
+      <View style={{backgroundColor: colors.bgSecondary, flex: 1}} className='p-5'>
+        <PaddingTop />
+        <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
+      </View>
+    </>
   )
 }

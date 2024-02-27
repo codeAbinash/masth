@@ -1,7 +1,8 @@
 import React from 'react'
-import {TouchableOpacity, Image, ImageSourcePropType, View, Text, TouchableOpacityProps} from 'react-native'
-import IconM from 'react-native-vector-icons/MaterialIcons'
+import {Image, ImageSourcePropType, Text, TouchableOpacity, TouchableOpacityProps, View} from 'react-native'
+import {SvgProps} from 'react-native-svg'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import IconM from 'react-native-vector-icons/MaterialIcons'
 
 interface SelectProps extends TouchableOpacityProps {
   disabled?: boolean
@@ -9,6 +10,7 @@ interface SelectProps extends TouchableOpacityProps {
   classNames?: string
   icon?: ImageSourcePropType | string
   space?: number
+  SvgIcon?: React.FC<SvgProps>
   IconProvider?: typeof Icon
 }
 
@@ -19,10 +21,11 @@ export const Select: React.FC<SelectProps> = ({
   classNames,
   icon,
   IconProvider,
+  SvgIcon,
   space = 5,
   ...rest
 }) => {
-  const iconSize = icon ? 20 : 0
+  const iconSize = icon || SvgIcon ? 20 : 0
   return (
     <TouchableOpacity
       activeOpacity={0.6}
@@ -30,15 +33,9 @@ export const Select: React.FC<SelectProps> = ({
       style={[{padding: 15, borderWidth: 1.5}, style]}
       onPress={onPress}
       {...rest}>
+      {SvgIcon && <SvgIcon width={iconSize} height={iconSize} style={{marginRight: space}} />}
       {IconProvider && icon ? (
-        <IconProvider
-          name={icon as string}
-          size={20}
-          color='black'
-          style={{
-            marginRight: space,
-          }}
-        />
+        <IconProvider name={icon as string} size={iconSize} color='black' style={{marginRight: space}} />
       ) : (
         icon && (
           <Image style={{width: iconSize, height: iconSize, marginRight: 5}} source={icon as ImageSourcePropType} />
