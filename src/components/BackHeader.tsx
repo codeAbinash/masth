@@ -12,7 +12,7 @@ export default function BackHeader({
   RightComponent,
 }: {
   navigation: StackNav
-  title: string
+  title: React.ReactNode
   RightComponent?: React.ReactNode
 }) {
   return (

@@ -60,11 +60,11 @@ const transactions = [
 
 export default function Transactions({navigation}: {navigation: StackNav}) {
   return (
-    <View className='bg-bgSecondary flex-1'>
+    <View className='flex-1 bg-bgSecondary'>
       <BackHeader navigation={navigation} title='' RightComponent={<RightSettingIcon navigation={navigation} />} />
       <FlatList
         data={transactions}
-        renderItem={({item}) => <TransactionCard {...item} />}
+        renderItem={({item}) => <TransactionCard {...item} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={{paddingHorizontal: 20, gap: 15, marginTop: 0, paddingBottom: 50}}
         ListHeaderComponent={<ListHeader />}
@@ -89,16 +89,21 @@ function TransactionCard({
   message,
   date,
   amount,
+  navigation,
 }: {
   green?: boolean
   message?: string
-  date?: Date
+  date: Date
   amount?: number
+  navigation: StackNav
 }) {
-  const textColor = green ? '#5FD156' : '#F9522E'
+  const textColor = green ? '#24C917' : '#F9522E'
   const backgroundColor = green ? '#EAF9E9' : '#FEE9E4'
   return (
-    <TouchableOpacity activeOpacity={0.7} className='flex-row items-center justify-between rounded-2xl bg-white p-2.5'>
+    <TouchableOpacity
+      activeOpacity={0.6}
+      className='flex-row items-center justify-between rounded-2xl bg-white p-2.5'
+      onPress={() => navigation.navigate('TransactionDetails', {green, message, date: date.toISOString(), amount})}>
       <View className='flex-row gap-3' style={{flex: 1}}>
         <View style={{backgroundColor}} className='rounded-xl p-2.5'>
           {green ? <SwapGreen height={30} width={30} /> : <SwapRed height={30} width={30} />}
@@ -107,7 +112,11 @@ function TransactionCard({
           <Text className='text-lg' numberOfLines={1}>
             {message}
           </Text>
-          <Text className='text-neutral-500'>{date?.toDateString()}</Text>
+          <Text className='text-neutral-500'>
+            {date?.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}
+            {', '}
+            {date?.toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}
+          </Text>
         </View>
       </View>
       <View>

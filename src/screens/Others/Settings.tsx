@@ -6,14 +6,18 @@ import {ScrollView, Text, View} from 'react-native'
 
 export default function Settings({navigation}: {navigation: StackNav}) {
   return (
-    <View className='bg-bgSecondary flex-1'>
+    <View className='flex-1 bg-bgSecondary'>
       <BackHeader
         navigation={navigation}
         title='Settings'
         RightComponent={<RightSettingIcon navigation={navigation} />}
       />
       <ScrollView className='px-5'>
-        <Text>This is the settings page. You can change your password, update your profile, and more.</Text>
+        <Text style={{fontSize: 30}}>Settings</Text>
+
+        <Text className='mt-10'>
+          This is the settings page. You can change your password, update your profile, and more.
+        </Text>
         <Text className='text-2xl font-bold'>Settings</Text>
         <Text>Change Password</Text>
         <Text className='pb-10'>

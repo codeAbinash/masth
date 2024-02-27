@@ -3,13 +3,15 @@ import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/st
 import Home from '@screens/Home'
 import Login from '@screens/Login/Login'
 import SignUp from '@screens/Login/SignUp'
+import NotificationDetails from '@screens/Others/NotificationDetails'
 import Notifications from '@screens/Others/Notifications'
 import Settings from '@screens/Others/Settings'
+import TransactionDetails from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
 import React from 'react'
 import {Dimensions, SafeAreaView, StatusBar, Text} from 'react-native'
 import {PaperProvider} from 'react-native-paper'
-import {SafeAreaProvider, useSafeAreaInsets} from 'react-native-safe-area-context'
+import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 const Stack = createStackNavigator()
 const {width, height} = Dimensions.get('window')
@@ -27,10 +29,28 @@ function Navigation() {
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='Notifications' component={Notifications} />
+      <Stack.Screen
+        name='NotificationDetails'
+        component={NotificationDetails}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          gestureEnabled: true,
+          gestureDirection: 'vertical',
+        }}
+      />
       <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='Settings' component={Settings} />
       <Stack.Screen name='Transactions' component={Transactions} />
+      <Stack.Screen
+        name='TransactionDetails'
+        component={TransactionDetails}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          gestureEnabled: true,
+          gestureDirection: 'vertical',
+        }}
+      />
     </Stack.Navigator>
   )
 }
