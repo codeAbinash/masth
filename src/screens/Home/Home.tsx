@@ -9,12 +9,11 @@ const { width } = Dimensions.get('window')
 
 export default function Home({ navigation }: { navigation: StackNav }) {
   return (
-    <>
-      <View style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
-        <PaddingTop />
-        <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
-      </View>
-    </>
+    <View style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
+      <PaddingTop />
+      <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
+      <NewsFeed />
+    </View>
   )
 }
 

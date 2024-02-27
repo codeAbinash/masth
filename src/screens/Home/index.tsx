@@ -8,8 +8,9 @@ import ProfileIconSvg from '@icons/profile.svg'
 import WalletIconSvgOutline from '@icons/wallet-outline.svg'
 import WalletIconSvg from '@icons/wallet.svg'
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { colors } from '@utils/colors'
 import React from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { StatusBar, TouchableOpacity, View } from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
 import Profile from './Profile'
@@ -107,44 +108,47 @@ function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
 
 const Home = () => {
   return (
-    <Tab.Navigator tabBar={MyTabBar}>
-      <Tab.Screen
-        name='Wallet'
-        component={Wallet}
-        options={{
-          tabBarLabel: 'Wallet',
-          headerShown: false,
-          tabBarIcon: WalletIcon,
-        }}
-      />
-      <Tab.Screen
-        name='HomeScreen'
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'HomeScreen',
-          headerShown: false,
-          tabBarIcon: HomeIcon,
-        }}
-      />
-      <Tab.Screen
-        name='GameZone'
-        component={GameZone}
-        options={{
-          tabBarLabel: 'GameZone',
-          headerShown: false,
-          tabBarIcon: GameZoneIcon,
-        }}
-      />
-      <Tab.Screen
-        name='Profile'
-        component={Profile}
-        options={{
-          tabBarLabel: 'Profile',
-          headerShown: false,
-          tabBarIcon: ProfileIcon,
-        }}
-      />
-    </Tab.Navigator>
+    <>
+      <StatusBar barStyle={'dark-content'} backgroundColor={colors.bgSecondary} />
+      <Tab.Navigator tabBar={MyTabBar}>
+        <Tab.Screen
+          name='HomeScreen'
+          component={HomeScreen}
+          options={{
+            tabBarLabel: 'HomeScreen',
+            headerShown: false,
+            tabBarIcon: HomeIcon,
+          }}
+        />
+        <Tab.Screen
+          name='Wallet'
+          component={Wallet}
+          options={{
+            tabBarLabel: 'Wallet',
+            headerShown: false,
+            tabBarIcon: WalletIcon,
+          }}
+        />
+        <Tab.Screen
+          name='GameZone'
+          component={GameZone}
+          options={{
+            tabBarLabel: 'GameZone',
+            headerShown: false,
+            tabBarIcon: GameZoneIcon,
+          }}
+        />
+        <Tab.Screen
+          name='Profile'
+          component={Profile}
+          options={{
+            tabBarLabel: 'Profile',
+            headerShown: false,
+            tabBarIcon: ProfileIcon,
+          }}
+        />
+      </Tab.Navigator>
+    </>
   )
 }
 

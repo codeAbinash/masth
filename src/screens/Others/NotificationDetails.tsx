@@ -1,9 +1,10 @@
 import { Button } from '@components/Button'
 import { PaddingBottom } from '@components/SafePadding'
+import { TransparentStatusBar } from '@components/StatusBar'
 import { ParamListBase, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { StatusBar, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 type TransactionDetailsRouteProp = RouteProp<ParamListBase, 'NotificationDetails'>
 
@@ -12,7 +13,7 @@ type TransactionDetailsNavigationProp = StackNavigationProp<ParamListBase, 'Noti
 function TopBar() {
   return (
     <>
-      <StatusBar barStyle={'default'} />
+      <TransparentStatusBar />
       <View className='items-center justify-center'>
         <View className='w-20 rounded-full bg-neutral-300' style={{ height: 5 }} />
       </View>

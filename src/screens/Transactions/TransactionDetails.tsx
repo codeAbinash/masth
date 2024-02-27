@@ -1,9 +1,10 @@
 import { Button } from '@components/Button'
 import { PaddingBottom } from '@components/SafePadding'
+import { TransparentStatusBar } from '@components/StatusBar'
 import { ParamListBase, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { StatusBar, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 type TransactionDetailsRouteProp = RouteProp<ParamListBase, 'TransactionDetails'>
 
@@ -25,7 +26,7 @@ type Props = {
 export default function TransactionDetails({ navigation, route }: Props) {
   return (
     <>
-      <StatusBar barStyle={'default'} />
+      <TransparentStatusBar />
       <View className='flex-1 justify-between p-5 pb-2'>
         <View>
           <TopBar />

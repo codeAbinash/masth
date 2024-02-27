@@ -1,3 +1,4 @@
+import { TransparentStatusBar } from '@components/StatusBar'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import Home from '@screens/Home'
@@ -9,9 +10,8 @@ import Settings from '@screens/Others/Settings'
 import TransactionDetails from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
 import React from 'react'
-import { Dimensions, SafeAreaView, StatusBar, Text } from 'react-native'
+import { Dimensions, SafeAreaView, Text } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 const Stack = createStackNavigator()
 const { width, height } = Dimensions.get('window')
@@ -27,8 +27,8 @@ function Navigation() {
         // gestureResponseDistance: width,
       }}
     >
-      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='Notifications' component={Notifications} />
       <Stack.Screen
@@ -59,16 +59,16 @@ function Navigation() {
 export default function App(): React.JSX.Element {
   return (
     // <GestureHandlerRootView style={{flex: 1}}>
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
-        <PaperProvider>
-          <NavigationContainer>
-            <Navigation />
-          </NavigationContainer>
-        </PaperProvider>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    // <SafeAreaProvider>
+    <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
+      <TransparentStatusBar />
+      <PaperProvider>
+        <NavigationContainer>
+          <Navigation />
+        </NavigationContainer>
+      </PaperProvider>
+    </SafeAreaView>
+    // </SafeAreaProvider>
     // </GestureHandlerRootView>
   )
 }

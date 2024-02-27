@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 interface Tab {
   title: string
@@ -33,7 +33,11 @@ export default function Tabs({ tabs }: TabsProps) {
           </View>
         ))}
       </View>
-      <View className='mt-5'>{tabs[activeTab].UI}</View>
+      {tabs.map((tab, index) => (
+        <View style={{ display: activeTab === index ? 'flex' : 'none' }} key={index}>
+          {tab.UI}
+        </View>
+      ))}
     </>
   )
 }
