@@ -109,21 +109,21 @@ const Home = () => {
   return (
     <Tab.Navigator tabBar={MyTabBar}>
       <Tab.Screen
-        name='HomeScreen'
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'HomeScreen',
-          headerShown: false,
-          tabBarIcon: HomeIcon,
-        }}
-      />
-      <Tab.Screen
         name='Wallet'
         component={Wallet}
         options={{
           tabBarLabel: 'Wallet',
           headerShown: false,
           tabBarIcon: WalletIcon,
+        }}
+      />
+      <Tab.Screen
+        name='HomeScreen'
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'HomeScreen',
+          headerShown: false,
+          tabBarIcon: HomeIcon,
         }}
       />
       <Tab.Screen

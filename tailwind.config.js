@@ -8,6 +8,8 @@ module.exports = {
       },
       colors: {
         bgSecondary: '#f7f7f7',
+        yellowPrimary: '#ffdeac',
+        onYellow: '#333333',
       },
     },
   },

@@ -27,6 +27,7 @@ function Navigation() {
         // gestureResponseDistance: width,
       }}
     >
+      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='Notifications' component={Notifications} />
@@ -39,7 +40,6 @@ function Navigation() {
           gestureDirection: 'vertical',
         }}
       />
-      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='Settings' component={Settings} />
       <Stack.Screen name='Transactions' component={Transactions} />
