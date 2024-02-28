@@ -7,6 +7,7 @@ interface InputProps extends TextInputProps {
   icon?: ImageSourcePropType | string
   IconProvider?: typeof Icon
   SvgIcon?: React.FC<SvgProps>
+  RightUI?: React.FC
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -17,6 +18,7 @@ export const Input: React.FC<InputProps> = ({
   style,
   className,
   SvgIcon,
+  RightUI,
   ...rest
 }) => {
   const iconSize = icon || SvgIcon ? 20 : 0
@@ -46,6 +48,7 @@ export const Input: React.FC<InputProps> = ({
         onTextInput={onTextInput}
         {...rest}
       />
+      {RightUI && <RightUI />}
     </View>
   )
 }
