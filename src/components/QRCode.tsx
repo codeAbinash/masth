@@ -5,9 +5,9 @@ const { width } = Dimensions.get('window')
 
 export default function QR_CODE({ str }: { str: string }) {
   const data = useQRCodeData(str, {})
-  const pixelSize = (width * 0.9 - 75) / data.qrCodeSize
+  const pixelSize = (width * 0.8 - 75) / data.qrCodeSize
   const iconSize = width * 0.15
-
+  const innerBorderRadius = (1 / data.qrCodeSize) * 200
   return (
     <View className='flex items-center justify-center'>
       <Image
@@ -30,9 +30,9 @@ export default function QR_CODE({ str }: { str: string }) {
         }
         pieceSize={pixelSize}
         pieceScale={1.03} // fix small gap between pieces
-        innerEyesOptions={{ borderRadius: 10 }}
-        outerEyesOptions={{ borderRadius: 20 }}
-        pieceBorderRadius={4.5}
+        innerEyesOptions={{ borderRadius: innerBorderRadius }}
+        outerEyesOptions={{ borderRadius: innerBorderRadius * 2 }}
+        pieceBorderRadius={innerBorderRadius * 0.5}
       />
     </View>
   )
