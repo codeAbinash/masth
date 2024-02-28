@@ -59,7 +59,7 @@ function WalletBalance() {
           <SmallButton title='Withdraw' SvgIcon={LockIcon} />
         </View>
         <Text style={{ flex: 0.5, fontSize: 17 }} className='text-onYellow'>
-          MST/USD 0.99
+          MST / USD 0.99
         </Text>
       </View>
     </View>

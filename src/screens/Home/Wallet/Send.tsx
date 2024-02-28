@@ -1,11 +1,9 @@
+import icons from '@assets/icons/icons'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import RadioButton, { RadioButtonOption } from '@components/Radio'
 import { useState } from 'react'
-import { View, Text } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 const options: RadioButtonOption[] = [
   { key: '200', text: '200 MST' },
@@ -36,7 +34,8 @@ export default function Send() {
           RightUI={() => {
             return (
               <TouchableOpacity>
-                <Icon name='qrcode-scan' size={20} color='black' style={{ marginRight: 10 }} />
+                {/* <Icon name='qrcode-scan' size={20} color='black' style={{ marginRight: 10 }} /> */}
+                <Image source={icons.qr} style={{ marginRight: 5, width: 24, height: 24, tintColor: 'black' }} />
               </TouchableOpacity>
             )
           }}

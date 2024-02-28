@@ -2,8 +2,7 @@ import BackIcon from '@icons/arrow-left.svg'
 import SettingIcon from '@icons/setting.svg'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { PaddingTop } from './SafePadding'
 
 export default function BackHeader({

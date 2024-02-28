@@ -1,4 +1,6 @@
 export const colors = {
   bgSecondary: '#f7f7f7',
-  green: '#22c55e',
+  green: '#58CB4F',
+  blue: '#3b82f6',
+  red: '#ef4444',
 }

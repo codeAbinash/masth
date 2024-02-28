@@ -1,6 +1,7 @@
 import { Button } from '@components/Button'
 import { PaddingBottom } from '@components/SafePadding'
 import { DefaultTransparent } from '@components/StatusBar'
+import TopBar from '@components/TopBar'
 import { ParamListBase, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
@@ -9,14 +10,6 @@ import { Text, View } from 'react-native'
 type TransactionDetailsRouteProp = RouteProp<ParamListBase, 'TransactionDetails'>
 
 type TransactionDetailsNavigationProp = StackNavigationProp<ParamListBase, 'TransactionDetails'>
-
-function TopBar() {
-  return (
-    <View className='items-center justify-center'>
-      <View className='w-20 rounded-full bg-neutral-300' style={{ height: 5 }} />
-    </View>
-  )
-}
 
 type Props = {
   route: TransactionDetailsRouteProp

@@ -2,8 +2,7 @@ import NotificationIcon from '@icons/notification.svg'
 import SettingIcon from '@icons/setting.svg'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { Image, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
   return (

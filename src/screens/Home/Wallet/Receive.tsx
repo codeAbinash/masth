@@ -2,11 +2,11 @@ import { CopyButton, ShareButton } from '@components/Button'
 import QR_CODE from '@components/QRCode'
 import { colors } from '@utils/colors'
 import React from 'react'
-import { View, Text } from 'react-native'
+import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default function Receive() {
-  const qrCodeString = 'codeAbinashKarmakar@Masth'
+  const qrCodeString = 'codeAbinashKarmakar@Masth@codeAbinash'
   return (
     <View>
       <View className='mt-5 flex items-center justify-center'>
@@ -31,7 +31,7 @@ export default function Receive() {
       </View>
       <View className='mt-2 flex-row items-center justify-center gap-x-2 rounded-full'>
         <Icon name='shield-check' size={18} color={colors.green} />
-        <Text className='text-lg text-green-500'>Trust Wallet</Text>
+        <Text className='text-greenPrimary text-lg'>Trust Wallet</Text>
       </View>
     </View>
   )
