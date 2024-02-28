@@ -15,18 +15,15 @@ export default function Tabs({ tabs }: TabsProps) {
 
   return (
     <>
-      <View
-        className='mt-5 flex-row items-center justify-between rounded-2xl border-neutral-300 p-1'
-        style={{ gap: 5, borderWidth: 1.5 }}
-      >
+      <View className='mt-5 flex-row items-center justify-between rounded-2xl bg-white p-1' style={{ gap: 5 }}>
         {tabs.map((tab, index) => (
           <View style={{ flex: 1 }} key={index}>
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => setActiveTab(index)}
-              className={`rounded-xl ${activeTab === index ? 'bg-neutral-300' : ''} p-2.5`}
+              className={`rounded-2xl ${activeTab === index ? 'bg-neutral-200' : ''} p-3`}
             >
-              <Text className='text-center' style={{ fontSize: 17 }}>
+              <Text className={`text-center ${activeTab === index ? 'font-bold' : ''}`} style={{ fontSize: 17 }}>
                 {tab.title}
               </Text>
             </TouchableOpacity>

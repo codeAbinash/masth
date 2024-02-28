@@ -1,7 +1,10 @@
-import React from 'react'
-import { Image, ImageSourcePropType, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
+import React, { useState } from 'react'
+import { Image, ImageSourcePropType, Share, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 import Icon from 'react-native-vector-icons/Feather'
+import CopyIcon from '@icons/copy.svg'
+import Clipboard from '@react-native-community/clipboard'
+import ShareIcon from '@icons/share.svg'
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string
@@ -98,4 +101,55 @@ export function SmallButton({ onPress, title, classNames, icon, IconProvider, Sv
       </Text>
     </TouchableOpacity>
   )
+}
+
+interface RoundButtonProps extends TouchableOpacityProps {
+  icon?: ImageSourcePropType | string
+  IconProvider?: typeof Icon
+  SvgIcon?: React.FC<SvgProps>
+}
+
+export function RoundButton({ onPress, icon, IconProvider, SvgIcon, ...rest }: RoundButtonProps) {
+  const iconSize = icon || SvgIcon ? 19 : 0
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      className='flex items-center justify-center rounded-full bg-black'
+      style={{ padding: 15 }}
+      onPress={onPress}
+      {...rest}
+    >
+      {SvgIcon && <SvgIcon width={iconSize} height={iconSize} />}
+      {IconProvider && icon ? (
+        <IconProvider name={icon as string} size={iconSize} color='white' />
+      ) : (
+        icon && <Image style={{ width: iconSize, height: iconSize }} source={icon as ImageSourcePropType} />
+      )}
+    </TouchableOpacity>
+  )
+}
+
+export function CopyButton({ str }: { str: string }) {
+  const [copied, setCopied] = useState(false)
+  const onPress = () => {
+    Clipboard.setString(str)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 2000)
+  }
+  return copied ? (
+    <RoundButton IconProvider={Icon} icon={'check'} onPress={onPress} />
+  ) : (
+    <RoundButton SvgIcon={CopyIcon} onPress={onPress} />
+  )
+}
+
+export function ShareButton({ str }: { str: string }) {
+  const onShare = async () => {
+    try {
+      const result = await Share.share({ message: str })
+    } catch (error) {}
+  }
+  return <RoundButton SvgIcon={ShareIcon} onPress={onShare} />
 }

@@ -14,7 +14,7 @@ import { StatusBar, TouchableOpacity, View } from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
 import Profile from './Profile'
-import Wallet from './Wallet'
+import Wallet from './Wallet/Wallet'
 
 function HomeIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
