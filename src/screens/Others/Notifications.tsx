@@ -1,6 +1,7 @@
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
-import { StackNav } from '@utils/types'
+import { PaddingBottom } from '@components/SafePadding'
 import NotificationBellIcon from '@icons/bell.svg'
+import { StackNav } from '@utils/types'
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 
@@ -108,8 +109,9 @@ export default function Notifications({ navigation }: { navigation: StackNav }) 
         data={transactions}
         renderItem={({ item }) => <TransactionCard {...item} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ paddingHorizontal: 20, gap: 13, marginTop: 0, paddingBottom: 50 }}
+        contentContainerStyle={{ paddingHorizontal: 20, gap: 13, marginTop: 0 }}
         ListHeaderComponent={<ListHeader />}
+        ListFooterComponent={<PaddingBottom />}
       />
     </View>
   )

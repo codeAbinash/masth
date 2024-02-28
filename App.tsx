@@ -7,6 +7,7 @@ import SignUp from '@screens/Login/SignUp'
 import NotificationDetails from '@screens/Others/NotificationDetails'
 import Notifications from '@screens/Others/Notifications'
 import Settings from '@screens/Others/Settings'
+import Refer from '@screens/Refer/Refer'
 import TransactionDetails from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
 import React from 'react'
@@ -27,8 +28,8 @@ function Navigation() {
         // gestureResponseDistance: width,
       }}
     >
-      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='Notifications' component={Notifications} />
       <Stack.Screen
@@ -43,6 +44,7 @@ function Navigation() {
       <Stack.Screen name='Profile' component={Profile} />
       <Stack.Screen name='Settings' component={Settings} />
       <Stack.Screen name='Transactions' component={Transactions} />
+      <Stack.Screen name='Refer' component={Refer} />
       <Stack.Screen
         name='TransactionDetails'
         component={TransactionDetails}

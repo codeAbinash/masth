@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather'
 import CopyIcon from '@icons/copy.svg'
 import Clipboard from '@react-native-community/clipboard'
 import ShareIcon from '@icons/share.svg'
+import { shareText } from '@utils/utils'
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string
@@ -26,7 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   const isOutline = variant === 'outline'
-  const iconSize = icon || SvgIcon ? 20 : 0
+  const iconSize = icon || SvgIcon ? 19 : 0
   const iconColor = isOutline ? 'black' : 'white'
   const space = 10
   const bg = isOutline ? 'bg-transparent' : 'bg-black'
@@ -146,10 +147,5 @@ export function CopyButton({ str }: { str: string }) {
 }
 
 export function ShareButton({ str }: { str: string }) {
-  const onShare = async () => {
-    try {
-      const result = await Share.share({ message: str })
-    } catch (error) {}
-  }
-  return <RoundButton SvgIcon={ShareIcon} onPress={onShare} />
+  return <RoundButton SvgIcon={ShareIcon} onPress={() => shareText(str)} />
 }

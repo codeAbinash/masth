@@ -26,7 +26,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
         <WalletBalance />
         <MSTPerUSDCard />
         <Miners />
-        <TotalRemoteMining />
+        <TotalRemoteMining navigation={navigation} />
         <TotalLiveMining />
       </View>
     </ScrollView>
@@ -42,16 +42,16 @@ function Miners() {
   )
 }
 
-function TotalRemoteMining() {
+function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
   return (
     <View className='mt-5 rounded-3xl  bg-white p-5'>
       <View className='flex-row justify-between' style={{ gap: 15 }}>
         <View>
-          <View className='bg-bgAqua rounded-xl p-2.5'>
+          <View className='rounded-xl bg-bgAqua p-2.5'>
             <GraphIcon width={20} height={20} />
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Refer')}>
           <View className='flex-row items-center rounded-full bg-black/10 px-1 py-1 pl-3.5' style={{ gap: 5 }}>
             <Text style={{ fontSize: 16 }}>View Team</Text>
             <MaterialIcon name='keyboard-arrow-right' size={20} />
@@ -67,8 +67,8 @@ function TotalRemoteMining() {
           <Text className='text-lg text-neutral-600'>Total Remote Mining</Text>
         </View>
         <View className='items-end'>
-          <Text className='text-greenPrimary text-lg'>More than usual</Text>
-          <Text className='text-greenPrimary text-lg'>1.023 MST</Text>
+          <Text className='text-lg text-greenPrimary'>More than usual</Text>
+          <Text className='text-lg text-greenPrimary'>1.023 MST</Text>
         </View>
       </View>
     </View>
@@ -85,8 +85,8 @@ function ActiveMiners() {
           </View>
         </View>
         <View>
-          <View className='bg-bgGreen flex-row items-center rounded-full px-3 py-0.5' style={{ gap: 8 }}>
-            <Text className='text-greenPrimary text-lg'>+5</Text>
+          <View className='flex-row items-center rounded-full bg-bgGreen px-3 py-0.5' style={{ gap: 8 }}>
+            <Text className='text-lg text-greenPrimary'>+5</Text>
             <ArrowUpBold width={10} height={10} color={colors.green} />
           </View>
         </View>
@@ -127,7 +127,7 @@ function TotalLiveMining() {
   return (
     <View className='mt-5 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
       <View>
-        <View className='bg-bgGreen rounded-xl p-2.5'>
+        <View className='rounded-xl bg-bgGreen p-2.5'>
           <ChartIcon width={20} height={20} />
         </View>
       </View>
@@ -135,7 +135,7 @@ function TotalLiveMining() {
         <View>
           <View className='flex-row items-center justify-between '>
             <Text className='text-lg text-neutral-600'>Total Live Mining</Text>
-            <View className='bg-bgGreen flex-row items-center rounded-full px-3 py-0.5' style={{ gap: 7 }}>
+            <View className='flex-row items-center rounded-full bg-bgGreen px-3 py-0.5' style={{ gap: 7 }}>
               <Text className='text-greenPrimary' style={{ fontSize: 17 }}>
                 +3.2345 MST
               </Text>
@@ -209,7 +209,7 @@ function MSTPerUSDCard() {
         </View>
       </View>
       <View>
-        <Text className='text-greenPrimary text-lg'>+0.08 (0.2%)</Text>
+        <Text className='text-lg text-greenPrimary'>+0.08 (0.2%)</Text>
       </View>
     </View>
   )

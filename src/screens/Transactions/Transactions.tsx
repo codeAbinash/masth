@@ -1,4 +1,5 @@
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
+import { PaddingBottom } from '@components/SafePadding'
 import SwapGreen from '@icons/transaction-green.svg'
 import SwapRed from '@icons/transaction-red.svg'
 import { StackNav } from '@utils/types'
@@ -66,8 +67,9 @@ export default function Transactions({ navigation }: { navigation: StackNav }) {
         data={transactions}
         renderItem={({ item }) => <TransactionCard {...item} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ paddingHorizontal: 20, gap: 15, marginTop: 0, paddingBottom: 50 }}
+        contentContainerStyle={{ paddingHorizontal: 20, gap: 13, marginTop: 0 }}
         ListHeaderComponent={<ListHeader />}
+        ListFooterComponent={<PaddingBottom />}
       />
     </View>
   )

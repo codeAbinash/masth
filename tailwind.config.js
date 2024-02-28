@@ -14,6 +14,7 @@ module.exports = {
         bgGreen: '#D5FAD2',
         greenPrimary: '#58CB4F',
         bgAqua: '#7FF1F1',
+        accent: '#ff9a00',
       },
     },
   },
