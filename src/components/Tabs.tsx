@@ -15,13 +15,13 @@ export default function Tabs({ tabs }: TabsProps) {
 
   return (
     <>
-      <View className='mt-5 flex-row items-center justify-between rounded-2xl bg-white p-1' style={{ gap: 5 }}>
+      <View className='mt-5 flex-row items-center justify-between rounded-2xl bg-neutral-200 p-1' style={{ gap: 5 }}>
         {tabs.map((tab, index) => (
           <View style={{ flex: 1 }} key={index}>
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => setActiveTab(index)}
-              className={`rounded-2xl ${activeTab === index ? 'bg-neutral-200' : ''} p-3`}
+              className={`rounded-xl ${activeTab === index ? 'bg-bgSecondary' : ''} p-2.5`}
             >
               <Text className={`text-center ${activeTab === index ? 'font-bold' : ''}`} style={{ fontSize: 17 }}>
                 {tab.title}
