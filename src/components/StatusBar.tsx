@@ -1,8 +1,12 @@
 import { colors } from '@utils/colors'
 import { StatusBar } from 'react-native'
 
-export function TransparentStatusBar() {
+export function DefaultTransparent() {
   return <StatusBar barStyle={'default'} backgroundColor={'transparent'} />
+}
+
+export function DarkContentTransparentStatusBar() {
+  return <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
 }
 
 export function SecondaryBgStatusBar() {

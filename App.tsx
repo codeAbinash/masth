@@ -1,4 +1,4 @@
-import { TransparentStatusBar } from '@components/StatusBar'
+import { DarkContentTransparentStatusBar } from '@components/StatusBar'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import Home from '@screens/Home'
@@ -61,7 +61,7 @@ export default function App(): React.JSX.Element {
     // <GestureHandlerRootView style={{flex: 1}}>
     // <SafeAreaProvider>
     <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
-      <TransparentStatusBar />
+      <DarkContentTransparentStatusBar />
       <PaperProvider>
         <NavigationContainer>
           <Navigation />
