@@ -32,12 +32,7 @@ export default function Send() {
       <RadioButton options={options} value={selected} onChange={setSelected} style={{ marginTop: 0 }} />
       <View>
         <Label title='Amount' />
-        <Input
-          placeholder='Enter amount in MST'
-          keyboardType='numeric'
-          style={{ backgroundColor: 'white' }}
-          RightUI={Currency}
-        />
+        <Input placeholder='Enter amount in MST' keyboardType='numeric' style={{ backgroundColor: 'white' }} RightUI={Currency} />
       </View>
       <View>
         <Label title='Receiver Address' />

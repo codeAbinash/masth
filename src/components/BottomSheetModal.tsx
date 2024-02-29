@@ -1,13 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  Animated,
-  Dimensions,
-  Modal,
-  PanResponder,
-  ScrollView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import { Animated, Dimensions, Modal, PanResponder, ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 
 const BottomSheet = ({
   visible,
@@ -80,21 +72,10 @@ const BottomSheet = ({
   })
 
   return (
-    <Modal
-      animated
-      animationType='fade'
-      visible={visible}
-      transparent
-      onRequestClose={dismissFunc}
-      hardwareAccelerated
-      statusBarTranslucent
-    >
+    <Modal animated animationType='fade' visible={visible} transparent onRequestClose={dismissFunc} hardwareAccelerated statusBarTranslucent>
       <TouchableWithoutFeedback onPress={() => closeAnim.start(dismissFunc)}>
         <Animated.View style={[styles.overlay, { backgroundColor }]}>
-          <Animated.View
-            style={[styles.container, { top, backgroundColor: 'transparent' }]}
-            {...panResponders.panHandlers}
-          >
+          <Animated.View style={[styles.container, { top, backgroundColor: 'transparent' }]} {...panResponders.panHandlers}>
             <ScrollView>{children}</ScrollView>
           </Animated.View>
         </Animated.View>

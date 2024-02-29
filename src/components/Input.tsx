@@ -38,9 +38,7 @@ export const Input: React.FC<InputProps> = ({
           }}
         />
       ) : (
-        icon && (
-          <Image style={{ width: iconSize, height: iconSize, marginRight: 10 }} source={icon as ImageSourcePropType} />
-        )
+        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: 10 }} source={icon as ImageSourcePropType} />
       )}
       <TextInput
         placeholder={placeholder}

@@ -25,10 +25,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
             </Text>
             <Text style={{ fontSize: 30 }}>Wallet</Text>
           </View>
-          <TouchableOpacity
-            className='rounded-full border border-neutral-200 bg-white p-2.5'
-            onPress={() => navigation.navigate('Transactions')}
-          >
+          <TouchableOpacity className='rounded-full border border-neutral-200 bg-white p-2.5' onPress={() => navigation.navigate('Transactions')}>
             <SwapIcon height={17} width={17} />
           </TouchableOpacity>
         </View>

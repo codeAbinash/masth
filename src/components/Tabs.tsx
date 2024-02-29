@@ -23,10 +23,7 @@ export default function Tabs({ tabs }: TabsProps) {
               onPress={() => setActiveTab(index)}
               className={`rounded-xl ${activeTab === index ? 'bg-bgSecondary' : ''} p-2`}
             >
-              <Text
-                className={`text-center ${activeTab === index ? 'font-bold' : 'opacity-50'}`}
-                style={{ fontSize: 16 }}
-              >
+              <Text className={`text-center ${activeTab === index ? 'font-bold' : 'opacity-50'}`} style={{ fontSize: 16 }}>
                 {tab.title}
               </Text>
             </TouchableOpacity>

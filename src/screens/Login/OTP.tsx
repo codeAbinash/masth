@@ -20,9 +20,7 @@ export default function OTP({ navigation }: { navigation: StackNav }) {
       <View className='items-center'>
         <Image source={icons.mobile_otp} style={{ width: width * topIconSize, height: width * topIconSize }} />
         <Text className='mt-5 text-center text-3xl font-bold'>Verify OTP</Text>
-        <Text className='mt-4 w-4/5 text-center text-base text-neutral-600'>
-          We have sent an otp to your mobile number ends with 8988
-        </Text>
+        <Text className='mt-4 w-4/5 text-center text-base text-neutral-600'>We have sent an otp to your mobile number ends with 8988</Text>
         <View style={{ padding: 5 }}>
           <View className='flex-row'>
             <OTPInputView

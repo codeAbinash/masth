@@ -15,17 +15,7 @@ interface ButtonProps extends TouchableOpacityProps {
   IconProvider?: typeof Icon
   SvgIcon?: React.FC<SvgProps>
 }
-export const Button: React.FC<ButtonProps> = ({
-  onPress,
-  title,
-  variant,
-  style,
-  classNames,
-  icon,
-  IconProvider,
-  SvgIcon,
-  ...rest
-}) => {
+export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, classNames, icon, IconProvider, SvgIcon, ...rest }) => {
   const isOutline = variant === 'outline'
   const iconSize = icon || SvgIcon ? 17 : 0
   const iconColor = isOutline ? 'black' : 'white'
@@ -53,12 +43,7 @@ export const Button: React.FC<ButtonProps> = ({
           }}
         />
       ) : (
-        icon && (
-          <Image
-            style={{ width: iconSize, height: iconSize, marginRight: space }}
-            source={icon as ImageSourcePropType}
-          />
-        )
+        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: space }} source={icon as ImageSourcePropType} />
       )}
 
       <Text className={textColor} style={{ fontSize: 16, marginRight: (10 + iconSize) / 2 }}>
@@ -77,16 +62,7 @@ interface SmallButtonProps extends TouchableOpacityProps {
   textStyles?: StyleProp<any>
   iconStyles?: StyleProp<any>
 }
-export function SmallButton({
-  onPress,
-  title,
-  classNames,
-  icon,
-  IconProvider,
-  SvgIcon,
-  textStyles,
-  ...rest
-}: SmallButtonProps) {
+export function SmallButton({ onPress, title, classNames, icon, IconProvider, SvgIcon, textStyles, ...rest }: SmallButtonProps) {
   const iconSize = icon || SvgIcon ? 16 : 0
   return (
     <TouchableOpacity
@@ -100,12 +76,7 @@ export function SmallButton({
       {IconProvider && icon ? (
         <IconProvider name={icon as string} size={iconSize} color='white' style={{ marginRight: iconSize / 2 }} />
       ) : (
-        icon && (
-          <Image
-            style={{ width: iconSize, height: iconSize, marginRight: iconSize / 2 }}
-            source={icon as ImageSourcePropType}
-          />
-        )
+        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: iconSize / 2 }} source={icon as ImageSourcePropType} />
       )}
 
       <Text className='text-white' style={[{ fontSize: 15 }, textStyles]}>
@@ -150,11 +121,7 @@ export function CopyButton({ str }: { str: string }) {
       setCopied(false)
     }, 2000)
   }
-  return copied ? (
-    <RoundButton IconProvider={Icon} icon={'check'} onPress={onPress} />
-  ) : (
-    <RoundButton SvgIcon={CopyIcon} onPress={onPress} />
-  )
+  return copied ? <RoundButton IconProvider={Icon} icon={'check'} onPress={onPress} /> : <RoundButton SvgIcon={CopyIcon} onPress={onPress} />
 }
 
 export function ShareButton({ str }: { str: string }) {

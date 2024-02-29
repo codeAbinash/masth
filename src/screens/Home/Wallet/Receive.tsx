@@ -25,9 +25,7 @@ export default function Receive() {
         </View>
       </View>
       <View className='mt-3 p-5'>
-        <Text className='text-center text-onYellow'>
-          Send only Masth to this address. Sending any other coins may result in permanent loss.
-        </Text>
+        <Text className='text-center text-onYellow'>Send only Masth to this address. Sending any other coins may result in permanent loss.</Text>
       </View>
       <View className='mt-2 flex-row items-center justify-center gap-x-2 rounded-full'>
         <Icon name='shield-check' size={18} color={colors.greenPrimary} />

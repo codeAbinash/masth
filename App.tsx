@@ -30,8 +30,8 @@ function Navigation() {
         // gestureResponseDistance: width,
       }}
     >
-      <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='OTP' component={OTP} />
       <Stack.Screen name='Notifications' component={Notifications} />

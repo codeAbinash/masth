@@ -17,14 +17,7 @@ interface SelectProps extends TouchableOpacityProps {
 }
 
 function RightSideUI() {
-  return (
-    <IconM
-      name='keyboard-control-key'
-      size={20}
-      color='black'
-      style={{ backgroundColor: 'transparent', transform: [{ rotate: '180deg' }] }}
-    />
-  )
+  return <IconM name='keyboard-control-key' size={20} color='black' style={{ backgroundColor: 'transparent', transform: [{ rotate: '180deg' }] }} />
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -53,9 +46,7 @@ export const Select: React.FC<SelectProps> = ({
       {IconProvider && icon ? (
         <IconProvider name={icon as string} size={iconSize} color='black' style={{ marginRight: space }} />
       ) : (
-        icon && (
-          <Image style={{ width: iconSize, height: iconSize, marginRight: 5 }} source={icon as ImageSourcePropType} />
-        )
+        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: 5 }} source={icon as ImageSourcePropType} />
       )}
       <View className='flex flex-1 flex-row justify-between'>
         <Text className={value ? '' : 'text-gray-500'} style={{ fontSize: 16 }}>

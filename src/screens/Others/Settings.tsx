@@ -9,11 +9,7 @@ import ComingSoonSvg from '@icons/coming-soon-2.svg'
 export default function Settings({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex-1 bg-bgSecondary'>
-      <BackHeader
-        navigation={navigation}
-        title='Settings'
-        RightComponent={<RightSettingIcon navigation={navigation} />}
-      />
+      <BackHeader navigation={navigation} title='Settings' RightComponent={<RightSettingIcon navigation={navigation} />} />
       <ScrollView className='px-5'>
         <ComingSoon />
         <PaddingBottom />

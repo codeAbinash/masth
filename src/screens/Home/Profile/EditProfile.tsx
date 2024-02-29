@@ -23,24 +23,12 @@ function SignOut() {
 export default function Settings({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex-1 bg-bgSecondary'>
-      <BackHeader
-        navigation={navigation}
-        title='Edit Profile'
-        RightComponent={<RightSettingIcon navigation={navigation} />}
-      />
+      <BackHeader navigation={navigation} title='Edit Profile' RightComponent={<RightSettingIcon navigation={navigation} />} />
       <KeyboardAvoidingContainer className='px-5'>
         <View className='mt-5 items-center justify-center'>
           <View className='relative'>
-            <Image
-              className='rounded-full bg-neutral-200'
-              source={{ uri: 'https://picsum.photos/201' }}
-              style={{ width: 140, height: 140 }}
-            />
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{ position: 'absolute', bottom: 0, right: 0 }}
-              className='rounded-full bg-white p-3'
-            >
+            <Image className='rounded-full bg-neutral-200' source={{ uri: 'https://picsum.photos/201' }} style={{ width: 140, height: 140 }} />
+            <TouchableOpacity activeOpacity={0.7} style={{ position: 'absolute', bottom: 0, right: 0 }} className='rounded-full bg-white p-3'>
               <Icon name='edit' size={20} />
             </TouchableOpacity>
           </View>
@@ -52,12 +40,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
         <View className='mt-5 flex-1' style={{ gap: 10 }}>
           <View>
             <Label title='Full Name' />
-            <Input
-              placeholder='Full Name'
-              icon={'account-outline'}
-              IconProvider={MaterialCommunityIcon}
-              value='Abinash Karmakar'
-            />
+            <Input placeholder='Full Name' icon={'account-outline'} IconProvider={MaterialCommunityIcon} value='Abinash Karmakar' />
           </View>
           {/* <View>
             <Label title='Username' />
