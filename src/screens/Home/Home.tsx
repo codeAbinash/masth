@@ -165,10 +165,10 @@ function WalletBalance() {
           <SmallButton title='Start Mining' SvgIcon={PlayIcon} />
         </View>
         <View style={{ flex: 0.45 }} className='flex-row'>
-          <Text style={{ fontSize: 17 }} className='text-onYellow'>
+          <Text style={{ fontSize: 16 }} className='text-onYellow'>
             50 Masth
           </Text>
-          <Text style={{ fontSize: 17 }} className='text-onYellow opacity-60'>
+          <Text style={{ fontSize: 16 }} className='text-onYellow opacity-60'>
             {' '}
             / hour
           </Text>

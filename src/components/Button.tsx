@@ -76,12 +76,12 @@ interface SmallButtonProps extends TouchableOpacityProps {
   SvgIcon?: React.FC<SvgProps>
 }
 export function SmallButton({ onPress, title, classNames, icon, IconProvider, SvgIcon, ...rest }: SmallButtonProps) {
-  const iconSize = icon || SvgIcon ? 17 : 0
+  const iconSize = icon || SvgIcon ? 16 : 0
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       className={`flex flex-row items-center justify-center rounded-full border-black bg-black ${classNames}`}
-      style={{ padding: 10, borderWidth: 1.5 }}
+      style={{ padding: 9, borderWidth: 1.5 }}
       onPress={onPress}
       {...rest}
     >
@@ -97,7 +97,7 @@ export function SmallButton({ onPress, title, classNames, icon, IconProvider, Sv
         )
       )}
 
-      <Text className='text-white' style={{ fontSize: 17 }}>
+      <Text className='text-white' style={{ fontSize: 16 }}>
         {title}
       </Text>
     </TouchableOpacity>
