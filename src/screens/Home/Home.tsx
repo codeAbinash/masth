@@ -35,7 +35,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
 
 function Miners() {
   return (
-    <View className='mt-5 flex-row' style={{ gap: 20 }}>
+    <View className='mt-4 flex-row' style={{ gap: 18 }}>
       <ActiveMiners />
       <TotalMiners />
     </View>
@@ -44,7 +44,7 @@ function Miners() {
 
 function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
   return (
-    <View className='mt-5 rounded-3xl  bg-white p-5'>
+    <View className='mt-4 rounded-3xl  bg-white p-5'>
       <View className='flex-row justify-between' style={{ gap: 15 }}>
         <View>
           <View className='rounded-xl bg-bgAqua p-2.5'>
@@ -52,23 +52,25 @@ function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
           </View>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('Refer')}>
-          <View className='flex-row items-center rounded-full bg-black/10 px-1 py-1 pl-3.5' style={{ gap: 5 }}>
-            <Text style={{ fontSize: 16 }}>View Team</Text>
+          <View className='flex-row items-center rounded-full bg-black/10 px-1 py-1 pl-3.5' style={{ gap: 0 }}>
+            <Text style={{ fontSize: 15 }} className='pb-0.5'>
+              View Team
+            </Text>
             <MaterialIcon name='keyboard-arrow-right' size={20} />
           </View>
         </TouchableOpacity>
       </View>
       <View className='mt-3 flex flex-row items-end justify-between'>
         <View>
-          <View className='flex-row items-end gap-x-2'>
-            <Text className='text-4xl'>42.0728</Text>
-            <Text className='text-2xl text-neutral-600'>MST</Text>
+          <View className='flex-row items-end gap-x-1'>
+            <Text className='text-3xl'>42.0728</Text>
+            <Text className='mb-0.5 text-xl text-neutral-600'>MST</Text>
           </View>
-          <Text className='text-lg text-neutral-600'>Total Remote Mining</Text>
+          <Text className='text-base text-neutral-600'>Total Remote Mining</Text>
         </View>
         <View className='items-end'>
-          <Text className='text-lg text-greenPrimary'>More than usual</Text>
-          <Text className='text-lg text-greenPrimary'>1.023 MST</Text>
+          <Text className='text-base text-greenPrimary'>More than usual</Text>
+          <Text className='text-base text-greenPrimary'>1.023 MST</Text>
         </View>
       </View>
     </View>
@@ -80,20 +82,20 @@ function ActiveMiners() {
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
         <View>
-          <View className='rounded-xl bg-yellowPrimary p-2.5'>
-            <PlayBlackIcon width={20} height={20} />
+          <View className='rounded-xl bg-yellowPrimary p-2'>
+            <PlayBlackIcon width={18} height={18} />
           </View>
         </View>
         <View>
           <View className='flex-row items-center rounded-full bg-bgGreen px-3 py-0.5' style={{ gap: 8 }}>
-            <Text className='text-lg text-greenPrimary'>+5</Text>
-            <ArrowUpBold width={10} height={10} color={colors.green} />
+            <Text className='text-base text-greenPrimary'>+5</Text>
+            <ArrowUpBold width={9} height={9} color={colors.green} />
           </View>
         </View>
       </View>
       <View>
-        <Text className='text-4xl'>24</Text>
-        <Text className='mt-1 text-xl text-neutral-600'>Active Miners</Text>
+        <Text className='text-3xl'>24</Text>
+        <Text className='mt-1 text-lg text-neutral-600'>Active Miners</Text>
       </View>
     </View>
   )
@@ -104,20 +106,20 @@ function TotalMiners() {
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
         <View>
-          <View className='rounded-xl bg-purplePrimary p-2.5'>
-            <ThreeUserIcon width={20} height={20} />
+          <View className='rounded-xl bg-purplePrimary p-2'>
+            <ThreeUserIcon width={18} height={18} />
           </View>
         </View>
         <View>
           <View className='flex-row items-center rounded-full bg-red-500/20 px-3 py-0.5' style={{ gap: 8 }}>
-            <Text className='text-lg text-red-500'>-5</Text>
-            <ArrowDownBold width={10} height={10} color={colors.red} />
+            <Text className='text-base text-red-500'>-5</Text>
+            <ArrowDownBold width={9} height={9} color={colors.red} />
           </View>
         </View>
       </View>
       <View>
-        <Text className='text-4xl'>24</Text>
-        <Text className='mt-1 text-xl text-neutral-600'>Active Miners</Text>
+        <Text className='text-3xl'>24</Text>
+        <Text className='mt-1 text-lg text-neutral-600'>Total Miners</Text>
       </View>
     </View>
   )
@@ -125,7 +127,7 @@ function TotalMiners() {
 
 function TotalLiveMining() {
   return (
-    <View className='mt-5 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
+    <View className='mt-4 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
       <View>
         <View className='rounded-xl bg-bgGreen p-2.5'>
           <ChartIcon width={20} height={20} />
@@ -134,18 +136,23 @@ function TotalLiveMining() {
       <View style={{ gap: 4, flex: 1 }}>
         <View>
           <View className='flex-row items-center justify-between '>
-            <Text className='text-lg text-neutral-600'>Total Live Mining</Text>
-            <View className='flex-row items-center rounded-full bg-bgGreen px-3 py-0.5' style={{ gap: 7 }}>
-              <Text className='text-greenPrimary' style={{ fontSize: 17 }}>
-                +3.2345 MST
-              </Text>
-              <ArrowUpBold width={10} height={10} color={colors.green} />
+            <Text className='text-base text-neutral-600'>Total Live Mining</Text>
+            <View>
+              <View className='flex-row items-center rounded-full bg-bgGreen px-2 py-0.5' style={{ gap: 5 }}>
+                <View className='flex-row items-end'>
+                  <Text className='text-base text-greenPrimary'>+3.2345</Text>
+                  <Text style={{ fontSize: 12 }} className='pb-0.5 pl-1 text-greenPrimary'>
+                    MST
+                  </Text>
+                </View>
+                <ArrowUpBold width={9} height={9} color={colors.green} />
+              </View>
             </View>
           </View>
         </View>
-        <View className='mt-1 flex-row items-end gap-x-2'>
-          <Text className='text-3xl'>4289192.0728</Text>
-          <Text className='mb-0.5 text-xl text-neutral-600'>MST</Text>
+        <View className='mt-1 flex-row items-end gap-x-1'>
+          <Text className='text-2xl'>4289192.0728</Text>
+          <Text className='mb-0.5 text-base text-neutral-600'>MST</Text>
         </View>
       </View>
     </View>
@@ -156,8 +163,10 @@ function WalletBalance() {
   return (
     <View className='mt-5 rounded-3xl bg-yellowPrimary p-5'>
       <Text className='text-lg text-onYellow'>Wallet Balance</Text>
-      <View className='mt-3 flex-row items-end'>
-        <Text className='text-5xl text-onYellow'>{(6860.306).toLocaleString()}</Text>
+      <View className='flex-row items-end'>
+        <Text className='text-onYellow' style={{ fontSize: 43 }}>
+          {(6860.306).toLocaleString()}
+        </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
       </View>
       <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
@@ -200,16 +209,16 @@ function NewsFeed() {
 
 function MSTPerUSDCard() {
   return (
-    <View className='mt-4 flex-row justify-between rounded-2xl bg-white p-4 px-5'>
+    <View className='mt-4 flex-row items-center justify-between rounded-2xl bg-white p-3.5 px-5'>
       <View style={{ gap: 5 }} className='flex-row items-center'>
-        <Text className='text-lg text-neutral-600'>MST / USD</Text>
-        <Text className='text-lg'> 0.99</Text>
+        <Text className='text-base text-neutral-600'>MST / USD</Text>
+        <Text className='text-base'> 0.99</Text>
         <View className='p-1.5'>
-          <Icon name='info' size={18} color={'gray'} />
+          <Icon name='info' size={17} color={'gray'} />
         </View>
       </View>
       <View>
-        <Text className='text-lg text-greenPrimary'>+0.08 (0.2%)</Text>
+        <Text className='text-base text-greenPrimary'>+0.08 (0.2%)</Text>
       </View>
     </View>
   )

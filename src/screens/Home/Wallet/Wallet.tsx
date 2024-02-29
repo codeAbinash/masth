@@ -50,15 +50,17 @@ function WalletBalance() {
   return (
     <View className='mt-4 rounded-3xl bg-yellowPrimary p-5'>
       <Text className='text-lg text-onYellow'>Wallet Balance</Text>
-      <View className='mt-3 flex-row items-end'>
-        <Text className='text-5xl text-onYellow'>{(6860.306).toLocaleString()}</Text>
+      <View className='flex-row items-end'>
+        <Text className='text-onYellow' style={{ fontSize: 43 }}>
+          {(6860.306).toLocaleString()}
+        </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
       </View>
       <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
         <View style={{ flex: 0.5 }}>
           <SmallButton title='Withdraw' SvgIcon={LockIcon} />
         </View>
-        <Text style={{ flex: 0.5, fontSize: 17 }} className='text-onYellow'>
+        <Text style={{ flex: 0.5, fontSize: 16 }} className='text-onYellow'>
           MST / USD 0.99
         </Text>
       </View>
