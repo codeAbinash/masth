@@ -39,7 +39,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
             <TouchableOpacity
               activeOpacity={0.7}
               style={{ position: 'absolute', bottom: 0, right: 0 }}
-              className='rounded-full bg-white p-3.5'
+              className='rounded-full bg-white p-3'
             >
               <Icon name='edit' size={20} />
             </TouchableOpacity>

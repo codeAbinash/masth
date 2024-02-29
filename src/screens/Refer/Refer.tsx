@@ -48,7 +48,7 @@ function ReferCard() {
   return (
     <View className='mt-5 rounded-3xl bg-white p-5'>
       <View>
-        <Text className='text-xl'>Get 10% Commission</Text>
+        <Text className='text-lg'>Get 10% Commission</Text>
         <Text className='text-base text-neutral-600'>Every time when your friend started mining</Text>
       </View>
       <ReferCode />
@@ -94,7 +94,7 @@ function TotalEarned() {
     <View className='mt-5 items-center justify-center' style={{ gap: 10 }}>
       <Text className='text-xl text-neutral-600'>You've Earned</Text>
       <View className='flex-row items-end gap-x-1'>
-        <Text style={{ fontSize: 43 }}>62.524</Text>
+        <Text style={{ fontSize: 40 }}>62.524</Text>
         <Text style={{ fontSize: 25 }} className='pb-1 text-neutral-600'>
           MST
         </Text>

@@ -11,7 +11,7 @@ interface QR_CODEProps extends ViewProps {
 export default function QR_CODE({ str, scale = 0.8, ...rest }: QR_CODEProps) {
   const data = useQRCodeData(str, {})
   const pixelSize = (width * scale - 75) / data.qrCodeSize
-  const iconSize = width * 0.15 * scale
+  const iconSize = width * 0.17 * scale
   const innerBorderRadius = (1 / data.qrCodeSize) * 200 * scale
   return (
     <View className='flex items-center justify-center' {...rest}>
@@ -34,7 +34,7 @@ export default function QR_CODE({ str, scale = 0.8, ...rest }: QR_CODEProps) {
           } as GradientProps
         }
         pieceSize={pixelSize}
-        pieceScale={1.03} // fix small gap between pieces
+        pieceScale={0.88} // small gap between pieces
         innerEyesOptions={{ borderRadius: innerBorderRadius * 1.5 }}
         outerEyesOptions={{ borderRadius: innerBorderRadius * 2 * 1.5 }}
         pieceBorderRadius={innerBorderRadius * 0.5}

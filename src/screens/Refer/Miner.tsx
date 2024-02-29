@@ -21,7 +21,7 @@ const Miner: React.FC<MinerProps> = ({ name, username, profile_pic, bellIcon }) 
       <View className='flex-row items-center gap-3' style={{ flex: 1 }}>
         <Image source={{ uri: profile_pic }} style={{ width: 50, height: 50, borderRadius: 25 }} />
         <View style={{ flex: 1 }}>
-          <Text className='text-lg' numberOfLines={1}>
+          <Text className='text-base' numberOfLines={1}>
             {name}
           </Text>
           <Text className='text-base text-neutral-600' style={{ fontSize: 16 }} numberOfLines={1}>

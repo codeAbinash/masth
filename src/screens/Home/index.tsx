@@ -49,7 +49,7 @@ function WalletIcon(props: { focused: boolean; color: string; size: number }) {
 }
 const Tab = createBottomTabNavigator()
 
-function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+function BottomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <View className='bg-white'>
       <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
@@ -93,9 +93,9 @@ function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
               onPress={onPress}
               onLongPress={onLongPress}
               className='flex items-center justify-center p-1'
-              style={{ flex: 1, paddingTop: 17, paddingBottom: 17 }}
+              style={{ flex: 1, paddingTop: 17, paddingBottom: 20 }}
             >
-              {options.tabBarIcon && options.tabBarIcon({ focused: isFocused, color: 'black', size: 24 })}
+              {options.tabBarIcon && options.tabBarIcon({ focused: isFocused, color: 'black', size: 23 })}
               {/* <Text style={{color: isFocused ? '#673ab7' : '#222'}}>{label as ReactNode}</Text> */}
             </TouchableOpacity>
           )
@@ -110,7 +110,7 @@ const Home = () => {
   return (
     <>
       <StatusBar barStyle={'dark-content'} backgroundColor={colors.bgSecondary} />
-      <Tab.Navigator tabBar={MyTabBar}>
+      <Tab.Navigator tabBar={BottomTabBar}>
         <Tab.Screen
           name='HomeScreen'
           component={HomeScreen}

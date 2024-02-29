@@ -9,18 +9,16 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { colors } from '@utils/colors'
 
 const { width } = Dimensions.get('window')
-const appIconSize = 0.35
-// import KeyboardAvoidingContainer from '@components/KeyboardAvoidingContainer'
+const topIconSize = 0.35
 
 export default function OTP({ navigation }: { navigation: StackNav }) {
   return (
-    // <KeyboardAvoidingContainer>
     <View className='flex-1 justify-between bg-white'>
       <View>
         <PaddingTop />
       </View>
       <View className='items-center'>
-        <Image source={icons.mobile_otp} style={{ width: width * appIconSize, height: width * appIconSize }} />
+        <Image source={icons.mobile_otp} style={{ width: width * topIconSize, height: width * topIconSize }} />
         <Text className='mt-5 text-center text-3xl font-bold'>Verify OTP</Text>
         <Text className='mt-4 w-4/5 text-center text-base text-neutral-600'>
           We have sent an otp to your mobile number ends with 8988
@@ -34,7 +32,7 @@ export default function OTP({ navigation }: { navigation: StackNav }) {
               codeInputFieldStyle={styles.underlineStyleBase}
               codeInputHighlightStyle={styles.underlineStyleHighLighted}
               onCodeFilled={(code) => {
-                console.log(`Code is ${code}, you are good to go!`)
+                navigation.navigate('Home')
               }}
             />
           </View>
@@ -66,7 +64,7 @@ const styles = StyleSheet.create({
 
   underlineStyleBase: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 17,
     borderWidth: 1.5,
     borderRadius: 14,
     backgroundColor: colors.bgSecondary,
