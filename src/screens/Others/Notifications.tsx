@@ -107,9 +107,9 @@ export default function Notifications({ navigation }: { navigation: StackNav }) 
       <BackHeader navigation={navigation} title='' RightComponent={<RightSettingIcon navigation={navigation} />} />
       <FlatList
         data={transactions}
-        renderItem={({ item }) => <TransactionCard {...item} navigation={navigation} />}
+        renderItem={({ item }) => <NotificationCard {...item} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ paddingHorizontal: 20, gap: 13, marginTop: 0 }}
+        contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0 }}
         ListHeaderComponent={<ListHeader />}
         ListFooterComponent={<PaddingBottom />}
       />
@@ -120,15 +120,15 @@ export default function Notifications({ navigation }: { navigation: StackNav }) 
 function ListHeader() {
   return (
     <>
-      <Text className='text-neutral-500' style={{ fontSize: 30 }}>
+      <Text className='text-neutral-500' style={{ fontSize: 27 }}>
         Your,{' '}
       </Text>
-      <Text style={{ fontSize: 30 }}>Notifications</Text>
+      <Text style={{ fontSize: 27 }}>Notifications</Text>
     </>
   )
 }
 
-function TransactionCard({ message, date, navigation }: { message?: string; date: Date; navigation: StackNav }) {
+function NotificationCard({ message, date, navigation }: { message?: string; date: Date; navigation: StackNav }) {
   return (
     <TouchableOpacity
       activeOpacity={0.6}
@@ -137,10 +137,10 @@ function TransactionCard({ message, date, navigation }: { message?: string; date
     >
       <View className='flex-row gap-3' style={{ flex: 1 }}>
         <View style={{ backgroundColor: '#ffeed5' }} className='rounded-xl p-3'>
-          <NotificationBellIcon width={25} height={25} />
+          <NotificationBellIcon width={23} height={23} />
         </View>
         <View style={{ flex: 1 }}>
-          <Text className='text-lg' numberOfLines={1}>
+          <Text className='text-base' numberOfLines={1}>
             {message}
           </Text>
           <Text className='text-neutral-500'>

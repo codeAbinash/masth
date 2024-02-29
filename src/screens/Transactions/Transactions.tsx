@@ -78,10 +78,10 @@ export default function Transactions({ navigation }: { navigation: StackNav }) {
 function ListHeader() {
   return (
     <>
-      <Text className='text-neutral-500' style={{ fontSize: 30 }}>
+      <Text className='text-neutral-500' style={{ fontSize: 27 }}>
         Your,{' '}
       </Text>
-      <Text style={{ fontSize: 30 }}>Transactions</Text>
+      <Text style={{ fontSize: 27 }}>Transactions</Text>
     </>
   )
 }
@@ -107,12 +107,12 @@ function TransactionCard({
       className='flex-row items-center justify-between rounded-2xl bg-white p-2.5'
       onPress={() => navigation.navigate('TransactionDetails', { green, message, date: date.toISOString(), amount })}
     >
-      <View className='flex-row gap-3' style={{ flex: 1 }}>
+      <View className='flex-row items-center gap-3' style={{ flex: 1 }}>
         <View style={{ backgroundColor }} className='rounded-xl p-2.5'>
-          {green ? <SwapGreen height={30} width={30} /> : <SwapRed height={30} width={30} />}
+          {green ? <SwapGreen height={27} width={27} /> : <SwapRed height={27} width={27} />}
         </View>
         <View style={{ flex: 1 }}>
-          <Text className='text-lg' numberOfLines={1}>
+          <Text className='text-base' numberOfLines={1}>
             {message}
           </Text>
           <Text className='text-neutral-500'>
@@ -123,7 +123,7 @@ function TransactionCard({
         </View>
       </View>
       <View>
-        <Text className='pr-2 text-lg' style={{ color: textColor }}>
+        <Text className='pr-2 text-base' style={{ color: textColor }}>
           {green ? '+' : '-'}
           {amount}
         </Text>

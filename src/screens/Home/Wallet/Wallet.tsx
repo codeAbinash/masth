@@ -20,7 +20,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
         <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
         <View className='mt-3 flex-row items-center justify-between'>
           <View className='flex flex-row'>
-            <Text className='text-neutral-500' style={{ fontSize: 30 }}>
+            <Text className='text-neutral-500' style={{ fontSize: 27 }}>
               Your,{' '}
             </Text>
             <Text style={{ fontSize: 30 }}>Wallet</Text>
@@ -29,7 +29,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
             className='rounded-full border border-neutral-200 bg-white p-2.5'
             onPress={() => navigation.navigate('Transactions')}
           >
-            <SwapIcon height={18} width={18} />
+            <SwapIcon height={17} width={17} />
           </TouchableOpacity>
         </View>
         <View>
@@ -49,9 +49,9 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
 function WalletBalance() {
   return (
     <View className='mt-4 rounded-3xl bg-yellowPrimary p-5'>
-      <Text className='text-lg text-onYellow'>Wallet Balance</Text>
+      <Text className='text-base text-onYellow'>Wallet Balance</Text>
       <View className='flex-row items-end'>
-        <Text className='text-onYellow' style={{ fontSize: 43 }}>
+        <Text className='text-onYellow' style={{ fontSize: 40 }}>
           {(6860.306).toLocaleString()}
         </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
@@ -60,7 +60,7 @@ function WalletBalance() {
         <View style={{ flex: 0.5 }}>
           <SmallButton title='Withdraw' SvgIcon={LockIcon} />
         </View>
-        <Text style={{ flex: 0.5, fontSize: 16 }} className='text-onYellow'>
+        <Text style={{ flex: 0.5, fontSize: 15 }} className='text-onYellow'>
           MST / USD 0.99
         </Text>
       </View>

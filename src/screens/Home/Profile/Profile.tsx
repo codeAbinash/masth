@@ -26,7 +26,7 @@ export default function Profile({ navigation }: { navigation: StackNav }) {
               height: 90,
             }}
           />
-          <Text className='pt-1 text-base font-bold uppercase' style={{ color: '#2aa3ce' }}>
+          <Text className='pt-1 text-xl font-bold uppercase' style={{ color: '#2aa3ce' }}>
             @codeAbinash
           </Text>
         </View>

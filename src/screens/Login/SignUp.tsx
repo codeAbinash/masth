@@ -17,7 +17,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
     <ScrollView className='bg-white'>
       <View className='flex h-full flex-1 justify-between bg-white p-4 pb-2'>
         <View>
-          <View className='flex items-center justify-center'>
+          <View className='mt-2 flex items-center justify-center'>
             <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} />
             <Text className='text-center font-mono text-4xl font-bold text-black'>Let's Sign Up</Text>
             <Text className='p-4 px-10 pt-1 text-center text-lg text-neutral-500' style={{ lineHeight: 25 }}>

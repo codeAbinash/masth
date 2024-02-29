@@ -22,7 +22,7 @@ export default function BackHeader({
           <TouchableOpacity className='p-2.5' onPress={() => navigation.goBack()}>
             <BackIcon height={20} width={20} />
           </TouchableOpacity>
-          <Text className='font-medium' style={{ fontSize: 21 }}>
+          <Text className='font-medium' style={{ fontSize: 20 }}>
             {title}
           </Text>
         </View>
@@ -35,7 +35,7 @@ export default function BackHeader({
 export function RightSettingIcon({ navigation }: { navigation: StackNav }) {
   return (
     <TouchableOpacity className='p-2' onPress={() => navigation.navigate('Settings')}>
-      <SettingIcon height={22} width={22} />
+      <SettingIcon height={20} width={20} />
     </TouchableOpacity>
   )
 }

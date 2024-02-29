@@ -63,14 +63,14 @@ function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
       <View className='mt-3 flex flex-row items-end justify-between'>
         <View>
           <View className='flex-row items-end gap-x-1'>
-            <Text className='text-3xl'>42.0728</Text>
-            <Text className='mb-0.5 text-xl text-neutral-600'>MST</Text>
+            <Text className='text-2xl'>42.0728</Text>
+            <Text className='mb-0.5 text-base text-neutral-600'>MST</Text>
           </View>
           <Text className='text-base text-neutral-600'>Total Remote Mining</Text>
         </View>
         <View className='items-end'>
-          <Text className='text-base text-greenPrimary'>More than usual</Text>
-          <Text className='text-base text-greenPrimary'>1.023 MST</Text>
+          <Text className='text-sm text-greenPrimary'>More than usual</Text>
+          <Text className='text-sm text-greenPrimary'>1.023 MST</Text>
         </View>
       </View>
     </View>
@@ -95,7 +95,7 @@ function ActiveMiners() {
       </View>
       <View>
         <Text className='text-3xl'>24</Text>
-        <Text className='mt-1 text-lg text-neutral-600'>Active Miners</Text>
+        <Text className='mt-1 text-base text-neutral-600'>Active Miners</Text>
       </View>
     </View>
   )
@@ -119,7 +119,7 @@ function TotalMiners() {
       </View>
       <View>
         <Text className='text-3xl'>24</Text>
-        <Text className='mt-1 text-lg text-neutral-600'>Total Miners</Text>
+        <Text className='mt-1 text-base text-neutral-600'>Total Miners</Text>
       </View>
     </View>
   )
@@ -162,9 +162,9 @@ function TotalLiveMining() {
 function WalletBalance() {
   return (
     <View className='mt-5 rounded-3xl bg-yellowPrimary p-5'>
-      <Text className='text-lg text-onYellow'>Wallet Balance</Text>
+      <Text className='text-base text-onYellow'>Wallet Balance</Text>
       <View className='flex-row items-end'>
-        <Text className='text-onYellow' style={{ fontSize: 43 }}>
+        <Text className='text-onYellow' style={{ fontSize: 40 }}>
           {(6860.306).toLocaleString()}
         </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
@@ -174,10 +174,10 @@ function WalletBalance() {
           <SmallButton title='Start Mining' SvgIcon={PlayIcon} />
         </View>
         <View style={{ flex: 0.45 }} className='flex-row'>
-          <Text style={{ fontSize: 16 }} className='text-onYellow'>
+          <Text style={{ fontSize: 15 }} className='text-onYellow'>
             50 Masth
           </Text>
-          <Text style={{ fontSize: 16 }} className='text-onYellow opacity-60'>
+          <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
             {' '}
             / hour
           </Text>

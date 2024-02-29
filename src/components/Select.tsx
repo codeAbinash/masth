@@ -58,7 +58,7 @@ export const Select: React.FC<SelectProps> = ({
         )
       )}
       <View className='flex flex-1 flex-row justify-between'>
-        <Text className={value ? '' : 'text-gray-500'} style={{ fontSize: 17 }}>
+        <Text className={value ? '' : 'text-gray-500'} style={{ fontSize: 16 }}>
           {value || placeholder}
         </Text>
         {RightUI && <RightUI />}

@@ -21,7 +21,7 @@ export const Input: React.FC<InputProps> = ({
   RightUI,
   ...rest
 }) => {
-  const iconSize = icon || SvgIcon ? 18 : 0
+  const iconSize = icon || SvgIcon ? 17 : 0
   return (
     <View
       className={`flex flex-shrink flex-row items-center justify-center rounded-2xl border-neutral-300 bg-neutral-100 ${className}`}
@@ -44,7 +44,8 @@ export const Input: React.FC<InputProps> = ({
       )}
       <TextInput
         placeholder={placeholder}
-        className='flex-1 border-none border-transparent text-lg outline-none'
+        className='flex-1 border-none border-transparent outline-none'
+        style={{ fontSize: 16 }}
         onTextInput={onTextInput}
         {...rest}
       />

@@ -12,7 +12,7 @@ export interface RadioButtonProps extends ViewProps {
 
 const RadioButton: React.FC<RadioButtonProps> = ({ options, value, onChange, style }) => {
   return (
-    <View className='flex-row flex-wrap items-center gap-3' style={style}>
+    <View className='flex-row flex-wrap items-center gap-2' style={style}>
       {options.map((item, index) => {
         return (
           <TouchableOpacity
@@ -23,7 +23,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({ options, value, onChange, sty
             onPress={() => onChange(item.key)}
             style={{ borderWidth: 1.5 }}
           >
-            <Text className='text-black' style={{ fontSize: 16 }}>
+            <Text className='text-black' style={{ fontSize: 15 }}>
               {item.text}
             </Text>
           </TouchableOpacity>

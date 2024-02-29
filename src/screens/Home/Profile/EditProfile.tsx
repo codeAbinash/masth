@@ -2,6 +2,7 @@ import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import KeyboardAvoidingContainer from '@components/KeyboardAvoidingContainer'
+import Label from '@components/Label'
 import { PaddingBottom } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { StackNav } from '@utils/types'
@@ -13,14 +14,10 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 function SignOut() {
   return (
-    <TouchableOpacity className='border-red-500/30 bg-red-500/20 rounded-full border p-2 px-5'>
+    <TouchableOpacity className='rounded-full border border-red-500/30 bg-red-500/20 p-2 px-5'>
       <Text className='text-red-500'>Sign Out</Text>
     </TouchableOpacity>
   )
-}
-
-function Label({ title }: { title: string }) {
-  return <Text className='mb-1 pl-1 text-sm text-neutral-600'>{title}</Text>
 }
 
 export default function Settings({ navigation }: { navigation: StackNav }) {

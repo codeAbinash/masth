@@ -11,7 +11,13 @@ interface MinerProps {
 
 const Miner: React.FC<MinerProps> = ({ name, username, profile_pic, bellIcon }) => {
   return (
-    <TouchableOpacity activeOpacity={0.7} className='flex-row items-center justify-between rounded-3xl bg-white p-3'>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      className='flex-row  items-center justify-between bg-white p-3'
+      style={{
+        borderRadius: 20,
+      }}
+    >
       <View className='flex-row items-center gap-3' style={{ flex: 1 }}>
         <Image source={{ uri: profile_pic }} style={{ width: 50, height: 50, borderRadius: 25 }} />
         <View style={{ flex: 1 }}>
@@ -24,8 +30,8 @@ const Miner: React.FC<MinerProps> = ({ name, username, profile_pic, bellIcon }) 
         </View>
         {bellIcon && (
           <TouchableOpacity activeOpacity={0.7}>
-            <View className='items-center justify-center rounded-full bg-black' style={{ width: 45, height: 45 }}>
-              <BellWhiteIcon height={19} width={19} />
+            <View className='items-center justify-center rounded-full bg-black' style={{ width: 43, height: 43 }}>
+              <BellWhiteIcon height={17} width={17} />
             </View>
           </TouchableOpacity>
         )}

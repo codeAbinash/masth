@@ -7,11 +7,11 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
   return (
     <View className='flex flex-row items-center justify-between'>
-      <View className='flex flex-row gap-4'>
-        <Image source={{ uri: 'https://picsum.photos/100' }} className='h-12 w-12 rounded-full' />
+      <View className='flex flex-row gap-4 '>
+        <Image source={{ uri: 'https://picsum.photos/100' }} className='h-11 w-11 rounded-full' />
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
-          <Text className='font-bold' style={{ fontSize: 18 }}>
+          <Text className='font-bold' style={{ fontSize: 16 }}>
             Abinash Karmakar
           </Text>
         </View>
@@ -23,12 +23,12 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
 
 export function RightSideSmallProfile({ navigation }: { navigation: StackNav }) {
   return (
-    <View className='flex flex-row gap-3'>
+    <View className='flex flex-row gap-2'>
       <TouchableOpacity className='p-2' onPress={() => navigation.navigate('Notifications')}>
-        <NotificationIcon height={22} width={22} />
+        <NotificationIcon height={20} width={20} />
       </TouchableOpacity>
       <TouchableOpacity className='p-2' onPress={() => navigation.navigate('Settings')}>
-        <SettingIcon height={22} width={22} />
+        <SettingIcon height={20} width={20} />
       </TouchableOpacity>
     </View>
   )

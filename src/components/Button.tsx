@@ -27,7 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   const isOutline = variant === 'outline'
-  const iconSize = icon || SvgIcon ? 18 : 0
+  const iconSize = icon || SvgIcon ? 17 : 0
   const iconColor = isOutline ? 'black' : 'white'
   const space = 10
   const bg = isOutline ? 'bg-transparent' : 'bg-black'
@@ -61,7 +61,7 @@ export const Button: React.FC<ButtonProps> = ({
         )
       )}
 
-      <Text className={textColor} style={{ fontSize: 17, marginRight: (10 + iconSize) / 2 }}>
+      <Text className={textColor} style={{ fontSize: 16, marginRight: (10 + iconSize) / 2 }}>
         {title}
       </Text>
     </TouchableOpacity>
@@ -108,7 +108,7 @@ export function SmallButton({
         )
       )}
 
-      <Text className='text-white' style={[{ fontSize: 16 }, textStyles]}>
+      <Text className='text-white' style={[{ fontSize: 15 }, textStyles]}>
         {title}
       </Text>
     </TouchableOpacity>
