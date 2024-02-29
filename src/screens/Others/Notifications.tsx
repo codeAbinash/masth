@@ -109,7 +109,7 @@ export default function Notifications({ navigation }: { navigation: StackNav }) 
         data={transactions}
         renderItem={({ item }) => <NotificationCard {...item} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0 }}
+        contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0, paddingBottom: 50 }}
         ListHeaderComponent={<ListHeader />}
         ListFooterComponent={<PaddingBottom />}
       />

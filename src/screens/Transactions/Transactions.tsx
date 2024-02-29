@@ -67,7 +67,7 @@ export default function Transactions({ navigation }: { navigation: StackNav }) {
         data={transactions}
         renderItem={({ item }) => <TransactionCard {...item} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={{ paddingHorizontal: 20, gap: 13, marginTop: 0 }}
+        contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0, paddingBottom: 50 }}
         ListHeaderComponent={<ListHeader />}
         ListFooterComponent={<PaddingBottom />}
       />

@@ -26,14 +26,14 @@ export default function Profile({ navigation }: { navigation: StackNav }) {
               height: 90,
             }}
           />
-          <Text className='pt-1 text-xl font-bold uppercase' style={{ color: '#2aa3ce' }}>
-            @codeAbinash
+          <Text className='pt-2 text-xl font-bold uppercase' style={{ color: '#2aa3ce' }}>
+            codeAbinash
           </Text>
         </View>
         <View className='relative mt-10'>
           <View className='items-center'>
             <View className='items-center rounded-2xl bg-white p-5'>
-              <QR_CODE str='codeAbinash@Masth' scale={0.85} style={{ marginTop: 70 }} />
+              <QR_CODE str='codeAbinash@Masth' scale={0.85} style={{ marginTop: 80 }} />
             </View>
           </View>
         </View>
