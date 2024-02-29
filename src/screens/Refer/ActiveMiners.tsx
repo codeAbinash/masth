@@ -1,5 +1,6 @@
 import React from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { View } from 'react-native'
+import Miner from './Miner'
 
 const activeMiners = [
   {
@@ -77,23 +78,5 @@ export default function ActiveMiners() {
         <Miner key={index} {...miner} />
       ))}
     </View>
-  )
-}
-
-function Miner({ name, username, profile_pic }: { name: string; username: string; profile_pic: string }) {
-  return (
-    <TouchableOpacity activeOpacity={0.6} className='flex-row items-center justify-between rounded-3xl bg-white p-3.5'>
-      <View className='flex-row items-center gap-3' style={{ flex: 1 }}>
-        <Image source={{ uri: profile_pic }} style={{ width: 50, height: 50, borderRadius: 25 }} />
-        <View style={{ flex: 1 }}>
-          <Text className='text-lg' numberOfLines={1}>
-            {name}
-          </Text>
-          <Text className='text-neutral-600' style={{ fontSize: 16 }}>
-            @{username}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
   )
 }

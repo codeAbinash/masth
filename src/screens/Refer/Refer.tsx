@@ -46,18 +46,19 @@ function ReferCard() {
   const referText =
     'Refer a friend and earn 10% commission on every mining they do. Share your referral code with your friends and family and earn more.'
   return (
-    <View className='mt-7 rounded-3xl bg-white p-5'>
+    <View className='mt-5 rounded-3xl bg-white p-5'>
       <View>
-        <Text className='text-2xl'>Get 10% Commission</Text>
-        <Text className='text-lg text-neutral-600'>Every time when your friend started mining</Text>
+        <Text className='text-xl'>Get 10% Commission</Text>
+        <Text className='text-base text-neutral-600'>Every time when your friend started mining</Text>
       </View>
       <ReferCode />
       <Button
         title='Refer'
-        className='mt-5'
+        className='mt-4'
         icon={'share-2'}
         IconProvider={Icon}
         onPress={() => shareText(referText)}
+        style={{ padding: 13 }}
       />
     </View>
   )
@@ -73,17 +74,17 @@ function ReferCode({ str = 'CRP22043' }) {
     }, 2000)
   }
   return (
-    <View className='mt-5 flex-row items-center justify-between rounded-xl bg-bgSecondary p-3.5 pl-4'>
+    <View className='mt-4 flex-row items-center justify-between rounded-xl bg-bgSecondary p-3.5 pl-4'>
       <View className='flex-row'>
         <View className='flex-row'>
-          <Text className='text-lg'>Refer Code: </Text>
+          <Text className='text-base'>Refer Code: </Text>
         </View>
         <View>
-          <Text className='text-accent text-lg'>CRP22043</Text>
+          <Text className='text-base text-accent'>CRP22043</Text>
         </View>
       </View>
       <TouchableOpacity className='pr-1' onPress={onPress}>
-        {copied ? <Icon name='check' size={20} color={colors.green} /> : <Icon name='copy' size={20} />}
+        {copied ? <Icon name='check' size={18} color={colors.green} /> : <Icon name='copy' size={18} />}
       </TouchableOpacity>
     </View>
   )
@@ -92,9 +93,11 @@ function TotalEarned() {
   return (
     <View className='mt-5 items-center justify-center' style={{ gap: 10 }}>
       <Text className='text-xl text-neutral-600'>You've Earned</Text>
-      <View className='flex-row items-end px-5'>
-        <Text className='text-5xl'>62.524</Text>
-        <Text className='pb-1 pl-2 text-3xl'>MST</Text>
+      <View className='flex-row items-end gap-x-1'>
+        <Text style={{ fontSize: 43 }}>62.524</Text>
+        <Text style={{ fontSize: 25 }} className='pb-1 text-neutral-600'>
+          MST
+        </Text>
       </View>
     </View>
   )
