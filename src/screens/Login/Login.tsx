@@ -31,7 +31,7 @@ export default function Login({ navigation }: { navigation: StackNav }) {
             <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
           </View>
           <View className='mt-3' />
-          <Button title='Log In' onPress={() => navigation.replace('Home')} IconProvider={Icon} icon='account' />
+          <Button title='Log In' onPress={() => navigation.navigate('OTP')} IconProvider={Icon} icon='account' />
           <Button
             title='Create Account'
             variant='outline'

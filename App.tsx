@@ -4,6 +4,7 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import Home from '@screens/Home'
 import EditProfile from '@screens/Home/Profile/EditProfile'
 import Login from '@screens/Login/Login'
+import OTP from '@screens/Login/OTP'
 import SignUp from '@screens/Login/SignUp'
 import NotificationDetails from '@screens/Others/NotificationDetails'
 import Notifications from '@screens/Others/Notifications'
@@ -32,6 +33,7 @@ function Navigation() {
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='SignUp' component={SignUp} />
+      <Stack.Screen name='OTP' component={OTP} />
       <Stack.Screen name='Notifications' component={Notifications} />
       <Stack.Screen
         name='NotificationDetails'
