@@ -6,7 +6,7 @@ import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default function Receive() {
-  const qrCodeString = 'codeAbinashKarmakar@Masth@codeAbinash'
+  const qrCodeString = 'codeAbinash@Masth'
   return (
     <View>
       <View className='mt-5 flex items-center justify-center'>
