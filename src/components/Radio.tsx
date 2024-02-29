@@ -23,7 +23,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({ options, value, onChange, sty
             onPress={() => onChange(item.key)}
             style={{ borderWidth: 1.5 }}
           >
-            <Text className='text-black' style={{ fontSize: 17 }}>
+            <Text className='text-black' style={{ fontSize: 16 }}>
               {item.text}
             </Text>
           </TouchableOpacity>

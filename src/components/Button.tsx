@@ -27,7 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   const isOutline = variant === 'outline'
-  const iconSize = icon || SvgIcon ? 19 : 0
+  const iconSize = icon || SvgIcon ? 18 : 0
   const iconColor = isOutline ? 'black' : 'white'
   const space = 10
   const bg = isOutline ? 'bg-transparent' : 'bg-black'
@@ -38,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
     <TouchableOpacity
       activeOpacity={activeOpacity}
       className={`flex w-full flex-row items-center justify-center rounded-2xl border-black ${bg} ${classNames}`}
-      style={[{ padding: 15, borderWidth: 1.5 }, style]}
+      style={[{ padding: 14, borderWidth: 1.5 }, style]}
       onPress={onPress}
       {...rest}
     >
@@ -111,7 +111,7 @@ interface RoundButtonProps extends TouchableOpacityProps {
 }
 
 export function RoundButton({ onPress, icon, IconProvider, SvgIcon, ...rest }: RoundButtonProps) {
-  const iconSize = icon || SvgIcon ? 19 : 0
+  const iconSize = icon || SvgIcon ? 18 : 0
   return (
     <TouchableOpacity
       activeOpacity={0.7}

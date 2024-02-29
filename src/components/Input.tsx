@@ -21,17 +21,17 @@ export const Input: React.FC<InputProps> = ({
   RightUI,
   ...rest
 }) => {
-  const iconSize = icon || SvgIcon ? 20 : 0
+  const iconSize = icon || SvgIcon ? 18 : 0
   return (
     <View
       className={`flex flex-shrink flex-row items-center justify-center rounded-2xl border-neutral-300 bg-neutral-100 ${className}`}
-      style={[{ borderWidth: 1.5, paddingVertical: 2, paddingLeft: 15, paddingRight: 10 }, style]}
+      style={[{ borderWidth: 1.5, paddingVertical: 1, paddingLeft: 15, paddingRight: 10 }, style]}
     >
       {SvgIcon && <SvgIcon width={iconSize} height={iconSize} style={{ marginRight: 10 }} />}
       {IconProvider && icon ? (
         <IconProvider
           name={icon as string}
-          size={20}
+          size={iconSize}
           color='black'
           style={{
             marginRight: 10,
