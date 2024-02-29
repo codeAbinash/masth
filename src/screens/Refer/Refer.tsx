@@ -32,8 +32,8 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
             },
           ]}
         />
+        <PaddingBottom />
       </ScrollView>
-      <PaddingBottom />
     </View>
   )
 }
