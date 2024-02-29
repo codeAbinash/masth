@@ -2,7 +2,9 @@ import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { PaddingBottom } from '@components/SafePadding'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { Dimensions, ScrollView, Text, View } from 'react-native'
+
+import ComingSoonSvg from '@icons/coming-soon-2.svg'
 
 export default function Settings({ navigation }: { navigation: StackNav }) {
   return (
@@ -13,19 +15,23 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
         RightComponent={<RightSettingIcon navigation={navigation} />}
       />
       <ScrollView className='px-5'>
-        <Text style={{ fontSize: 30 }}>Settings</Text>
-
-        <Text className='mt-10'>
-          This is the settings page. You can change your password, update your profile, and more.
-        </Text>
-        <Text className='text-2xl font-bold'>Settings</Text>
-        <Text>Change Password</Text>
-        <Text className='pb-10'>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tenetur illo, quaerat exercitationem magni odio
-          omnis nesciunt vel harum doloremque ut itaque alias debitis sint dolor inventore, cupiditate, quia facere sit?
-        </Text>
+        <ComingSoon />
         <PaddingBottom />
       </ScrollView>
+    </View>
+  )
+}
+
+const { width } = Dimensions.get('window')
+
+function ComingSoon() {
+  return (
+    <View className='mt-5 flex-1 items-center justify-center'>
+      <ComingSoonSvg width={width * 0.85} />
+      <Text className='mt-5 text-2xl'>Coming Soon</Text>
+      <Text className='mt-2 px-5 text-center text-neutral-600' style={{ fontSize: 16 }}>
+        Settings feature is under development and will be available soon. Stay tuned!
+      </Text>
     </View>
   )
 }

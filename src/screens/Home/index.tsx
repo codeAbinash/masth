@@ -13,7 +13,7 @@ import React from 'react'
 import { StatusBar, TouchableOpacity, View } from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
-import Profile from './Profile'
+import Profile from './Profile/Profile'
 import Wallet from './Wallet/Wallet'
 
 function HomeIcon(props: { focused: boolean; color: string; size: number }) {

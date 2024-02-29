@@ -27,7 +27,7 @@ export default function Login({ navigation }: { navigation: StackNav }) {
         </View>
         <View style={{ gap: 10, marginTop: 10 }}>
           <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
-            <Select title='+91' icon='phone-outline' IconProvider={Icon} style={{ flex: 0.45 }} />
+            <Select placeholder='+91' icon='phone-outline' IconProvider={Icon} style={{ flex: 0.45 }} />
             <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
           </View>
           <View className='mt-3' />

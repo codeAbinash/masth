@@ -28,12 +28,20 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
             <Input placeholder='Username' icon={'at'} IconProvider={Icon} />
             <Input placeholder='Full Name' icon={'account-outline'} IconProvider={Icon} />
             <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
-              <Select title='+91' icon='phone-outline' IconProvider={Icon} style={{ flex: 0.45 }} />
-              <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
+              <Select placeholder='+91' icon='phone-outline' IconProvider={Icon} style={{ flex: 0.45 }} />
+              <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' />
             </View>
-            <Select title='DOB' icon='calendar-month-outline' IconProvider={Icon} space={15} />
-            <Select title='Language' icon='language' IconProvider={IconM} space={15} />
-            <Button title='Create Account' IconProvider={Icon} icon='creation' onPress={() => {}} className='mt-4' />
+            <Select placeholder='DOB' icon='calendar-month-outline' IconProvider={Icon} space={15} RightUI={null} />
+            <Select placeholder='Language' icon='language' IconProvider={IconM} space={15} />
+            <Button
+              title='Create Account'
+              IconProvider={Icon}
+              icon='creation'
+              onPress={() => {
+                navigation.replace('Home')
+              }}
+              className='mt-4'
+            />
             <Button
               title='Log In'
               variant='outline'

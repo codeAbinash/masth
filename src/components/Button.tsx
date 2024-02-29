@@ -1,11 +1,11 @@
+import CopyIcon from '@icons/copy.svg'
+import ShareIcon from '@icons/share.svg'
+import Clipboard from '@react-native-community/clipboard'
+import { shareText } from '@utils/utils'
 import React, { useState } from 'react'
-import { Image, ImageSourcePropType, Share, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
+import { Image, ImageSourcePropType, StyleProp, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { SvgProps } from 'react-native-svg'
 import Icon from 'react-native-vector-icons/Feather'
-import CopyIcon from '@icons/copy.svg'
-import Clipboard from '@react-native-community/clipboard'
-import ShareIcon from '@icons/share.svg'
-import { shareText } from '@utils/utils'
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string
@@ -74,8 +74,19 @@ interface SmallButtonProps extends TouchableOpacityProps {
   icon?: ImageSourcePropType | string
   IconProvider?: typeof Icon
   SvgIcon?: React.FC<SvgProps>
+  textStyles?: StyleProp<any>
+  iconStyles?: StyleProp<any>
 }
-export function SmallButton({ onPress, title, classNames, icon, IconProvider, SvgIcon, ...rest }: SmallButtonProps) {
+export function SmallButton({
+  onPress,
+  title,
+  classNames,
+  icon,
+  IconProvider,
+  SvgIcon,
+  textStyles,
+  ...rest
+}: SmallButtonProps) {
   const iconSize = icon || SvgIcon ? 16 : 0
   return (
     <TouchableOpacity
@@ -97,7 +108,7 @@ export function SmallButton({ onPress, title, classNames, icon, IconProvider, Sv
         )
       )}
 
-      <Text className='text-white' style={{ fontSize: 16 }}>
+      <Text className='text-white' style={[{ fontSize: 16 }, textStyles]}>
         {title}
       </Text>
     </TouchableOpacity>

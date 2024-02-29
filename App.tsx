@@ -2,6 +2,7 @@ import { DarkContentTransparentStatusBar } from '@components/StatusBar'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import Home from '@screens/Home'
+import EditProfile from '@screens/Home/Profile/EditProfile'
 import Login from '@screens/Login/Login'
 import SignUp from '@screens/Login/SignUp'
 import NotificationDetails from '@screens/Others/NotificationDetails'
@@ -42,6 +43,7 @@ function Navigation() {
         }}
       />
       <Stack.Screen name='Profile' component={Profile} />
+      <Stack.Screen name='EditProfile' component={EditProfile} />
       <Stack.Screen name='Settings' component={Settings} />
       <Stack.Screen name='Transactions' component={Transactions} />
       <Stack.Screen name='Refer' component={Refer} />

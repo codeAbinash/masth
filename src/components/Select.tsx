@@ -6,23 +6,38 @@ import IconM from 'react-native-vector-icons/MaterialIcons'
 
 interface SelectProps extends TouchableOpacityProps {
   disabled?: boolean
-  title: string
+  placeholder: string
   classNames?: string
   icon?: ImageSourcePropType | string
   space?: number
   SvgIcon?: React.FC<SvgProps>
   IconProvider?: typeof Icon
+  value?: string
+  RightUI?: React.FC | null
+}
+
+function RightSideUI() {
+  return (
+    <IconM
+      name='keyboard-control-key'
+      size={20}
+      color='black'
+      style={{ backgroundColor: 'transparent', transform: [{ rotate: '180deg' }] }}
+    />
+  )
 }
 
 export const Select: React.FC<SelectProps> = ({
   onPress,
   style,
-  title,
+  placeholder,
   classNames,
   icon,
   IconProvider,
   SvgIcon,
+  RightUI = RightSideUI,
   space = 5,
+  value,
   ...rest
 }) => {
   const iconSize = icon || SvgIcon ? 20 : 0
@@ -43,15 +58,10 @@ export const Select: React.FC<SelectProps> = ({
         )
       )}
       <View className='flex flex-1 flex-row justify-between'>
-        <Text className={'text-gray-500'} style={{ fontSize: 17 }}>
-          {title}
+        <Text className={value ? '' : 'text-gray-500'} style={{ fontSize: 17 }}>
+          {value || placeholder}
         </Text>
-        <IconM
-          name='keyboard-control-key'
-          size={20}
-          color='black'
-          style={{ backgroundColor: 'transparent', transform: [{ rotate: '180deg' }] }}
-        />
+        {RightUI && <RightUI />}
       </View>
     </TouchableOpacity>
   )

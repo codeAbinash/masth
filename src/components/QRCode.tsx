@@ -1,15 +1,20 @@
 import icons from '@assets/icons/icons'
-import { View, Image, Dimensions } from 'react-native'
+import { Dimensions, Image, View, ViewProps } from 'react-native'
 import QRCodeStyled, { GradientProps, useQRCodeData } from 'react-native-qrcode-styled'
 const { width } = Dimensions.get('window')
 
-export default function QR_CODE({ str }: { str: string }) {
+interface QR_CODEProps extends ViewProps {
+  str: string
+  scale?: number
+}
+
+export default function QR_CODE({ str, scale = 0.8, ...rest }: QR_CODEProps) {
   const data = useQRCodeData(str, {})
-  const pixelSize = (width * 0.8 - 75) / data.qrCodeSize
-  const iconSize = width * 0.15
-  const innerBorderRadius = (1 / data.qrCodeSize) * 200
+  const pixelSize = (width * scale - 75) / data.qrCodeSize
+  const iconSize = width * 0.15 * scale
+  const innerBorderRadius = (1 / data.qrCodeSize) * 200 * scale
   return (
-    <View className='flex items-center justify-center'>
+    <View className='flex items-center justify-center' {...rest}>
       <Image
         source={icons.appIcon}
         className='border'
@@ -30,8 +35,8 @@ export default function QR_CODE({ str }: { str: string }) {
         }
         pieceSize={pixelSize}
         pieceScale={1.03} // fix small gap between pieces
-        innerEyesOptions={{ borderRadius: innerBorderRadius }}
-        outerEyesOptions={{ borderRadius: innerBorderRadius * 2 }}
+        innerEyesOptions={{ borderRadius: innerBorderRadius * 1.5 }}
+        outerEyesOptions={{ borderRadius: innerBorderRadius * 2 * 1.5 }}
         pieceBorderRadius={innerBorderRadius * 0.5}
       />
     </View>
