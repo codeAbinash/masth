@@ -47,8 +47,8 @@ function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
     <View className='mt-4 rounded-3xl  bg-white p-5'>
       <View className='flex-row justify-between' style={{ gap: 15 }}>
         <View>
-          <View className='rounded-xl bg-bgAqua p-2.5'>
-            <GraphIcon width={20} height={20} />
+          <View className='rounded-xl bg-bgAqua p-2'>
+            <GraphIcon width={18} height={18} />
           </View>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('Refer')}>
@@ -89,7 +89,7 @@ function ActiveMiners() {
         <View>
           <View className='flex-row items-center rounded-full bg-bgGreen px-3 py-0.5' style={{ gap: 8 }}>
             <Text className='text-base text-greenPrimary'>+5</Text>
-            <ArrowUpBold width={9} height={9} color={colors.green} />
+            <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
           </View>
         </View>
       </View>
@@ -113,7 +113,7 @@ function TotalMiners() {
         <View>
           <View className='flex-row items-center rounded-full bg-red-500/20 px-3 py-0.5' style={{ gap: 8 }}>
             <Text className='text-base text-red-500'>-5</Text>
-            <ArrowDownBold width={9} height={9} color={colors.red} />
+            <ArrowDownBold width={9} height={9} />
           </View>
         </View>
       </View>
@@ -129,8 +129,8 @@ function TotalLiveMining() {
   return (
     <View className='mt-4 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
       <View>
-        <View className='rounded-xl bg-bgGreen p-2.5'>
-          <ChartIcon width={20} height={20} />
+        <View className='rounded-xl bg-bgGreen p-2'>
+          <ChartIcon width={18} height={18} />
         </View>
       </View>
       <View style={{ gap: 4, flex: 1 }}>
@@ -145,7 +145,7 @@ function TotalLiveMining() {
                     MST
                   </Text>
                 </View>
-                <ArrowUpBold width={9} height={9} color={colors.green} />
+                <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
               </View>
             </View>
           </View>

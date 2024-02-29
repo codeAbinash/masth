@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 function SignOut() {
   return (
-    <TouchableOpacity className='rounded-full border border-red-500/30 bg-red-500/20 p-2 px-5'>
+    <TouchableOpacity className='border-red-500/30 bg-red-500/20 rounded-full border p-2 px-5'>
       <Text className='text-red-500'>Sign Out</Text>
     </TouchableOpacity>
   )

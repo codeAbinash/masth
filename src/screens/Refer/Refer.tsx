@@ -84,7 +84,7 @@ function ReferCode({ str = 'CRP22043' }) {
         </View>
       </View>
       <TouchableOpacity className='pr-1' onPress={onPress}>
-        {copied ? <Icon name='check' size={18} color={colors.green} /> : <Icon name='copy' size={18} />}
+        {copied ? <Icon name='check' size={18} color={colors.greenPrimary} /> : <Icon name='copy' size={18} />}
       </TouchableOpacity>
     </View>
   )

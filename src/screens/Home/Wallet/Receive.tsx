@@ -30,8 +30,8 @@ export default function Receive() {
         </Text>
       </View>
       <View className='mt-2 flex-row items-center justify-center gap-x-2 rounded-full'>
-        <Icon name='shield-check' size={18} color={colors.green} />
-        <Text className='text-greenPrimary text-lg'>Trust Wallet</Text>
+        <Icon name='shield-check' size={18} color={colors.greenPrimary} />
+        <Text className='text-lg text-greenPrimary'>Trust Wallet</Text>
       </View>
     </View>
   )
