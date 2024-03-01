@@ -1,6 +1,7 @@
 import CopyIcon from '@icons/copy.svg'
 import ShareIcon from '@icons/share.svg'
 import Clipboard from '@react-native-community/clipboard'
+import { colors } from '@utils/colors'
 import { shareText } from '@utils/utils'
 import React, { useState } from 'react'
 import { StyleProp, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
@@ -89,10 +90,12 @@ export function CopyButton({ str }: { str: string }) {
   }
   return copied ? (
     <RoundButton>
-      <Icon name='check' size={18} color='white' />
+      <Icon name='check' size={18} color={colors.greenPrimary} />
     </RoundButton>
   ) : (
-    <RoundButton>{<CopyIcon width={18} height={18} />}</RoundButton>
+    <RoundButton onPress={onPress}>
+      <CopyIcon width={18} height={18} />
+    </RoundButton>
   )
 }
 
