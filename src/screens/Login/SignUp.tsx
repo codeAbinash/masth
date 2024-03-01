@@ -19,36 +19,34 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
         <View>
           <View className='mt-2 flex items-center justify-center'>
             <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} />
-            <Text className='text-center font-mono text-4xl font-bold text-black'>Let's Sign Up</Text>
+            <Text className='text-center font-mono text-3xl font-bold text-black'>Let's Sign Up</Text>
             <Text className='p-4 px-10 pt-1 text-center text-lg text-neutral-500' style={{ lineHeight: 25 }}>
               There are many variations of passages of Lorem Ipsum available
             </Text>
           </View>
           <View style={{ gap: 10, marginTop: 10 }}>
-            <Input placeholder='Username' icon={'at'} IconProvider={Icon} />
-            <Input placeholder='Full Name' icon={'account-outline'} IconProvider={Icon} />
+            <Input placeholder='Username' LeftUI={<Icon name='at' size={20} color='black' />} />
+            <Input placeholder='Full Name' LeftUI={<Icon name='account-outline' size={20} color='black' />} />
             <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
-              <Select placeholder='+91' icon='phone-outline' IconProvider={Icon} style={{ flex: 0.45 }} />
+              <Select placeholder='+91' LeftUI={<Icon name='phone-outline' size={20} color='black' />} style={{ flex: 0.45 }} />
               <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' />
             </View>
-            <Select placeholder='DOB' icon='calendar-month-outline' IconProvider={Icon} space={15} RightUI={null} />
-            <Select placeholder='Language' icon='language' IconProvider={IconM} space={15} />
+            <Select placeholder='DOB' space={15} LeftUI={<Icon name='calendar-month-outline' size={20} color='black' />} RightUI={null} />
+            <Select placeholder='Language' space={15} LeftUI={<IconM name='language' size={20} color='black' />} />
             <Button
               title='Create Account'
-              IconProvider={Icon}
-              icon='creation'
               onPress={() => {
                 navigation.replace('Home')
               }}
+              LeftUI={<Icon name='creation' size={17} color='white' />}
               className='mt-4'
             />
             <Button
               title='Log In'
               variant='outline'
-              IconProvider={Icon}
-              icon='account'
               className='mt-1'
               onPress={() => navigation.navigate('Login')}
+              LeftUI={<Icon name='account' size={17} />}
             />
           </View>
         </View>

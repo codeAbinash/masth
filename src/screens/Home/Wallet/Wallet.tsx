@@ -55,7 +55,7 @@ function WalletBalance() {
       </View>
       <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
         <View style={{ flex: 0.5 }}>
-          <SmallButton title='Withdraw' SvgIcon={LockIcon} />
+          <SmallButton title='Withdraw' LeftUI={<LockIcon height={16} width={16} />} />
         </View>
         <Text style={{ flex: 0.5, fontSize: 15 }} className='text-onYellow'>
           MST / USD 0.99

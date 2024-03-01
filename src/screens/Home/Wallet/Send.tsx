@@ -5,6 +5,7 @@ import Label from '@components/Label'
 import RadioButton, { RadioButtonOption } from '@components/Radio'
 import { useState } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const options: RadioButtonOption[] = [
   { key: '200', text: '200 MST' },
@@ -32,13 +33,13 @@ export default function Send() {
       <RadioButton options={options} value={selected} onChange={setSelected} style={{ marginTop: 0 }} />
       <View>
         <Label title='Amount' />
-        <Input placeholder='Enter amount in MST' keyboardType='numeric' style={{ backgroundColor: 'white' }} RightUI={Currency} />
+        <Input placeholder='Enter amount in MST' keyboardType='numeric' style={{ backgroundColor: 'white' }} RightUI={<Currency />} />
       </View>
       <View>
         <Label title='Receiver Address' />
-        <Input placeholder='Enter Receiver Wallet Address' style={{ backgroundColor: 'white' }} RightUI={QRCodeIcon} />
+        <Input placeholder='Enter Receiver Wallet Address' style={{ backgroundColor: 'white' }} RightUI={<QRCodeIcon />} />
       </View>
-      <Button title='Send Now' className='mt-2.5' />
+      <Button title='Send Now' className='mt-2.5' RightUI={<Icon name='send' size={14} color='white' style={{ marginRight: 10 }} />} />
     </View>
   )
 }

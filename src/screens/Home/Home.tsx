@@ -171,7 +171,7 @@ function WalletBalance() {
       </View>
       <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
         <View style={{ flex: 0.55 }}>
-          <SmallButton title='Start Mining' SvgIcon={PlayIcon} />
+          <SmallButton title='Start Mining' LeftUI={<PlayIcon width={17} height={17} />} />
         </View>
         <View style={{ flex: 0.45 }} className='flex-row'>
           <Text style={{ fontSize: 15 }} className='text-onYellow'>

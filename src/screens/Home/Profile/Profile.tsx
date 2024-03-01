@@ -41,12 +41,11 @@ export default function Profile({ navigation }: { navigation: StackNav }) {
       <View className='mt-2 flex-row items-center justify-center p-5' style={{ gap: 10 }}>
         <SmallButton
           title='Edit Profile'
-          IconProvider={Icon}
-          icon={'edit'}
+          LeftUI={<Icon name='edit' size={17} color='white' />}
           className='px-5 py-2.5 pl-4'
           onPress={() => navigation.navigate('EditProfile')}
         />
-        <SmallButton title='Sign Out' IconProvider={FeatherIcon} icon={'log-out'} className='px-5 py-2.5' />
+        <SmallButton title='Sign Out' LeftUI={<FeatherIcon name='log-out' size={17} color='white' />} className='px-5 py-2.5' />
       </View>
     </ScrollView>
   )

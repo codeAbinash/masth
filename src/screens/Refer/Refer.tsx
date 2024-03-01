@@ -52,7 +52,13 @@ function ReferCard() {
         <Text className='text-base text-neutral-600'>Every time when your friend started mining</Text>
       </View>
       <ReferCode />
-      <Button title='Refer' className='mt-4' icon={'share-2'} IconProvider={Icon} onPress={() => shareText(referText)} style={{ padding: 13 }} />
+      <Button
+        title='Refer'
+        className='mt-4'
+        LeftUI={<Icon name='share-2' size={16} color='white' />}
+        onPress={() => shareText(referText)}
+        style={{ padding: 13 }}
+      />
     </View>
   )
 }

@@ -3,22 +3,19 @@ import ShareIcon from '@icons/share.svg'
 import Clipboard from '@react-native-community/clipboard'
 import { shareText } from '@utils/utils'
 import React, { useState } from 'react'
-import { Image, ImageSourcePropType, StyleProp, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
-import { SvgProps } from 'react-native-svg'
+import { StyleProp, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string
   variant?: 'outline' | 'solid'
   classNames?: string
-  icon?: ImageSourcePropType | string
-  IconProvider?: typeof Icon
-  SvgIcon?: React.FC<SvgProps>
+  LeftUI?: React.ReactNode
+  RightUI?: React.ReactNode
 }
-export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, classNames, icon, IconProvider, SvgIcon, ...rest }) => {
+
+export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, classNames, LeftUI, RightUI, ...rest }) => {
   const isOutline = variant === 'outline'
-  const iconSize = icon || SvgIcon ? 17 : 0
-  const iconColor = isOutline ? 'black' : 'white'
   const space = 10
   const bg = isOutline ? 'bg-transparent' : 'bg-black'
   const textColor = isOutline ? 'text-black' : 'text-white'
@@ -32,23 +29,11 @@ export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, 
       onPress={onPress}
       {...rest}
     >
-      {SvgIcon && <SvgIcon width={iconSize} height={iconSize} style={{ marginRight: space }} />}
-      {IconProvider && icon ? (
-        <IconProvider
-          name={icon as string}
-          size={iconSize}
-          color={iconColor}
-          style={{
-            marginRight: space,
-          }}
-        />
-      ) : (
-        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: space }} source={icon as ImageSourcePropType} />
-      )}
-
-      <Text className={textColor} style={{ fontSize: 16, marginRight: (10 + iconSize) / 2 }}>
+      {LeftUI && <View style={{ marginRight: space }}>{LeftUI}</View>}
+      <Text className={textColor} style={{ fontSize: 16 }}>
         {title}
       </Text>
+      {RightUI && <View style={{ marginLeft: space }}>{RightUI}</View>}
     </TouchableOpacity>
   )
 }
@@ -56,14 +41,12 @@ export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, 
 interface SmallButtonProps extends TouchableOpacityProps {
   title: string
   classNames?: string
-  icon?: ImageSourcePropType | string
-  IconProvider?: typeof Icon
-  SvgIcon?: React.FC<SvgProps>
   textStyles?: StyleProp<any>
-  iconStyles?: StyleProp<any>
+  LeftUI?: React.ReactNode
+  RightUI?: React.ReactNode
 }
-export function SmallButton({ onPress, title, classNames, icon, IconProvider, SvgIcon, textStyles, ...rest }: SmallButtonProps) {
-  const iconSize = icon || SvgIcon ? 16 : 0
+export function SmallButton({ onPress, title, classNames, LeftUI, RightUI, textStyles, ...rest }: SmallButtonProps) {
+  const space = 10
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -72,28 +55,16 @@ export function SmallButton({ onPress, title, classNames, icon, IconProvider, Sv
       onPress={onPress}
       {...rest}
     >
-      {SvgIcon && <SvgIcon width={iconSize} height={iconSize} style={{ marginRight: iconSize / 2 }} fill={'white'} />}
-      {IconProvider && icon ? (
-        <IconProvider name={icon as string} size={iconSize} color='white' style={{ marginRight: iconSize / 2 }} />
-      ) : (
-        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: iconSize / 2 }} source={icon as ImageSourcePropType} />
-      )}
-
+      {LeftUI && <View style={{ marginRight: space }}>{LeftUI}</View>}
       <Text className='text-white' style={[{ fontSize: 15 }, textStyles]}>
         {title}
       </Text>
+      {RightUI && <View style={{ marginLeft: space }}>{RightUI}</View>}
     </TouchableOpacity>
   )
 }
 
-interface RoundButtonProps extends TouchableOpacityProps {
-  icon?: ImageSourcePropType | string
-  IconProvider?: typeof Icon
-  SvgIcon?: React.FC<SvgProps>
-}
-
-export function RoundButton({ onPress, icon, IconProvider, SvgIcon, ...rest }: RoundButtonProps) {
-  const iconSize = icon || SvgIcon ? 18 : 0
+export function RoundButton({ onPress, children, ...rest }: TouchableOpacityProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -102,12 +73,7 @@ export function RoundButton({ onPress, icon, IconProvider, SvgIcon, ...rest }: R
       onPress={onPress}
       {...rest}
     >
-      {SvgIcon && <SvgIcon width={iconSize} height={iconSize} />}
-      {IconProvider && icon ? (
-        <IconProvider name={icon as string} size={iconSize} color='white' />
-      ) : (
-        icon && <Image style={{ width: iconSize, height: iconSize }} source={icon as ImageSourcePropType} />
-      )}
+      {children}
     </TouchableOpacity>
   )
 }
@@ -121,9 +87,19 @@ export function CopyButton({ str }: { str: string }) {
       setCopied(false)
     }, 2000)
   }
-  return copied ? <RoundButton IconProvider={Icon} icon={'check'} onPress={onPress} /> : <RoundButton SvgIcon={CopyIcon} onPress={onPress} />
+  return copied ? (
+    <RoundButton>
+      <Icon name='check' size={18} color='white' />
+    </RoundButton>
+  ) : (
+    <RoundButton>{<CopyIcon width={18} height={18} />}</RoundButton>
+  )
 }
 
 export function ShareButton({ str }: { str: string }) {
-  return <RoundButton SvgIcon={ShareIcon} onPress={() => shareText(str)} />
+  return (
+    <RoundButton onPress={() => shareText(str)}>
+      <ShareIcon width={18} height={18} />
+    </RoundButton>
+  )
 }

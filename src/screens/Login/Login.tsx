@@ -27,16 +27,15 @@ export default function Login({ navigation }: { navigation: StackNav }) {
         </View>
         <View style={{ gap: 10, marginTop: 10 }}>
           <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
-            <Select placeholder='+91' icon='phone-outline' IconProvider={Icon} style={{ flex: 0.45 }} />
+            <Select placeholder='+91' LeftUI={<Icon name='phone-outline' size={20} color='black' />} style={{ flex: 0.45 }} />
             <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
           </View>
           <View className='mt-3' />
-          <Button title='Log In' onPress={() => navigation.navigate('OTP')} IconProvider={Icon} icon='account' />
+          <Button title='Log In' onPress={() => navigation.navigate('OTP')} LeftUI={<Icon name='account' size={17} color='white' />} />
           <Button
             title='Create Account'
             variant='outline'
-            IconProvider={Icon}
-            icon='creation'
+            LeftUI={<Icon name='creation' size={17} />}
             className='mt-1'
             onPress={() => navigation.navigate('SignUp')}
           />

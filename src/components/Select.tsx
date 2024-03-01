@@ -8,12 +8,10 @@ interface SelectProps extends TouchableOpacityProps {
   disabled?: boolean
   placeholder: string
   classNames?: string
-  icon?: ImageSourcePropType | string
   space?: number
-  SvgIcon?: React.FC<SvgProps>
-  IconProvider?: typeof Icon
   value?: string
-  RightUI?: React.FC | null
+  LeftUI?: React.ReactNode
+  RightUI?: React.ReactNode
 }
 
 function RightSideUI() {
@@ -25,15 +23,15 @@ export const Select: React.FC<SelectProps> = ({
   style,
   placeholder,
   classNames,
-  icon,
-  IconProvider,
-  SvgIcon,
-  RightUI = RightSideUI,
+  RightUI = <RightSideUI />,
+  LeftUI,
   space = 5,
   value,
   ...rest
 }) => {
-  const iconSize = icon || SvgIcon ? 20 : 0
+  const spaceLeft = LeftUI ? 12 : 0
+  const spaceRight = RightUI ? 10 : 0
+
   return (
     <TouchableOpacity
       activeOpacity={0.6}
@@ -42,18 +40,13 @@ export const Select: React.FC<SelectProps> = ({
       onPress={onPress}
       {...rest}
     >
-      {SvgIcon && <SvgIcon width={iconSize} height={iconSize} style={{ marginRight: space }} />}
-      {IconProvider && icon ? (
-        <IconProvider name={icon as string} size={iconSize} color='black' style={{ marginRight: space }} />
-      ) : (
-        icon && <Image style={{ width: iconSize, height: iconSize, marginRight: 5 }} source={icon as ImageSourcePropType} />
-      )}
+      {LeftUI}
       <View className='flex flex-1 flex-row justify-between'>
-        <Text className={value ? '' : 'text-gray-500'} style={{ fontSize: 16 }}>
+        <Text className={value ? '' : 'text-gray-500'} style={{ fontSize: 16, paddingLeft: spaceLeft, paddingRight: spaceRight }}>
           {value || placeholder}
         </Text>
-        {RightUI && <RightUI />}
       </View>
+      {RightUI}
     </TouchableOpacity>
   )
 }

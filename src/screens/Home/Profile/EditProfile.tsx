@@ -40,19 +40,19 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
         <View className='mt-5 flex-1' style={{ gap: 10 }}>
           <View>
             <Label title='Full Name' />
-            <Input placeholder='Full Name' icon={'account-outline'} IconProvider={MaterialCommunityIcon} value='Abinash Karmakar' />
+            <Input
+              placeholder='Full Name'
+              LeftUI={<MaterialCommunityIcon name='account-outline' size={20} color='black' />}
+              value='Abinash Karmakar'
+              RightUI={<MaterialCommunityIcon name='pencil' size={20} color='black' />}
+            />
           </View>
-          {/* <View>
-            <Label title='Username' />
-            <Input placeholder='Username' icon={'at'} IconProvider={MaterialCommunityIcon} value='codeAbinash' />
-          </View> */}
           <View>
             <Label title='Email' />
             <Input
               placeholder='Email'
-              icon={'email-outline'}
               keyboardType='email-address'
-              IconProvider={MaterialCommunityIcon}
+              LeftUI={<MaterialCommunityIcon name='email-outline' size={20} color='black' />}
               value='codeAbinash@gmail.com'
             />
           </View>
@@ -61,10 +61,9 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
             <Input
               placeholder='Mobile Number'
               keyboardType='phone-pad'
-              icon={'phone-outline'}
-              IconProvider={MaterialCommunityIcon}
               value='+91 9876543210'
               editable={false}
+              LeftUI={<MaterialCommunityIcon name='phone-outline' size={20} color='black' />}
             />
           </View>
           <View>
@@ -72,9 +71,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
             <Select
               space={15}
               placeholder='Date of Birth'
-              icon={'calendar-month-outline'}
-              IconProvider={MaterialCommunityIcon}
               RightUI={null}
+              LeftUI={<MaterialCommunityIcon name='calendar-month-outline' size={20} color='black' />}
               // value='1999-01-01'
             />
           </View>
@@ -84,8 +82,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               navigation.goBack()
             }}
             className='mt-4'
-            IconProvider={MaterialCommunityIcon}
-            icon='creation'
+            LeftUI={<MaterialCommunityIcon name='creation' size={16} color='white' />}
           />
         </View>
         <PaddingBottom />
