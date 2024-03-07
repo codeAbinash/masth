@@ -134,7 +134,6 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(({ c
           <View style={{ paddingBottom: 15 }}>
             <TopBar />
           </View>
-
           {children}
         </Animated.View>
       </GestureDetector>
@@ -144,13 +143,14 @@ const BottomSheet = React.forwardRef<BottomSheetRefProps, BottomSheetProps>(({ c
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
-    height: SCREEN_HEIGHT - 10,
+    height: SCREEN_HEIGHT - 20,
     width: '100%',
     backgroundColor: 'white',
     position: 'absolute',
     top: SCREEN_HEIGHT + 100,
     borderRadius: 25,
     paddingTop: 20,
+    paddingBottom: 100,
   },
 })
 

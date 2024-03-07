@@ -98,7 +98,7 @@ function CountryCodeSelector({ setCountryCode, closeFn }: { setCountryCode: Reac
     }
     const timer = setTimeout(() => {
       setCountries(searchFn(search))
-    }, 300)
+    }, 100)
     return () => {
       clearTimeout(timer)
     }
@@ -110,7 +110,7 @@ function CountryCodeSelector({ setCountryCode, closeFn }: { setCountryCode: Reac
         <Input placeholder='Select Your country' LeftUI={<Icon name='magnify' size={20} color='gray' />} onChangeText={setSearch} />
       </View>
       <ScrollView style={{ paddingHorizontal: 15 }}>
-        <View className='pb-16'>
+        <View className='pb-4'>
           {countries.length === 0 && <Text className='text-center text-gray-500'>No results found</Text>}
           {countries.map((country, index) => (
             <TouchableOpacity
@@ -120,6 +120,7 @@ function CountryCodeSelector({ setCountryCode, closeFn }: { setCountryCode: Reac
               onPress={() => {
                 setCountryCode(country.dial_code)
                 closeFn()
+                setTimeout(() => setSearch(''), 100)
               }}
             >
               <Text className='text-2xl'>{country.flag}</Text>
@@ -129,7 +130,6 @@ function CountryCodeSelector({ setCountryCode, closeFn }: { setCountryCode: Reac
               </Text>
             </TouchableOpacity>
           ))}
-          <PaddingBottom />
         </View>
       </ScrollView>
     </View>
