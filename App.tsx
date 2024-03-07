@@ -12,8 +12,10 @@ import Settings from '@screens/Others/Settings'
 import Refer from '@screens/Refer/Refer'
 import TransactionDetails from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
+import TestScreen from '@components/BottomSheet'
 import React from 'react'
 import { Dimensions, SafeAreaView, Text } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 
 const Stack = createStackNavigator()
@@ -30,6 +32,7 @@ function Navigation() {
         // gestureResponseDistance: width,
       }}
     >
+      {/* <Stack.Screen name='Test' component={TestScreen} /> */}
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='SignUp' component={SignUp} />
@@ -66,14 +69,16 @@ export default function App(): React.JSX.Element {
   return (
     // <GestureHandlerRootView style={{flex: 1}}>
     // <SafeAreaProvider>
-    <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
-      <DarkContentTransparentStatusBar />
-      <PaperProvider>
-        <NavigationContainer>
-          <Navigation />
-        </NavigationContainer>
-      </PaperProvider>
-    </SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
+        <DarkContentTransparentStatusBar />
+        <PaperProvider>
+          <NavigationContainer>
+            <Navigation />
+          </NavigationContainer>
+        </PaperProvider>
+      </SafeAreaView>
+    </GestureHandlerRootView>
     // </SafeAreaProvider>
     // </GestureHandlerRootView>
   )
