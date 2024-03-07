@@ -1,7 +1,7 @@
 import { Input } from '@components/Input'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { countries as ALL_COUNTRIES } from '@utils/countryCode'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { View, Text } from 'react-native'
 

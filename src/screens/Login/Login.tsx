@@ -5,10 +5,11 @@ import { Input } from '@components/Input'
 import { PaddingBottom, PaddingTop } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { StackNav } from '@utils/types'
-import React from 'react'
-import { Dimensions, Image, Text, View } from 'react-native'
+import React, { useCallback } from 'react'
+import { Alert, Dimensions, Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CountryCodeSelector from './CountryCodeSelector'
+import { isValidPhoneNumber } from './utils'
 
 const { width } = Dimensions.get('window')
 
@@ -17,6 +18,24 @@ const appIconSize = 0.5
 export default function Login({ navigation }: { navigation: StackNav }) {
   const sheet = React.useRef<BottomSheetRefProps>(null)
   const [countryCode, setCountryCode] = React.useState('')
+  const [phoneNumber, setPhoneNumber] = React.useState('')
+
+  function handelSubmit() {
+    if (!countryCode) {
+      return Alert.alert('Country Code Required', 'Please select your country code.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
+        cancelable: false,
+      })
+    }
+
+    if (!isValidPhoneNumber(phoneNumber).status) {
+      return Alert.alert('Invalid Phone Number', isValidPhoneNumber(phoneNumber).message)
+    }
+
+    navigation.navigate('OTP', {
+      phoneNumber: phoneNumber,
+      countryCode: countryCode,
+    })
+  }
 
   return (
     <>
@@ -43,10 +62,10 @@ export default function Login({ navigation }: { navigation: StackNav }) {
                 RightUI={null}
                 value={countryCode}
               />
-              <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' />
+              <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' value={phoneNumber} onChangeText={setPhoneNumber} />
             </View>
             <View className='mt-3' />
-            <Button title='Log In' onPress={() => navigation.navigate('OTP')} LeftUI={<Icon name='account' size={17} color='white' />} />
+            <Button title='Log In' onPress={handelSubmit} LeftUI={<Icon name='account' size={17} color='white' />} />
             <Button
               title='Create Account'
               variant='outline'
