@@ -5,23 +5,74 @@ import { Input } from '@components/Input'
 import { Select } from '@components/Select'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
 
 const appIconSize = 0.45
 
 const { width } = Dimensions.get('window')
 
+const LANGUAGES = [
+  { id: 1, name: 'English (UK)' },
+  { id: 2, name: 'Hindi' },
+  { id: 3, name: 'Indonesian' },
+  { id: 4, name: 'Urdu' },
+  { id: 5, name: 'German' },
+  { id: 6, name: 'Russian' },
+]
+
+const LANGUAGES_UPCOMING = [
+  { id: 7, name: 'Arabic' },
+  { id: 8, name: 'Turki' },
+  { id: 9, name: 'African' },
+  { id: 10, name: 'Australian' },
+]
+
 export default function SignUp({ navigation }: { navigation: StackNav }) {
   const sheet = React.useRef<BottomSheetRefProps>(null)
   const languageSheet = React.useRef<BottomSheetRefProps>(null)
   const [countryCode, setCountryCode] = React.useState('')
-  const [language, setLanguage] = React.useState('')
+  const [language, setLanguage] = React.useState(LANGUAGES[0].name)
   const [date, setDate] = React.useState<Date | ''>('')
   const [showDatePicker, setShowDatePicker] = React.useState(false)
+  const [phoneNumber, setPhoneNumber] = React.useState('')
+  const [username, setUsername] = React.useState('')
+  const [fullName, setFullName] = React.useState('')
+
+  function handelSubmit() {
+    const usernameStatus = isValidUserName(username.trim())
+    if (!usernameStatus.status) {
+      return Alert.alert('Invalid Username', usernameStatus.message)
+    }
+    const fullNameStatus = isValidFullName(fullName.trim())
+    if (!fullNameStatus.status) {
+      return Alert.alert('Invalid Full Name', fullNameStatus.message)
+    }
+    if (!countryCode) {
+      return Alert.alert('Country Code Required', 'Please select your country code.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
+        cancelable: false,
+      })
+    }
+    const phoneNumberStatus = isValidPhoneNumber(phoneNumber.trim())
+    if (!phoneNumberStatus.status) {
+      return Alert.alert('Invalid Phone Number', phoneNumberStatus.message)
+    }
+    if (!date) {
+      return Alert.alert('Date of Birth Required', 'Please select your date of birth.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
+        cancelable: false,
+      })
+    }
+
+    if (!language) {
+      return Alert.alert('Language Required', 'Please select your language.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
+        cancelable: false,
+      })
+    }
+  }
 
   return (
     <>
@@ -36,8 +87,13 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
               </Text>
             </View>
             <View style={{ gap: 10, marginTop: 10 }}>
-              <Input placeholder='Username' LeftUI={<Icon name='at' size={20} color='black' />} />
-              <Input placeholder='Full Name' LeftUI={<Icon name='account-outline' size={20} color='black' />} />
+              <Input placeholder='Username' LeftUI={<Icon name='at' size={20} color='black' />} onChangeText={setUsername} value={username} />
+              <Input
+                placeholder='Full Name'
+                LeftUI={<Icon name='account-outline' size={20} color='black' />}
+                onChangeText={setFullName}
+                value={fullName}
+              />
               <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
                 <Select
                   placeholder='+ CC'
@@ -49,7 +105,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                   RightUI={null}
                   value={countryCode}
                 />
-                <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' />
+                <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' onChangeText={setPhoneNumber} value={phoneNumber} />
               </View>
               <Select
                 placeholder='Date of Birth'
@@ -70,14 +126,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 }}
                 value={language}
               />
-              <Button
-                title='Create Account'
-                onPress={() => {
-                  navigation.replace('Home')
-                }}
-                LeftUI={<Icon name='creation' size={17} color='white' />}
-                className='mt-4'
-              />
+              <Button title='Create Account' onPress={handelSubmit} LeftUI={<Icon name='creation' size={17} color='white' />} className='mt-4' />
               <Button
                 title='Log In'
                 variant='outline'
@@ -123,22 +172,6 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   )
 }
 
-const LANGUAGES = [
-  { id: 1, name: 'English (UK)' },
-  { id: 2, name: 'Hindi' },
-  { id: 3, name: 'Indonesian' },
-  { id: 4, name: 'Urdu' },
-  { id: 5, name: 'German' },
-  { id: 6, name: 'Russian' },
-]
-
-const LANGUAGES_UPCOMING = [
-  { id: 7, name: 'Arabic' },
-  { id: 8, name: 'Turki' },
-  { id: 9, name: 'African' },
-  { id: 10, name: 'Australian' },
-]
-
 function LanguageSelector({ setLanguage, closeFn }: { setLanguage: React.Dispatch<React.SetStateAction<string>>; closeFn: () => void }) {
   return (
     <View>
@@ -151,8 +184,8 @@ function LanguageSelector({ setLanguage, closeFn }: { setLanguage: React.Dispatc
               className='flex flex-row items-center gap-3.5 p-2.5'
               style={{ gap: 10 }}
               onPress={() => {
-                setLanguage(language.name)
                 closeFn()
+                setTimeout(() => setLanguage(language.name))
               }}
             >
               <Text style={{ fontSize: 18, flex: 1, fontWeight: '500' }} numberOfLines={1}>
@@ -175,19 +208,3 @@ function LanguageSelector({ setLanguage, closeFn }: { setLanguage: React.Dispatc
     </View>
   )
 }
-
-/*And The Language Is
-
-1 - English (UK)
-2 - Hindi
-3 - Indonesian
-4 - Urdu
-5 - German
-6 - Russian
-
-Upcoming
-
-7 - Arabic
-8 - Turki
-9 - African
-10 - Australian*/

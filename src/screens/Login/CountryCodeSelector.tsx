@@ -1,9 +1,9 @@
 import { Input } from '@components/Input'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { countries as ALL_COUNTRIES } from '@utils/countryCode'
-import { memo, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Text, View } from 'react-native'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { View, Text } from 'react-native'
 
 type Country = {
   name: string
@@ -52,8 +52,8 @@ export default function CountryCodeSelector({
               className='flex flex-row items-center gap-3.5 p-2.5'
               style={{ gap: 10 }}
               onPress={() => {
-                setCountryCode(country.dial_code)
                 closeFn()
+                setTimeout(() => setCountryCode(country.dial_code))
               }}
             >
               <Text className='text-2xl'>{country.flag}</Text>

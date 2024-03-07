@@ -41,7 +41,7 @@ export function isValidPhoneNumber(text: string) {
 }
 
 export function isValidUserName(text: string) {
-  // Check if the text meets the criteria for a valid user ID
+  // Check if the text meets the criteria for a valid username
   const alphanumericRegex = /^[a-zA-Z0-9]+$/
   const minLength = 4
   const maxLength = 50
@@ -49,22 +49,22 @@ export function isValidUserName(text: string) {
   if (!text) {
     return {
       status: false,
-      message: 'User ID cannot be empty.',
+      message: 'Username cannot be empty.',
     }
   } else if (text.length < minLength || text.length > maxLength) {
     return {
       status: false,
-      message: `User ID must be between ${minLength} and ${maxLength} characters long.`,
+      message: `Username must be between ${minLength} and ${maxLength} characters long.`,
     }
   } else if (!alphanumericRegex.test(text)) {
     return {
       status: false,
-      message: 'User ID can only contain alphanumeric characters.',
+      message: 'Username can only contain alphanumeric characters.',
     }
   } else {
     return {
       status: true,
-      message: 'User ID is valid.',
+      message: 'Username is valid.',
     }
   }
 }
