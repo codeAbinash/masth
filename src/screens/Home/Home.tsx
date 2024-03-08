@@ -10,6 +10,7 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import NewsFeedImage from '@images/feeds.svg'
 import { colors } from '@utils/colors'
+import { appStorage } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
@@ -28,6 +29,9 @@ export default function Home({ navigation }: { navigation: StackNav }) {
         <Miners />
         <TotalRemoteMining navigation={navigation} />
         <TotalLiveMining />
+        <View className='mt-2 flex items-center justify-center'>
+          <Text>{appStorage.getString('token')}</Text>
+        </View>
       </View>
     </ScrollView>
   )

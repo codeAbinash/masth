@@ -1,17 +1,56 @@
 import { PaddingBottom, PaddingTop } from '@components/SafePadding'
-import { StackNav } from '@utils/types'
 import React from 'react'
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import icons from '@assets/icons/icons'
 import { Button } from '@components/Button'
+import { SmallLoading } from '@components/Loading'
+import { verifyLogin_f, verifySignUp_f } from '@query/api'
+import { ParamListBase, RouteProp } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { useMutation } from '@tanstack/react-query'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { colors } from '@utils/colors'
-
+import { appStorage } from '../../utils/storage'
+import { isValidOTP } from './utils'
 const { width } = Dimensions.get('window')
 const topIconSize = 0.35
 
-export default function OTP({ navigation }: { navigation: StackNav }) {
+type OTPRouteProps = RouteProp<ParamListBase, 'OTP'>
+type OTPNavigationProps = StackNavigationProp<ParamListBase, 'OTP'>
+
+type Props = {
+  route: OTPRouteProps
+  navigation: OTPNavigationProps
+}
+
+export default function OTP({ navigation, route }: Props) {
+  const phone = (route.params as { phone: string })?.phone
+  const country_code = (route.params as { country_code: string })?.country_code
+  const isSignUp = (route.params as { isSignUp: boolean })?.isSignUp
+  const [otp, setOtp] = React.useState('')
+
+  const otpMutation = useMutation({
+    mutationFn: () => (isSignUp ? verifySignUp_f({ country_code, otp, phone }) : verifyLogin_f({ country_code, phone, otp })),
+    onSuccess: async (data) => {
+      if (data.status === true) {
+        appStorage.set('token', data.token)
+        // navigation.replace('Home')
+        navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
+      } else {
+        Alert.alert('Invalid', data.message)
+      }
+    },
+  })
+
+  function handelSubmit(code: string) {
+    const otpStatus = isValidOTP(code)
+    if (!otpStatus.status) {
+      return Alert.alert('Invalid OTP', otpStatus.message)
+    }
+    otpMutation.mutate()
+  }
+
   return (
     <View className='flex-1 justify-between bg-white'>
       <View>
@@ -20,7 +59,9 @@ export default function OTP({ navigation }: { navigation: StackNav }) {
       <View className='items-center'>
         <Image source={icons.mobile_otp} style={{ width: width * topIconSize, height: width * topIconSize }} />
         <Text className='mt-5 text-center text-3xl font-bold'>Verify OTP</Text>
-        <Text className='mt-4 w-4/5 text-center text-base text-neutral-600'>We have sent an otp to your mobile number ends with 8988</Text>
+        <Text className='mt-4 w-4/5 text-center text-base text-neutral-600'>
+          We have sent an otp to your mobile number ends with {phone?.slice(-4)}
+        </Text>
         <View style={{ padding: 5 }}>
           <View className='flex-row'>
             <OTPInputView
@@ -30,12 +71,17 @@ export default function OTP({ navigation }: { navigation: StackNav }) {
               codeInputFieldStyle={styles.underlineStyleBase}
               codeInputHighlightStyle={styles.underlineStyleHighLighted}
               onCodeFilled={(code) => {
-                navigation.navigate('Home')
+                setOtp(() => code)
+                handelSubmit(code)
               }}
             />
           </View>
           <View className='flex-row' style={{ paddingHorizontal: 20 }}>
-            <Button title='Confirm' onPress={() => navigation.navigate('Home')} />
+            {otpMutation.isPending ? (
+              <Button title='Verifying OTP...' LeftUI={<SmallLoading />} disabled={true} />
+            ) : (
+              <Button title='Confirm' onPress={() => handelSubmit(otp)} />
+            )}
           </View>
           <View className='mt-8 flex-row items-center justify-center px-5'>
             <Text className='text-center text-base text-neutral-700'>Didn't receive OTP?</Text>

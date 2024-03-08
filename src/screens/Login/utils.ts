@@ -68,3 +68,25 @@ export function isValidUserName(text: string) {
     }
   }
 }
+
+// Validate OTP input. it is a 6 digit number
+export function isValidOTP(text: string) {
+  const otpRegex = /^[0-9]{6}$/
+
+  if (!text) {
+    return {
+      status: false,
+      message: 'Please enter a valid OTP.',
+    }
+  } else if (!otpRegex.test(text)) {
+    return {
+      status: false,
+      message: 'Please enter a valid OTP.',
+    }
+  } else {
+    return {
+      status: true,
+      message: 'OTP is valid.',
+    }
+  }
+}

@@ -2,13 +2,28 @@ import { SmallButton } from '@components/Button'
 import QR_CODE from '@components/QRCode'
 import { PaddingTop } from '@components/SafePadding'
 import { colors } from '@utils/colors'
+import { appStorage } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { Image, ScrollView, Text, View } from 'react-native'
+import { Alert, Image, ScrollView, Text, View } from 'react-native'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default function Profile({ navigation }: { navigation: StackNav }) {
+  function signOut() {
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: () => {
+          appStorage.clearAll()
+          navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
+        },
+      },
+    ])
+  }
+
   return (
     <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }}>
       <PaddingTop />
@@ -45,7 +60,7 @@ export default function Profile({ navigation }: { navigation: StackNav }) {
           className='px-5 py-2.5 pl-4'
           onPress={() => navigation.navigate('EditProfile')}
         />
-        <SmallButton title='Sign Out' LeftUI={<FeatherIcon name='log-out' size={17} color='white' />} className='px-5 py-2.5' />
+        <SmallButton title='Sign Out' LeftUI={<FeatherIcon name='log-out' size={17} color='white' />} className='px-5 py-2.5' onPress={signOut} />
       </View>
     </ScrollView>
   )

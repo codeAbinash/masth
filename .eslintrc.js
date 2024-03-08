@@ -8,5 +8,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'jsx-quotes': ['warn', 'prefer-single'],
     semi: ['warn', 'never'],
+    curly: ['off', 'never'],
   },
 }

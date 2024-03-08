@@ -15,7 +15,7 @@ interface ButtonProps extends TouchableOpacityProps {
   RightUI?: React.ReactNode
 }
 
-export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, classNames, LeftUI, RightUI, ...rest }) => {
+export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, classNames, LeftUI, RightUI, disabled, ...rest }) => {
   const isOutline = variant === 'outline'
   const space = 10
   const bg = isOutline ? 'bg-transparent' : 'bg-black'
@@ -25,9 +25,12 @@ export const Button: React.FC<ButtonProps> = ({ onPress, title, variant, style, 
   return (
     <TouchableOpacity
       activeOpacity={activeOpacity}
-      className={`flex w-full flex-row items-center justify-center rounded-2xl border-black ${bg} ${classNames}`}
+      className={`flex w-full flex-row items-center justify-center rounded-2xl border-black ${
+        disabled ? 'opacity-70' : 'opacity-100'
+      } ${bg} ${classNames}`}
       style={[{ padding: 14, borderWidth: 1.5 }, style]}
       onPress={onPress}
+      disabled={disabled}
       {...rest}
     >
       {LeftUI && <View style={{ marginRight: space }}>{LeftUI}</View>}

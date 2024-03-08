@@ -2,14 +2,17 @@ import icons from '@assets/icons/icons'
 import BottomSheet, { BottomSheetRefProps } from '@components/BottomSheet'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
+import { SmallLoadingWrapped } from '@components/Loading'
 import { Select } from '@components/Select'
+import { signUpApi_f } from '@query/api'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { useMutation } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import React from 'react'
 import { Alert, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
-import DateTimePicker from '@react-native-community/datetimepicker'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
 
 const appIconSize = 0.45
@@ -35,43 +38,52 @@ const LANGUAGES_UPCOMING = [
 export default function SignUp({ navigation }: { navigation: StackNav }) {
   const sheet = React.useRef<BottomSheetRefProps>(null)
   const languageSheet = React.useRef<BottomSheetRefProps>(null)
-  const [countryCode, setCountryCode] = React.useState('')
-  const [language, setLanguage] = React.useState(LANGUAGES[0].name)
-  const [date, setDate] = React.useState<Date | ''>('')
+  const [country_code, setCountry_code] = React.useState('')
+  const [lang, setLang] = React.useState(LANGUAGES[0].name)
+  const [dob, setDob] = React.useState<Date | ''>(new Date(''))
   const [showDatePicker, setShowDatePicker] = React.useState(false)
-  const [phoneNumber, setPhoneNumber] = React.useState('')
+  const [phone, setPhone] = React.useState('')
   const [username, setUsername] = React.useState('')
-  const [fullName, setFullName] = React.useState('')
+  const [name, setName] = React.useState('')
+
+  const signUpMutation = useMutation({
+    mutationFn: () => signUpApi_f({ username, country_code, dob: dob.toString(), lang, name, phone }),
+    onSuccess: (data) => {
+      navigation.replace('OTP', { phone, country_code, isSignUp: true })
+    },
+  })
 
   function handelSubmit() {
     const usernameStatus = isValidUserName(username.trim())
     if (!usernameStatus.status) {
       return Alert.alert('Invalid Username', usernameStatus.message)
     }
-    const fullNameStatus = isValidFullName(fullName.trim())
+    const fullNameStatus = isValidFullName(name.trim())
     if (!fullNameStatus.status) {
       return Alert.alert('Invalid Full Name', fullNameStatus.message)
     }
-    if (!countryCode) {
+    if (!country_code) {
       return Alert.alert('Country Code Required', 'Please select your country code.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
         cancelable: false,
       })
     }
-    const phoneNumberStatus = isValidPhoneNumber(phoneNumber.trim())
+    const phoneNumberStatus = isValidPhoneNumber(phone.trim())
     if (!phoneNumberStatus.status) {
       return Alert.alert('Invalid Phone Number', phoneNumberStatus.message)
     }
-    if (!date) {
+    if (!dob) {
       return Alert.alert('Date of Birth Required', 'Please select your date of birth.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
         cancelable: false,
       })
     }
 
-    if (!language) {
+    if (!lang) {
       return Alert.alert('Language Required', 'Please select your language.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
         cancelable: false,
       })
     }
+
+    signUpMutation.mutate()
   }
 
   return (
@@ -88,12 +100,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
             </View>
             <View style={{ gap: 10, marginTop: 10 }}>
               <Input placeholder='Username' LeftUI={<Icon name='at' size={20} color='black' />} onChangeText={setUsername} value={username} />
-              <Input
-                placeholder='Full Name'
-                LeftUI={<Icon name='account-outline' size={20} color='black' />}
-                onChangeText={setFullName}
-                value={fullName}
-              />
+              <Input placeholder='Full Name' LeftUI={<Icon name='account-outline' size={20} color='black' />} onChangeText={setName} value={name} />
               <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
                 <Select
                   placeholder='+ CC'
@@ -103,9 +110,9 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                     sheet.current?.openFull()
                   }}
                   RightUI={null}
-                  value={countryCode}
+                  value={country_code}
                 />
-                <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' onChangeText={setPhoneNumber} value={phoneNumber} />
+                <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' onChangeText={setPhone} value={phone} />
               </View>
               <Select
                 placeholder='Date of Birth'
@@ -115,7 +122,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 onPress={() => {
                   setShowDatePicker(true)
                 }}
-                value={date && date.toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}
+                value={dob && dob.toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}
               />
               <Select
                 placeholder='Language'
@@ -124,9 +131,14 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 onPress={() => {
                   languageSheet.current?.open()
                 }}
-                value={language}
+                value={lang}
               />
-              <Button title='Create Account' onPress={handelSubmit} LeftUI={<Icon name='creation' size={17} color='white' />} className='mt-4' />
+              <View className='h-4' />
+              {signUpMutation.isPending ? (
+                <Button title='Sending OTP...' LeftUI={<SmallLoadingWrapped />} disabled={true} />
+              ) : (
+                <Button title='Create Account' onPress={handelSubmit} LeftUI={<Icon name='creation' size={17} color='white' />} />
+              )}
               <Button
                 title='Log In'
                 variant='outline'
@@ -141,7 +153,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
       </ScrollView>
       <BottomSheet ref={sheet}>
         <CountryCodeSelector
-          setCountryCode={setCountryCode}
+          setCountryCode={setCountry_code}
           closeFn={() => {
             sheet.current?.close()
           }}
@@ -149,7 +161,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
       </BottomSheet>
       <BottomSheet ref={languageSheet}>
         <LanguageSelector
-          setLanguage={setLanguage}
+          setLanguage={setLang}
           closeFn={() => {
             languageSheet.current?.close()
           }}
@@ -162,10 +174,10 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
           onChange={({ type }, selectDate) => {
             setShowDatePicker(false)
             if (type === 'set') {
-              setDate(selectDate || date)
+              setDob(selectDate || dob)
             }
           }}
-          value={date || new Date()}
+          value={dob || new Date()}
         />
       )}
     </>

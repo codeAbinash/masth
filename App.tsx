@@ -12,27 +12,80 @@ import Settings from '@screens/Others/Settings'
 import Refer from '@screens/Refer/Refer'
 import TransactionDetails from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
-import TestScreen from '@components/BottomSheet'
-import React from 'react'
-import { Dimensions, SafeAreaView, Text } from 'react-native'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { StackNav } from '@utils/types'
+import React, { useCallback, useEffect } from 'react'
+import { Dimensions, SafeAreaView, Text, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
+import { showErr } from './src/query/api'
+import { appStorage } from '@utils/storage'
+import { SmallLoading } from '@components/Loading'
 
 const Stack = createStackNavigator()
 const { width, height } = Dimensions.get('window')
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    mutations: {
+      retry: 1,
+      onError: showErr,
+    },
+  },
+})
+
+export default function App(): React.JSX.Element {
+  return (
+    // <SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
+          <DarkContentTransparentStatusBar />
+          <PaperProvider>
+            <NavigationContainer>
+              <Navigation />
+            </NavigationContainer>
+          </PaperProvider>
+        </SafeAreaView>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
+    //  </SafeAreaProvider>
+  )
+}
+
+function NavigationDecider({ navigation }: { navigation: StackNav }) {
+  const decide = useCallback(async () => {
+    const token = appStorage.getString('token')
+    console.log('token', token)
+    if (token) {
+      navigation.replace('Home')
+    } else {
+      navigation.replace('Login')
+    }
+  }, [navigation])
+
+  useEffect(() => {
+    decide()
+  }, [decide])
+
+  return (
+    <View className='flex-1 items-center justify-center bg-white p-5'>
+      <SmallLoading />
+    </View>
+  )
+}
 
 function Navigation() {
   return (
     <Stack.Navigator
       screenOptions={{
-        // gestureEnabled: true,
-        // gestureDirection: 'horizontal',
+        // gestureEnabled: true,gestureDirection: 'horizontal', gestureResponseDistance: width,
         headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        // gestureResponseDistance: width,
       }}
     >
       {/* <Stack.Screen name='Test' component={TestScreen} /> */}
+      <Stack.Screen name='navigationDecider' component={NavigationDecider} />
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='SignUp' component={SignUp} />
@@ -62,25 +115,6 @@ function Navigation() {
         }}
       />
     </Stack.Navigator>
-  )
-}
-
-export default function App(): React.JSX.Element {
-  return (
-    // <GestureHandlerRootView style={{flex: 1}}>
-    // <SafeAreaProvider>
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, height: height, backgroundColor: 'red' }}>
-        <DarkContentTransparentStatusBar />
-        <PaperProvider>
-          <NavigationContainer>
-            <Navigation />
-          </NavigationContainer>
-        </PaperProvider>
-      </SafeAreaView>
-    </GestureHandlerRootView>
-    // </SafeAreaProvider>
-    // </GestureHandlerRootView>
   )
 }
 
