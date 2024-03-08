@@ -13,6 +13,7 @@ import { Alert, Dimensions, Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidPhoneNumber } from './utils'
+import { removePlusBeforeCountryCode } from '@utils/utils'
 
 const { width } = Dimensions.get('window')
 
@@ -24,15 +25,13 @@ export default function Login({ navigation }: { navigation: StackNav }) {
   const [phone, setPhone] = useState('')
 
   const loginMutation = useMutation({
-    mutationFn: () => loginApi_f({ phone, country_code }),
+    mutationFn: () => loginApi_f({ phone, country_code: removePlusBeforeCountryCode(country_code) }),
     onSuccess: () => navigation.replace('OTP', { phone, country_code }),
   })
 
   function handelSubmit() {
     if (!country_code) {
-      return Alert.alert('Country Code Required', 'Please select your country code.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
-        cancelable: false,
-      })
+      return Alert.alert('Country Code Required', 'Please select your country code.')
     }
 
     if (!isValidPhoneNumber(phone).status) {

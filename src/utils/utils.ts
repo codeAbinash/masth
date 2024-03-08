@@ -5,3 +5,7 @@ export async function shareText(message: string) {
     const result = await Share.share({ message })
   } catch (error) {}
 }
+
+export function removePlusBeforeCountryCode(country_code: string) {
+  return country_code.replace('+', '')
+}

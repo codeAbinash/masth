@@ -13,6 +13,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { colors } from '@utils/colors'
 import { appStorage } from '../../utils/storage'
 import { isValidOTP } from './utils'
+import { removePlusBeforeCountryCode } from '@utils/utils'
 const { width } = Dimensions.get('window')
 const topIconSize = 0.35
 
@@ -31,7 +32,10 @@ export default function OTP({ navigation, route }: Props) {
   const [otp, setOtp] = React.useState('')
 
   const otpMutation = useMutation({
-    mutationFn: () => (isSignUp ? verifySignUp_f({ country_code, otp, phone }) : verifyLogin_f({ country_code, phone, otp })),
+    mutationFn: () =>
+      isSignUp
+        ? verifySignUp_f({ country_code: removePlusBeforeCountryCode(country_code), otp, phone })
+        : verifyLogin_f({ country_code: removePlusBeforeCountryCode(country_code), phone, otp }),
     onSuccess: async (data) => {
       if (data.status === true) {
         appStorage.set('token', data.token)

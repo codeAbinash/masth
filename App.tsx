@@ -56,7 +56,6 @@ export default function App(): React.JSX.Element {
 function NavigationDecider({ navigation }: { navigation: StackNav }) {
   const decide = useCallback(async () => {
     const token = appStorage.getString('token')
-    console.log('token', token)
     if (token) {
       navigation.replace('Home')
     } else {
@@ -85,9 +84,13 @@ function Navigation() {
       }}
     >
       {/* <Stack.Screen name='Test' component={TestScreen} /> */}
-      <Stack.Screen name='navigationDecider' component={NavigationDecider} />
-      <Stack.Screen name='Login' component={Login} />
-      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen
+        name='navigationDecider'
+        component={NavigationDecider}
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forNoAnimation }}
+      />
+      <Stack.Screen name='Login' component={Login} options={{ cardStyleInterpolator: CardStyleInterpolators.forNoAnimation }} />
+      <Stack.Screen name='Home' component={Home} options={{ cardStyleInterpolator: CardStyleInterpolators.forNoAnimation }} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='OTP' component={OTP} />
       <Stack.Screen name='Notifications' component={Notifications} />

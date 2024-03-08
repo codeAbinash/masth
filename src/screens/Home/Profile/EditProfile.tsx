@@ -44,7 +44,6 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               placeholder='Full Name'
               LeftUI={<MaterialCommunityIcon name='account-outline' size={20} color='black' />}
               value='Abinash Karmakar'
-              RightUI={<MaterialCommunityIcon name='pencil' size={20} color='black' />}
             />
           </View>
           <View>

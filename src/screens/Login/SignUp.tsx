@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
+import { removePlusBeforeCountryCode } from '@utils/utils'
 
 const appIconSize = 0.45
 
@@ -47,7 +48,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   const [name, setName] = React.useState('')
 
   const signUpMutation = useMutation({
-    mutationFn: () => signUpApi_f({ username, country_code, dob: dob.toString(), lang, name, phone }),
+    mutationFn: () => signUpApi_f({ username, country_code: removePlusBeforeCountryCode(country_code), dob: dob.toString(), lang, name, phone }),
     onSuccess: (data) => {
       navigation.replace('OTP', { phone, country_code, isSignUp: true })
     },
@@ -63,24 +64,18 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
       return Alert.alert('Invalid Full Name', fullNameStatus.message)
     }
     if (!country_code) {
-      return Alert.alert('Country Code Required', 'Please select your country code.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
-        cancelable: false,
-      })
+      return Alert.alert('Country Code Required', 'Please select your country code.')
     }
     const phoneNumberStatus = isValidPhoneNumber(phone.trim())
     if (!phoneNumberStatus.status) {
       return Alert.alert('Invalid Phone Number', phoneNumberStatus.message)
     }
     if (!dob) {
-      return Alert.alert('Date of Birth Required', 'Please select your date of birth.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
-        cancelable: false,
-      })
+      return Alert.alert('Date of Birth Required', 'Please select your date of birth.')
     }
 
     if (!lang) {
-      return Alert.alert('Language Required', 'Please select your language.', [{ text: 'OK', onPress: () => console.log('OK Pressed') }], {
-        cancelable: false,
-      })
+      return Alert.alert('Language Required', 'Please select your language.')
     }
 
     signUpMutation.mutate()
