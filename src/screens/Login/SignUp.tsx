@@ -39,7 +39,7 @@ const LANGUAGES_UPCOMING = [
 export default function SignUp({ navigation }: { navigation: StackNav }) {
   const sheet = React.useRef<BottomSheetRefProps>(null)
   const languageSheet = React.useRef<BottomSheetRefProps>(null)
-  const [country_code, setCountry_code] = React.useState('')
+  const [country_code, setCountry_code] = React.useState('+91')
   const [lang, setLang] = React.useState(LANGUAGES[0].name)
   const [dob, setDob] = React.useState<Date | ''>(new Date(''))
   const [showDatePicker, setShowDatePicker] = React.useState(false)

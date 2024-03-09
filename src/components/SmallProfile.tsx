@@ -8,7 +8,7 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
   return (
     <View className='flex flex-row items-center justify-between'>
       <View className='flex flex-row gap-4 '>
-        <Image source={{ uri: 'https://picsum.photos/100' }} className='h-11 w-11 rounded-full' />
+        <Image source={{ uri: 'https://picsum.photos/100' }} className='h-11 w-11 rounded-full bg-neutral-200' />
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
           <Text className='font-bold' style={{ fontSize: 16 }}>

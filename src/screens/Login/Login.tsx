@@ -21,7 +21,7 @@ const appIconSize = 0.5
 
 export default function Login({ navigation }: { navigation: StackNav }) {
   const sheet = useRef<BottomSheetRefProps>(null)
-  const [country_code, setCountry_code] = useState('')
+  const [country_code, setCountry_code] = useState('+91')
   const [phone, setPhone] = useState('')
 
   const loginMutation = useMutation({
