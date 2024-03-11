@@ -90,3 +90,23 @@ export function isValidOTP(text: string) {
     }
   }
 }
+
+export function isValidEmail(text: string) {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+  if (!text) {
+    return {
+      status: false,
+      message: 'Email cannot be empty.',
+    }
+  } else if (!emailRegex.test(text)) {
+    return {
+      status: false,
+      message: 'Please enter a valid email.',
+    }
+  } else {
+    return {
+      status: true,
+      message: 'Email is valid.',
+    }
+  }
+}

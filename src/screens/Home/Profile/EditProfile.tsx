@@ -9,13 +9,14 @@ import { PaddingBottom } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { profile_f, ProfileT, updateProfile_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { isValidEmail, isValidFullName } from '@screens/Login/utils'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import React, { useState } from 'react'
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
+import { launchImageLibrary } from 'react-native-image-picker'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { launchImageLibrary } from 'react-native-image-picker'
 
 // import { Image } from 'react-native-svg'
 
@@ -51,8 +52,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
   const updateMutation = useMutation({
     mutationFn: () => {
       const formData = new FormData()
-      fullName && formData.append('name', fullName)
-      email && formData.append('email', email)
+      fullName && formData.append('name', fullName.trim())
+      email && formData.append('email', email.trim())
       dob && formData.append('dob', dob.toISOString())
       if (profilePic && !profilePic.startsWith('http')) {
         formData.append('profile_pic', {
@@ -71,8 +72,16 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
   })
 
   function handelSubmit() {
-    if (!fullName || !email || !dob) {
-      return Alert.alert('Error', 'Please fill the data properly')
+    const fullNameStatus = isValidFullName(fullName.trim())
+    if (!fullNameStatus.status) {
+      return Alert.alert('Invalid Full Name', fullNameStatus.message)
+    }
+    if (!dob) {
+      return Alert.alert('Date of Birth Required', 'Please select your date of birth.')
+    }
+    const emailStatus = isValidEmail(email.trim())
+    if (!emailStatus.status) {
+      return Alert.alert('Invalid Email', emailStatus.message)
     }
     updateMutation.mutate()
   }
