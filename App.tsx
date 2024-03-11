@@ -99,9 +99,9 @@ function Navigation() {
       }}
     >
       {/* <Stack.Screen name='Test' component={TestScreen} /> */}
-      <Stack.Screen name='CheckRefer' component={CheckRefer} />
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
+      <Stack.Screen name='CheckRefer' component={CheckRefer} />
       <Stack.Screen name='Home' component={Home} options={NO_ANIMATION} />
       <Stack.Screen name='SignUp' component={SignUp} />
       <Stack.Screen name='OTP' component={OTP} />

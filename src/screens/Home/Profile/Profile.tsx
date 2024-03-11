@@ -27,11 +27,8 @@ export default function ProfileScreen({ navigation }: { navigation: StackNav }) 
         <View className='absolute z-10 w-full items-center'>
           <Image
             className='rounded-full bg-neutral-200'
-            source={{ uri: 'https://picsum.photos/201' }}
-            style={{
-              width: 90,
-              height: 90,
-            }}
+            source={{ uri: profile?.profile_pic || 'https://picsum.photos/201' }}
+            style={{ width: 90, height: 90 }}
           />
           <Text className='pt-2 text-xl font-bold uppercase' style={{ color: '#2aa3ce' }}>
             {profile?.username || 'Loading...'}

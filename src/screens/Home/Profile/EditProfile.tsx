@@ -4,16 +4,18 @@ import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import KeyboardAvoidingContainer from '@components/KeyboardAvoidingContainer'
 import Label from '@components/Label'
+import { SmallLoadingWrapped } from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import { Select } from '@components/Select'
-import { profile_f, ProfileT } from '@query/api'
+import { profile_f, ProfileT, updateProfile_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import React, { useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 // import { Image } from 'react-native-svg'
 
@@ -22,10 +24,58 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
   const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
   const [showDatePicker, setShowDatePicker] = React.useState(false)
+  const [profilePic, setProfilePic] = React.useState(profile?.profile_pic || '')
 
   const [fullName, setFullName] = useState(profile?.name || '')
   const [email, setEmail] = useState(profile?.email || '')
   const [dob, setDob] = useState(new Date(profile?.date_of_birth || ''))
+
+  const queryClient = useQueryClient()
+
+  async function selectPic() {
+    try {
+      const res = await launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 1,
+      })
+      if (res.didCancel || res.errorMessage) return
+      const assets: any = res?.assets as any
+      const uri: any = assets[0]?.uri
+
+      setProfilePic(uri as string)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const updateMutation = useMutation({
+    mutationFn: () => {
+      const formData = new FormData()
+      fullName && formData.append('name', fullName)
+      email && formData.append('email', email)
+      dob && formData.append('dob', dob.toISOString())
+      if (profilePic && !profilePic.startsWith('http')) {
+        formData.append('profile_pic', {
+          uri: profilePic,
+          name: 'image.jpg',
+          type: 'image/jpg',
+        })
+      }
+      return updateProfile_f(formData)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] })
+      navigation.goBack()
+      console.log(data.data)
+    },
+  })
+
+  function handelSubmit() {
+    if (!fullName || !email || !dob) {
+      return Alert.alert('Error', 'Please fill the data properly')
+    }
+    updateMutation.mutate()
+  }
 
   return (
     <View className='flex-1 bg-bgSecondary'>
@@ -33,8 +83,17 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
       <KeyboardAvoidingContainer className='px-5'>
         <View className='mt-5 items-center justify-center'>
           <View className='relative'>
-            <Image className='rounded-full bg-neutral-200' source={{ uri: 'https://picsum.photos/201' }} style={{ width: 140, height: 140 }} />
-            <TouchableOpacity activeOpacity={0.7} style={{ position: 'absolute', bottom: 0, right: 0 }} className='rounded-full bg-white p-3'>
+            <Image
+              className='rounded-full bg-neutral-200'
+              source={{ uri: profilePic || 'https://picsum.photos/201' }}
+              style={{ width: 140, height: 140 }}
+            />
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{ position: 'absolute', bottom: 0, right: 0 }}
+              className='rounded-full bg-white p-3'
+              onPress={selectPic}
+            >
               <Icon name='edit' size={20} />
             </TouchableOpacity>
           </View>
@@ -86,14 +145,16 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               value={dob && dob.toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}
             />
           </View>
-          <Button
-            title='Save Changes'
-            onPress={() => {
-              navigation.goBack()
-            }}
-            className='mt-4'
-            LeftUI={<MaterialCommunityIcon name='creation' size={16} color='white' />}
-          />
+          {updateMutation.isPending ? (
+            <Button title='Saving...' disabled className='mt-4' LeftUI={<SmallLoadingWrapped />} />
+          ) : (
+            <Button
+              title='Save Changes'
+              onPress={handelSubmit}
+              className='mt-4'
+              LeftUI={<MaterialCommunityIcon name='creation' size={16} color='white' />}
+            />
+          )}
         </View>
         <PaddingBottom />
       </KeyboardAvoidingContainer>

@@ -10,8 +10,6 @@ import { OneSignal } from 'react-native-onesignal'
 
 export default function Setup({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
-  const profile = profileQuery.data?.data || localProfile?.data
 
   useEffect(() => {
     // Remove this method to stop OneSignal Debugging
@@ -26,13 +24,20 @@ export default function Setup({ navigation }: { navigation: StackNav }) {
     //   console.log('OneSignal: notification clicked:', event)
     // })
 
-    const phone = (profile?.country_code || '') + (profile?.phone_number || '')
-    if (phone) {
+    if (profileQuery.data) {
+      const phone = (profileQuery?.data?.data.country_code || '') + profileQuery.data?.data.phone_number
       OneSignal.login(phone)
       console.log('OneSignal: logged in:', phone)
-      navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
+      // Check if referred
+      console.log(profileQuery.data.refer_claimed)
+      if (profileQuery.data?.refer_claimed === false) {
+        navigation.replace('CheckRefer')
+      } else {
+        navigation.replace('Home')
+      }
+      // navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
     }
-  }, [navigation, profile])
+  }, [navigation, profileQuery.data])
 
   return (
     <View className='flex flex-1 items-center justify-between'>

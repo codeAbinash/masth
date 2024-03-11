@@ -32,6 +32,7 @@ async function postApi<T>(url: string, data: any) {
 }
 
 export function showErr(error: Error) {
+  console.log(JSON.stringify(error, null, 2))
   Alert.alert(error.name, error.message)
 }
 
@@ -99,4 +100,12 @@ export interface ProfileDataT {
 export async function profile_f() {
   console.log('Fetch Profile Data')
   return await postApi<ProfileT>('profile/GetUser', null)
+}
+
+export async function updateProfile_f(data: FormData) {
+  return await axios.post<ServerResponse>(API + 'profile/UpdateUser', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
 }
