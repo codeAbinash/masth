@@ -1,18 +1,25 @@
+import useLocalData from '@/hooks/useLocalData'
 import NotificationIcon from '@icons/notification.svg'
 import SettingIcon from '@icons/setting.svg'
+import { Profile, profile_f } from '@query/api'
+import { useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const localProfile = useLocalData<Profile>(profileQuery, 'profile')
+  const profile = profileQuery.data?.data || localProfile?.data
+
   return (
     <View className='flex flex-row items-center justify-between'>
       <View className='flex flex-row gap-4 '>
-        <Image source={{ uri: 'https://picsum.photos/100' }} className='h-11 w-11 rounded-full bg-neutral-200' />
+        <Image source={{ uri: profile?.profile_pic || 'https://picsum.photos/100' }} className='h-11 w-11 rounded-full bg-neutral-200' />
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
           <Text className='font-bold' style={{ fontSize: 16 }}>
-            Abinash Karmakar
+            {profile?.name || 'Loading...'}
           </Text>
         </View>
       </View>

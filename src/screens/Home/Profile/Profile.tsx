@@ -2,7 +2,7 @@ import { SmallButton } from '@components/Button'
 import QR_CODE from '@components/QRCode'
 import { PaddingTop } from '@components/SafePadding'
 import { colors } from '@utils/colors'
-import { appStorage } from '@utils/storage'
+import { ls } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import React from 'react'
 import { Alert, Image, ScrollView, Text, View } from 'react-native'
@@ -17,8 +17,8 @@ export default function Profile({ navigation }: { navigation: StackNav }) {
         text: 'Sign Out',
         style: 'destructive',
         onPress: () => {
-          appStorage.clearAll()
           navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
+          setTimeout(() => ls.clearAll())
         },
       },
     ])

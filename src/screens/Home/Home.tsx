@@ -9,9 +9,11 @@ import GraphIcon from '@icons/graph.svg'
 import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import NewsFeedImage from '@images/feeds.svg'
+import { profile_f, setAuthToken } from '@query/api'
 import { colors } from '@utils/colors'
-import { appStorage } from '@utils/storage'
+import { ls } from '@utils/storage'
 import { StackNav } from '@utils/types'
+import { useEffect } from 'react'
 import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
@@ -19,6 +21,11 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 const { width } = Dimensions.get('window')
 
 export default function Home({ navigation }: { navigation: StackNav }) {
+  useEffect(() => {
+    // Set the authorization token to axios
+    setAuthToken()
+  }, [])
+
   return (
     <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
       <View className='pb-10'>
@@ -30,7 +37,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
         <TotalRemoteMining navigation={navigation} />
         <TotalLiveMining />
         <View className='mt-2 flex items-center justify-center'>
-          <Text>{appStorage.getString('token')}</Text>
+          <Text>{ls.getString('token')}</Text>
         </View>
       </View>
     </ScrollView>

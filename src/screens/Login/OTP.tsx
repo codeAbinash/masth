@@ -5,15 +5,15 @@ import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } fr
 import icons from '@assets/icons/icons'
 import { Button } from '@components/Button'
 import { SmallLoading } from '@components/Loading'
-import { verifyLogin_f, verifySignUp_f } from '@query/api'
+import { setAuthToken, verifyLogin_f, verifySignUp_f } from '@query/api'
 import { ParamListBase, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useMutation } from '@tanstack/react-query'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { colors } from '@utils/colors'
-import { appStorage } from '../../utils/storage'
-import { isValidOTP } from './utils'
 import { removePlusBeforeCountryCode } from '@utils/utils'
+import { ls } from '../../utils/storage'
+import { isValidOTP } from './utils'
 const { width } = Dimensions.get('window')
 const topIconSize = 0.35
 
@@ -38,8 +38,8 @@ export default function OTP({ navigation, route }: Props) {
         : verifyLogin_f({ country_code: removePlusBeforeCountryCode(country_code), phone, otp }),
     onSuccess: async (data) => {
       if (data.status === true) {
-        appStorage.set('token', data.token)
-        // navigation.replace('Home')
+        ls.set('token', data.token)
+        setAuthToken()
         navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
       } else {
         Alert.alert('Invalid', data.message)
