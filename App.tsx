@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, StackNavigationOptions, createStackNavigator } from '@react-navigation/stack'
 import Home from '@screens/Home'
 import EditProfile from '@screens/Home/Profile/EditProfile'
+import CheckRefer from '@screens/Login/CheckRefer'
 import Login from '@screens/Login/Login'
 import OTP from '@screens/Login/OTP'
 import Setup from '@screens/Login/Setup'
@@ -98,6 +99,7 @@ function Navigation() {
       }}
     >
       {/* <Stack.Screen name='Test' component={TestScreen} /> */}
+      <Stack.Screen name='CheckRefer' component={CheckRefer} />
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
       <Stack.Screen name='Home' component={Home} options={NO_ANIMATION} />
