@@ -54,7 +54,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
       const formData = new FormData()
       fullName && formData.append('name', fullName.trim())
       email && formData.append('email', email.trim())
-      dob && formData.append('dob', dob.toISOString())
+      dob && formData.append('dob', dob.toString())
       if (profilePic && !profilePic.startsWith('http')) {
         formData.append('profile_pic', {
           uri: profilePic,
