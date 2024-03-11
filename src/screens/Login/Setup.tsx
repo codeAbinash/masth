@@ -1,4 +1,4 @@
-import useLocalData from '@/hooks/useLocalData'
+import useHybridData from '@/hooks/useHybridData'
 import icons from '@assets/icons/icons'
 import { PaddingTop, PaddingBottom } from '@components/SafePadding'
 import { profile_f, ProfileT } from '@query/api'
@@ -10,7 +10,7 @@ import { OneSignal } from 'react-native-onesignal'
 
 export default function Setup({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useLocalData<ProfileT>(profileQuery, 'profile')
+  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import useLocalData from '@/hooks/useLocalData'
+import useHybridData from '@/hooks/useHybridData'
 import NotificationIcon from '@icons/notification.svg'
 import SettingIcon from '@icons/setting.svg'
 import { ProfileT, profile_f } from '@query/api'
@@ -9,7 +9,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useLocalData<ProfileT>(profileQuery, 'profile')
+  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
 
   return (

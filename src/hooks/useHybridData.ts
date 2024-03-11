@@ -17,7 +17,7 @@ function setLocalData<T>(profile: T, key: string) {
   }
 }
 
-export default function useLocalData<T>(query: UseQueryResult<T, Error>, key: string): T | null {
+export default function useHybridData<T>(query: UseQueryResult<T, Error>, key: string): T | null {
   useEffect(() => {
     setLocalData(query.data, key)
   }, [query.data, key])

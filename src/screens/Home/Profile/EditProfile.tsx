@@ -1,3 +1,4 @@
+import useHybridData from '@/hooks/useHybridData'
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
@@ -5,14 +6,27 @@ import KeyboardAvoidingContainer from '@components/KeyboardAvoidingContainer'
 import Label from '@components/Label'
 import { PaddingBottom } from '@components/SafePadding'
 import { Select } from '@components/Select'
+import { profile_f, ProfileT } from '@query/api'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+
 // import { Image } from 'react-native-svg'
 
 export default function Settings({ navigation }: { navigation: StackNav }) {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
+  const profile = profileQuery.data?.data || localProfile?.data
+  const [showDatePicker, setShowDatePicker] = React.useState(false)
+
+  const [fullName, setFullName] = useState(profile?.name || '')
+  const [email, setEmail] = useState(profile?.email || '')
+  const [dob, setDob] = useState(new Date(profile?.date_of_birth || ''))
+
   return (
     <View className='flex-1 bg-bgSecondary'>
       <BackHeader navigation={navigation} title='Edit Profile' RightComponent={<RightSettingIcon navigation={navigation} />} />
@@ -25,8 +39,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
             </TouchableOpacity>
           </View>
           <View className='mt-5'>
-            <Text className='text-center text-2xl'>@codeAbinash</Text>
-            <Text className='text-center text-lg text-neutral-700'>Hi There, Abinash</Text>
+            <Text className='text-center text-2xl'>@{profile?.username || 'Loading...'}</Text>
+            <Text className='text-center text-lg text-neutral-700'>Hi There, {profile?.name.split(' ')[0] || 'Loading...'}</Text>
           </View>
         </View>
         <View className='mt-5 flex-1' style={{ gap: 10 }}>
@@ -35,7 +49,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
             <Input
               placeholder='Full Name'
               LeftUI={<MaterialCommunityIcon name='account-outline' size={20} color='black' />}
-              value='Abinash Karmakar'
+              value={fullName}
+              onChangeText={(text) => setFullName(text)}
             />
           </View>
           <View>
@@ -44,7 +59,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               placeholder='Email'
               keyboardType='email-address'
               LeftUI={<MaterialCommunityIcon name='email-outline' size={20} color='black' />}
-              value='codeAbinash@gmail.com'
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
           <View>
@@ -52,7 +68,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
             <Input
               placeholder='Mobile Number'
               keyboardType='phone-pad'
-              value='+91 9876543210'
+              value={'+' + profile?.country_code + ' ' + profile?.phone_number}
               editable={false}
               LeftUI={<MaterialCommunityIcon name='phone-outline' size={20} color='black' />}
             />
@@ -60,11 +76,14 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
           <View>
             <Label title='Date of Birth' />
             <Select
-              space={15}
               placeholder='Date of Birth'
-              RightUI={null}
+              space={15}
               LeftUI={<MaterialCommunityIcon name='calendar-month-outline' size={20} color='black' />}
-              // value='1999-01-01'
+              RightUI={null}
+              onPress={() => {
+                setShowDatePicker(true)
+              }}
+              value={dob && dob.toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}
             />
           </View>
           <Button
@@ -78,6 +97,19 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
         </View>
         <PaddingBottom />
       </KeyboardAvoidingContainer>
+      {showDatePicker && (
+        <DateTimePicker
+          mode='date'
+          display='default'
+          onChange={({ type }, selectDate) => {
+            setShowDatePicker(false)
+            if (type === 'set') {
+              setDob(selectDate || dob)
+            }
+          }}
+          value={dob || new Date()}
+        />
+      )}
     </View>
   )
 }

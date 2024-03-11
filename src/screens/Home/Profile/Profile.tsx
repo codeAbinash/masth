@@ -1,4 +1,4 @@
-import useLocalData from '@/hooks/useLocalData'
+import useHybridData from '@/hooks/useHybridData'
 import { SmallButton } from '@components/Button'
 import QR_CODE from '@components/QRCode'
 import { PaddingTop } from '@components/SafePadding'
@@ -13,8 +13,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default function ProfileScreen({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useLocalData<ProfileT>(profileQuery, 'profile')
+  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
+
   return (
     <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }}>
       <PaddingTop />
@@ -33,13 +34,13 @@ export default function ProfileScreen({ navigation }: { navigation: StackNav }) 
             }}
           />
           <Text className='pt-2 text-xl font-bold uppercase' style={{ color: '#2aa3ce' }}>
-            codeAbinash
+            {profile?.username || 'Loading...'}
           </Text>
         </View>
         <View className='relative mt-10'>
           <View className='items-center'>
             <View className='items-center rounded-2xl bg-white p-5'>
-              <QR_CODE str='codeAbinash@Masth' scale={0.85} style={{ marginTop: 80 }} />
+              <QR_CODE str={`${profile?.username}@Masth`} scale={0.85} style={{ marginTop: 80 }} />
             </View>
           </View>
         </View>
