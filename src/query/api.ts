@@ -75,14 +75,14 @@ export async function verifyLogin_f(data: VerifyLoginAPI) {
   return await postApi<ResponseWithToken>('auth/login', data)
 }
 
-export interface Profile {
-  data: ProfileData
+export interface ProfileT {
+  data: ProfileDataT
   message: string
   refer_claimed: boolean
   status: boolean
 }
 
-export interface ProfileData {
+export interface ProfileDataT {
   country_code: string
   created_at: string
   date_of_birth: string
@@ -97,5 +97,6 @@ export interface ProfileData {
   username: string
 }
 export async function profile_f() {
-  return await postApi<Profile>('profile/GetUser', null)
+  console.log('Fetch Profile Data')
+  return await postApi<ProfileT>('profile/GetUser', null)
 }

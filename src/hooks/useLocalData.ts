@@ -2,8 +2,9 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { ls } from '@utils/storage'
 import { useEffect, useMemo } from 'react'
 
-function getLocalData<T>(key: string): T | null {
-  console.log(`Get local ${key} data`)
+function getLocalData<T>(queryData: T | undefined, key: string): T | null {
+  if (queryData) return queryData
+  else console.log(`Get local ${key} data`)
   const data = ls.getString(key)
   if (data) return JSON.parse(data)
   return null
@@ -20,5 +21,5 @@ export default function useLocalData<T>(query: UseQueryResult<T, Error>, key: st
   useEffect(() => {
     setLocalData(query.data, key)
   }, [query.data, key])
-  return useMemo(() => getLocalData<T>(key), [key])
+  return useMemo(() => getLocalData<T>(query.data, key), [key, query.data])
 }

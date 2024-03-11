@@ -40,7 +40,7 @@ export default function OTP({ navigation, route }: Props) {
       if (data.status === true) {
         ls.set('token', data.token)
         setAuthToken()
-        navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
+        navigation.replace('Setup')
       } else {
         Alert.alert('Invalid', data.message)
       }

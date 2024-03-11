@@ -1,7 +1,7 @@
 import useLocalData from '@/hooks/useLocalData'
 import NotificationIcon from '@icons/notification.svg'
 import SettingIcon from '@icons/setting.svg'
-import { Profile, profile_f } from '@query/api'
+import { ProfileT, profile_f } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import React from 'react'
@@ -9,7 +9,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useLocalData<Profile>(profileQuery, 'profile')
+  const localProfile = useLocalData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
 
   return (

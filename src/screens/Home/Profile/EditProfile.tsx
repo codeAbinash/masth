@@ -12,14 +12,6 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import Icon from 'react-native-vector-icons/MaterialIcons'
 // import { Image } from 'react-native-svg'
 
-function SignOut() {
-  return (
-    <TouchableOpacity className='rounded-full border border-red-500/30 bg-red-500/20 p-2 px-5'>
-      <Text className='text-red-500'>Sign Out</Text>
-    </TouchableOpacity>
-  )
-}
-
 export default function Settings({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex-1 bg-bgSecondary'>

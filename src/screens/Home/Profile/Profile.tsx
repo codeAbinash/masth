@@ -1,34 +1,25 @@
+import useLocalData from '@/hooks/useLocalData'
 import { SmallButton } from '@components/Button'
 import QR_CODE from '@components/QRCode'
 import { PaddingTop } from '@components/SafePadding'
+import { ProfileT, profile_f } from '@query/api'
+import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
-import { ls } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { Alert, Image, ScrollView, Text, View } from 'react-native'
+import { Image, ScrollView, Text, View } from 'react-native'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-export default function Profile({ navigation }: { navigation: StackNav }) {
-  function signOut() {
-    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel' },
-      {
-        text: 'Sign Out',
-        style: 'destructive',
-        onPress: () => {
-          navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
-          setTimeout(() => ls.clearAll())
-        },
-      },
-    ])
-  }
-
+export default function ProfileScreen({ navigation }: { navigation: StackNav }) {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const localProfile = useLocalData<ProfileT>(profileQuery, 'profile')
+  const profile = profileQuery.data?.data || localProfile?.data
   return (
     <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }}>
       <PaddingTop />
       <View className='mt-10 items-center'>
-        <Text className='text-center text-2xl font-bold text-neutral-800'>Hi There, Abinash</Text>
+        <Text className='text-center text-2xl font-bold text-neutral-800'>Hi There, {profile?.name.split(' ')[0] || 'Loading...'}</Text>
         <Text className='mt-1 w-2/3 text-center text-sm text-neutral-600'>This is your profile</Text>
       </View>
       <View className='mt-10'>
@@ -60,7 +51,12 @@ export default function Profile({ navigation }: { navigation: StackNav }) {
           className='px-5 py-2.5 pl-4'
           onPress={() => navigation.navigate('EditProfile')}
         />
-        <SmallButton title='Sign Out' LeftUI={<FeatherIcon name='log-out' size={17} color='white' />} className='px-5 py-2.5' onPress={signOut} />
+        <SmallButton
+          title='Log Out'
+          LeftUI={<FeatherIcon name='log-out' size={17} color='white' />}
+          className='px-5 py-2.5'
+          onPress={() => navigation.navigate('SignOut')}
+        />
       </View>
     </ScrollView>
   )
