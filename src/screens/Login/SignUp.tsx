@@ -41,15 +41,14 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   const languageSheet = React.useRef<BottomSheetRefProps>(null)
   const [country_code, setCountry_code] = React.useState('+91')
   const [lang, setLang] = React.useState(LANGUAGES[0].name)
-  const [dob, setDob] = React.useState<Date | ''>(new Date(''))
+  const [dob, setDob] = React.useState<Date>(new Date())
   const [showDatePicker, setShowDatePicker] = React.useState(false)
   const [phone, setPhone] = React.useState('')
   const [username, setUsername] = React.useState('')
   const [name, setName] = React.useState('')
 
   const signUpMutation = useMutation({
-    mutationFn: () =>
-      signUpApi_f({ username, country_code: removePlusBeforeCountryCode(country_code), dob: formattedDate(dob as Date), lang, name, phone }),
+    mutationFn: () => signUpApi_f({ username, country_code: removePlusBeforeCountryCode(country_code), dob: formattedDate(dob), lang, name, phone }),
     onSuccess: (data) => {
       navigation.replace('OTP', { phone, country_code, isSignUp: true })
     },
@@ -110,6 +109,10 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 />
                 <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' onChangeText={setPhone} value={phone} />
               </View>
+              <Text className='items-center justify-center px-5 text-center' style={{ color: 'green' }}>
+                Make sure you enter your <Icon name='whatsapp' size={15} color='green' /> Whatsapp Number. The OTP will be sent to this number on
+                whatsapp.
+              </Text>
               <Select
                 placeholder='Date of Birth'
                 space={15}
@@ -118,7 +121,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 onPress={() => {
                   setShowDatePicker(true)
                 }}
-                value={dob && formattedDate(dob as Date)}
+                value={dob && formattedDate(dob)}
               />
               <Select
                 placeholder='Language'

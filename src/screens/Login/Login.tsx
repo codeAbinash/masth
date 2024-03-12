@@ -8,12 +8,12 @@ import { Select } from '@components/Select'
 import { loginApi_f } from '@query/api'
 import { useMutation } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
+import { removePlusBeforeCountryCode } from '@utils/utils'
 import { useRef, useState } from 'react'
 import { Alert, Dimensions, Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidPhoneNumber } from './utils'
-import { removePlusBeforeCountryCode } from '@utils/utils'
 
 const { width } = Dimensions.get('window')
 
@@ -67,13 +67,17 @@ export default function Login({ navigation }: { navigation: StackNav }) {
               />
               <Input placeholder='Mobile Number' keyboardType='number-pad' className='flex-1' value={phone} onChangeText={setPhone} />
             </View>
-            <View className='mt-3' />
+            <Text className='items-center justify-center px-5 text-center' style={{ color: 'green' }}>
+              {/* <Icon name='information-outline' size={16} color='green' /> */}
+              Make sure you enter your <Icon name='whatsapp' size={15} color='green' /> Whatsapp Number. The OTP will be sent to this number on
+              whatsapp.
+            </Text>
+            <View />
             {loginMutation.isPending ? (
               <Button title='Sending OTP...' LeftUI={<SmallLoading />} disabled={true} />
             ) : (
               <Button title='Log In' onPress={handelSubmit} LeftUI={<Icon name='account' size={17} color='white' />} />
             )}
-
             <Button
               title='Create Account'
               variant='outline'

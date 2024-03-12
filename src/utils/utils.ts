@@ -11,5 +11,6 @@ export function removePlusBeforeCountryCode(country_code: string) {
 }
 
 export function formattedDate(date: Date) {
+  if (!date) return ''
   return date.toISOString().split('T')[0]
 }

@@ -1,11 +1,10 @@
-import useHybridData from '@/hooks/useHybridData'
 import icons from '@assets/icons/icons'
-import { PaddingTop, PaddingBottom } from '@components/SafePadding'
-import { profile_f, ProfileT } from '@query/api'
+import { PaddingBottom, PaddingTop } from '@components/SafePadding'
+import { profile_f } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import { useEffect } from 'react'
-import { View, Image, Text } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import { OneSignal } from 'react-native-onesignal'
 
 export default function Setup({ navigation }: { navigation: StackNav }) {
@@ -30,12 +29,12 @@ export default function Setup({ navigation }: { navigation: StackNav }) {
       console.log('OneSignal: logged in:', phone)
       // Check if referred
       console.log(profileQuery.data.refer_claimed)
-      if (profileQuery.data?.refer_claimed === false) {
-        navigation.replace('CheckRefer')
-      } else {
-        navigation.replace('Home')
-      }
-      // navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
+      // if (profileQuery.data?.refer_claimed === false) {
+      //   navigation.replace('CheckRefer')
+      // } else {
+      //   navigation.replace('Home')
+      // }
+      navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
     }
   }, [navigation, profileQuery.data])
 

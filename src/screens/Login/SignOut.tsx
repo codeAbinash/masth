@@ -4,29 +4,20 @@ import { SmallLoading } from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import { DefaultTransparent } from '@components/StatusBar'
 import TopBar from '@components/TopBar'
-import { ParamListBase, RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
 import { ls } from '@utils/storage'
+import { StackNav } from '@utils/types'
 import React, { useState } from 'react'
 import { Image, Text, View } from 'react-native'
 import { OneSignal } from 'react-native-onesignal'
 
-type TransactionDetailsRouteProp = RouteProp<ParamListBase, 'NotificationDetails'>
-
-type TransactionDetailsNavigationProp = StackNavigationProp<ParamListBase, 'NotificationDetails'>
-
-type Props = {
-  navigation: TransactionDetailsNavigationProp
-}
-
-export default function SignOut({ navigation }: Props) {
+export default function SignOut({ navigation }: { navigation: StackNav }) {
   const [isSignOut, setIsSignOut] = useState(false)
 
   function signOut() {
     setIsSignOut(true)
+    OneSignal.logout()
+    ls.clearAll()
     setTimeout(() => {
-      OneSignal.logout()
-      ls.clearAll()
       navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
     }, 0)
   }
