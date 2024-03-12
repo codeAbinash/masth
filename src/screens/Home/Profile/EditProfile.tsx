@@ -12,6 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { isValidEmail, isValidFullName } from '@screens/Login/utils'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
+import { formattedDate } from '@utils/utils'
 import React, { useState } from 'react'
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
@@ -54,7 +55,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
       const formData = new FormData()
       fullName && formData.append('name', fullName.trim())
       email && formData.append('email', email.trim())
-      dob && formData.append('dob', dob.toString())
+      dob && formData.append('dob', formattedDate(dob))
       if (profilePic && !profilePic.startsWith('http')) {
         formData.append('profile_pic', {
           uri: profilePic,
@@ -151,7 +152,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               onPress={() => {
                 setShowDatePicker(true)
               }}
-              value={dob && dob.toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}
+              value={dob && formattedDate(dob)}
             />
           </View>
           {updateMutation.isPending ? (

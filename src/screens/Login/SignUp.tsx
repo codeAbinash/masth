@@ -8,13 +8,13 @@ import { signUpApi_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useMutation } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
+import { formattedDate, removePlusBeforeCountryCode } from '@utils/utils'
 import React from 'react'
 import { Alert, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
-import { removePlusBeforeCountryCode } from '@utils/utils'
 
 const appIconSize = 0.45
 
@@ -48,7 +48,8 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   const [name, setName] = React.useState('')
 
   const signUpMutation = useMutation({
-    mutationFn: () => signUpApi_f({ username, country_code: removePlusBeforeCountryCode(country_code), dob: dob.toString(), lang, name, phone }),
+    mutationFn: () =>
+      signUpApi_f({ username, country_code: removePlusBeforeCountryCode(country_code), dob: formattedDate(dob as Date), lang, name, phone }),
     onSuccess: (data) => {
       navigation.replace('OTP', { phone, country_code, isSignUp: true })
     },
@@ -117,7 +118,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 onPress={() => {
                   setShowDatePicker(true)
                 }}
-                value={dob && dob.toLocaleDateString('en', { day: 'numeric', month: 'short', year: 'numeric' })}
+                value={dob && formattedDate(dob as Date)}
               />
               <Select
                 placeholder='Language'
