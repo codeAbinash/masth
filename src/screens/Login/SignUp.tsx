@@ -110,7 +110,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 <Input placeholder='Mobile Number' keyboardType='phone-pad' className='flex-1' onChangeText={setPhone} value={phone} />
               </View>
               <Text className='items-center justify-center px-5 text-center' style={{ color: 'green' }}>
-                Make sure you enter your <Icon name='whatsapp' size={15} color='green' /> Whatsapp Number. The OTP will be sent to this number on
+                Make sure you enter your <Icon name='whatsapp' size={16} color='green' /> Whatsapp Number. The OTP will be sent to this number on
                 whatsapp.
               </Text>
               <Select

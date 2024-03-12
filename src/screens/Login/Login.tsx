@@ -69,8 +69,8 @@ export default function Login({ navigation }: { navigation: StackNav }) {
             </View>
             <Text className='items-center justify-center px-5 text-center' style={{ color: 'green' }}>
               {/* <Icon name='information-outline' size={16} color='green' /> */}
-              Make sure you enter your <Icon name='whatsapp' size={15} color='green' /> Whatsapp Number. The OTP will be sent to this number on
-              whatsapp.
+              Make sure you enter your <Icon name='whatsapp' size={16} color='green' /> Whatsapp Number. The OTP will be sent to this number on
+              WhatsApp.
             </Text>
             <View />
             {loginMutation.isPending ? (

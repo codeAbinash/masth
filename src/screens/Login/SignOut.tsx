@@ -15,11 +15,11 @@ export default function SignOut({ navigation }: { navigation: StackNav }) {
 
   function signOut() {
     setIsSignOut(true)
-    OneSignal.logout()
-    ls.clearAll()
     setTimeout(() => {
+      OneSignal.logout()
+      ls.clearAll()
       navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
-    }, 0)
+    })
   }
 
   return (
