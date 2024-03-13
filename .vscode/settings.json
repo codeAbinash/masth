@@ -1,5 +1,18 @@
 {
-  "cSpell.words": ["datetimepicker", "Entypo", "Masth", "mmkv", "netinfo", "qrcode", "reactotron", "todos", "twotalltotems", "zustand"],
+  "cSpell.words": [
+    "datetimepicker",
+    "Entypo",
+    "Ionicons",
+    "Masth",
+    "mmkv",
+    "netinfo",
+    "playstore",
+    "qrcode",
+    "reactotron",
+    "todos",
+    "twotalltotems",
+    "zustand"
+  ],
   "search.exclude": {
     "**/src/assets/icons/src/**": true,
     "**/src/assets/images/src/**": true

@@ -24,6 +24,9 @@ import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
+import Suspended from '@screens/Account/Suspended'
+import AppUpdate from '@screens/Account/AppUpdate'
+import UnderMaintenance from '@screens/Account/UnderMaintenance'
 
 const Stack = createStackNavigator()
 const { width, height } = Dimensions.get('window')
@@ -114,6 +117,9 @@ function Navigation() {
       <Stack.Screen name='Refer' component={Refer} />
       <Stack.Screen name='TransactionDetails' component={TransactionDetails} options={IOS_BOTTOM_STYLE} />
       <Stack.Screen name='SignOut' component={SignOut} options={IOS_BOTTOM_STYLE} />
+      <Stack.Screen name='Suspended' component={Suspended} />
+      <Stack.Screen name='UnderMaintenance' component={UnderMaintenance} />
+      <Stack.Screen name='AppUpdate' component={AppUpdate} />
     </Stack.Navigator>
   )
 }
