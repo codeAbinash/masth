@@ -28,13 +28,14 @@ export default function Setup({ navigation }: { navigation: StackNav }) {
       OneSignal.login(phone)
       console.log('OneSignal: logged in:', phone)
       // Check if referred
-      console.log(profileQuery.data.refer_claimed)
-      // if (profileQuery.data?.refer_claimed === false) {
-      //   navigation.replace('CheckRefer')
-      // } else {
-      //   navigation.replace('Home')
-      // }
-      navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
+      const is_claimed = profileQuery.data?.refer_claimed
+      console.log('is_claimed:', is_claimed)
+      if (!is_claimed) {
+        navigation.replace('CheckRefer')
+      } else {
+        navigation.replace('Home')
+      }
+      // navigation.reset({ index: 0, routes: [{ name: 'Home' }] })
     }
   }, [navigation, profileQuery.data])
 

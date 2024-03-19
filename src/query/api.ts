@@ -109,3 +109,11 @@ export async function updateProfile_f(data: FormData) {
     },
   })
 }
+
+export async function claim_refer_f({ refer_code }: { refer_code: string }) {
+  return await postApi<ServerResponse>('refer/claim', { refer_code })
+}
+
+export async function skip_refer_f() {
+  return await postApi<ServerResponse>('refer/skip', null)
+}
