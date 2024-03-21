@@ -84,6 +84,7 @@ export interface ProfileT {
 }
 
 export interface ProfileDataT {
+  refer_code: string
   country_code: string
   created_at: string
   date_of_birth: string
