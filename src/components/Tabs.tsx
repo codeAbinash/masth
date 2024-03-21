@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 interface Tab {
   title: string
   UI: React.ReactNode
+  disabled?: boolean
 }
 
 interface TabsProps {
@@ -19,6 +20,7 @@ export default function Tabs({ tabs }: TabsProps) {
         {tabs.map((tab, index) => (
           <View style={{ flex: 1 }} key={index}>
             <TouchableOpacity
+              disabled={tab.disabled}
               activeOpacity={0.5}
               onPress={() => setActiveTab(index)}
               className={`rounded-xl ${activeTab === index ? 'bg-bgSecondary' : ''} p-2`}
