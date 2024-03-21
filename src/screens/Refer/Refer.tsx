@@ -1,22 +1,54 @@
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { Button } from '@components/Button'
+import Loading from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import Tabs from '@components/Tabs'
+import { get_referred_members_f } from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
 import { shareText } from '@utils/utils'
-import React, { useState } from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
-import ActiveMiners from './ActiveMiners'
 import InActiveMiners from './InActiveMiners'
+import Miner from './Miner'
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
+  // const referredUsersQuery = useQuery({ queryKey: ['referredUsers'], queryFn: get_referred_members_f })
+  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
+    queryKey: ['referredUsers'],
+    queryFn: get_referred_members_f,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.list.next_page_url
+    },
+    initialPageParam: null,
+  })
+
+  const loadNext = () => {
+    fetchNextPage()
+  }
+
+  useEffect(() => {
+    console.log(JSON.stringify(data?.pages[0].list.data, null, 2))
+  }, [data])
+
+  if (isLoading)
+    return (
+      <View className='flex-1 bg-bgSecondary'>
+        <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
+        <View className='flex-1 px-5'>
+          <Loading />
+        </View>
+      </View>
+    )
+
   return (
     <View className='flex-1 bg-bgSecondary'>
       <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
-      <ScrollView className='px-5'>
+      <View className='px-5'>
         <TotalEarned />
         <ReferCard />
         <ReferredTabs />
@@ -24,7 +56,16 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
           tabs={[
             {
               title: 'Active Miners',
-              UI: <ActiveMiners />,
+              UI: (
+                <FlatList
+                  style={{ gap: 10, marginTop: 20, paddingBottom: 50 }}
+                  data={data?.pages.map((page) => page.list.data).flat()}
+                  renderItem={({ item }) => <Miner {...item.profile[0]} />}
+                  keyExtractor={(item) => item.user_id}
+                  onEndReached={loadNext}
+                  onEndReachedThreshold={0.2}
+                />
+              ),
             },
             {
               title: 'Inactive Miners',
@@ -33,7 +74,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
           ]}
         />
         <PaddingBottom />
-      </ScrollView>
+      </View>
     </View>
   )
 }

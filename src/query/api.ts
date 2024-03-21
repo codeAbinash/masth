@@ -117,3 +117,33 @@ export async function claim_refer_f({ refer_code }: { refer_code: string }) {
 export async function skip_refer_f() {
   return await postApi<ServerResponse>('refer/skip', null)
 }
+
+export interface ReferredUserT {
+  status: boolean
+  referred_bonus: string
+  coins_earned: number
+  list: List
+}
+
+export interface List {
+  current_page: number
+  data: Datum[]
+  next_page_url: null
+}
+
+export interface Datum {
+  user_id: string
+  coins_earn: string
+  profile: Profile[]
+}
+
+export interface Profile {
+  id: number
+  name: string
+  profile_pic: string
+  username: string
+}
+
+export async function get_referred_members_f() {
+  return await postApi<ReferredUserT>('refer/get_referred_members', null)
+}
