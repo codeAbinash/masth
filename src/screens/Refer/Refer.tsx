@@ -3,25 +3,23 @@ import { Button } from '@components/Button'
 import Loading from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import Tabs from '@components/Tabs'
-import { get_referred_members_f } from '@query/api'
+import { get_referred_members_f, profile_f } from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
 import { shareText } from '@utils/utils'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
-import InActiveMiners from './InActiveMiners'
 import Miner from './Miner'
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
-  // const referredUsersQuery = useQuery({ queryKey: ['referredUsers'], queryFn: get_referred_members_f })
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['referredUsers'],
     queryFn: get_referred_members_f,
-    getNextPageParam: (lastPage, pages) => {
+    getNextPageParam: (lastPage, _pages) => {
       return lastPage.list.next_page_url
     },
     initialPageParam: null,
@@ -30,10 +28,6 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
   const loadNext = () => {
     fetchNextPage()
   }
-
-  useEffect(() => {
-    console.log(JSON.stringify(data?.pages[0].list.data, null, 2))
-  }, [data])
 
   if (isLoading)
     return (
@@ -48,48 +42,56 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex-1 bg-bgSecondary'>
       <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
-      <View className='px-5'>
-        <TotalEarned />
-        <ReferCard />
-        <ReferredTabs />
-        <Tabs
-          tabs={[
-            {
-              title: 'Active Miners',
-              UI: (
-                <FlatList
-                  style={{ gap: 10, marginTop: 20, paddingBottom: 50 }}
-                  data={data?.pages.map((page) => page.list.data).flat()}
-                  renderItem={({ item }) => <Miner {...item.profile[0]} />}
-                  keyExtractor={(item) => item.user_id}
-                  onEndReached={loadNext}
-                  onEndReachedThreshold={0.2}
-                />
-              ),
-            },
-            {
-              title: 'Inactive Miners',
-              UI: <InActiveMiners />,
-            },
-          ]}
+      <View>
+        <FlatList
+          contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
+          data={data?.pages.map((page) => page.list.data).flat()}
+          renderItem={({ item }) => <Miner {...item.profile[0]} />}
+          keyExtractor={(item) => item.user_id}
+          onEndReached={loadNext}
+          onEndReachedThreshold={0.2}
+          ListHeaderComponent={
+            <View className='pb-1'>
+              <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
+              <ReferCard percentage={data?.pages.at(-1)?.referred_bonus || '0'} />
+              <Tabs
+                tabs={[
+                  {
+                    title: 'Active Miners',
+                    UI: null,
+                  },
+                  {
+                    title: 'Inactive Miners',
+                    UI: null,
+                    disabled: true,
+                  },
+                ]}
+              />
+              {!data?.pages.at(-1)?.list.data.length && (
+                <View className='flex-1 items-center justify-center py-24'>
+                  <Text className='text-center text-neutral-600'>No Active Miners</Text>
+                </View>
+              )}
+            </View>
+          }
+          ListFooterComponent={
+            <View className='pb-32'>
+              <PaddingBottom />
+            </View>
+          }
         />
-        <PaddingBottom />
       </View>
     </View>
   )
 }
 
-function ReferredTabs() {
-  return null
-}
-
-function ReferCard() {
+function ReferCard({ percentage }: { percentage: string }) {
   const referText =
     'Refer a friend and earn 10% commission on every mining they do. Share your referral code with your friends and family and earn more.'
   return (
     <View className='mt-5 rounded-3xl bg-white p-5'>
       <View>
-        <Text className='text-lg'>Get 10% Commission</Text>
+        <Text className='text-lg'>Get {percentage}% Commission</Text>
         <Text className='text-base text-neutral-600'>Every time when your friend started mining</Text>
       </View>
       <ReferCode />
@@ -104,10 +106,11 @@ function ReferCard() {
   )
 }
 
-function ReferCode({ str = 'CRP22043' }) {
+function ReferCode() {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const [copied, setCopied] = useState(false)
   const onPress = () => {
-    Clipboard.setString(str)
+    Clipboard.setString(profileQuery.data?.data.refer_code || '')
     setCopied(true)
     setTimeout(() => {
       setCopied(false)
@@ -120,7 +123,7 @@ function ReferCode({ str = 'CRP22043' }) {
           <Text className='text-base'>Refer Code: </Text>
         </View>
         <View>
-          <Text className='text-base text-accent'>CRP22043</Text>
+          <Text className='text-base text-accent'>{profileQuery.data?.data.refer_code || 'Loading...'}</Text>
         </View>
       </View>
       <TouchableOpacity className='pr-1' onPress={onPress}>
@@ -129,12 +132,12 @@ function ReferCode({ str = 'CRP22043' }) {
     </View>
   )
 }
-function TotalEarned() {
+function TotalEarned({ earned = 0 }: { earned?: number }) {
   return (
     <View className='mt-5 items-center justify-center' style={{ gap: 10 }}>
       <Text className='text-xl text-neutral-600'>You've Earned</Text>
       <View className='flex-row items-end gap-x-1'>
-        <Text style={{ fontSize: 40 }}>62.524</Text>
+        <Text style={{ fontSize: 40 }}>{earned}</Text>
         <Text style={{ fontSize: 25 }} className='pb-1 text-neutral-600'>
           MST
         </Text>
