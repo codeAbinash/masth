@@ -1,10 +1,7 @@
-import { PaddingBottom, PaddingTop } from '@components/SafePadding'
-import React from 'react'
-import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import icons from '@assets/icons/icons'
 import { Button } from '@components/Button'
 import { SmallLoading } from '@components/Loading'
+import { PaddingBottom, PaddingTop } from '@components/SafePadding'
 import { setAuthToken, verifyLogin_f, verifySignUp_f } from '@query/api'
 import { ParamListBase, RouteProp } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -12,7 +9,10 @@ import { useMutation } from '@tanstack/react-query'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import { colors } from '@utils/colors'
 import { removePlusBeforeCountryCode } from '@utils/utils'
-import { ls } from '../../utils/storage'
+import React from 'react'
+import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { secureLs } from '../../utils/storage'
 import { isValidOTP } from './utils'
 const { width } = Dimensions.get('window')
 const topIconSize = 0.35
@@ -38,7 +38,7 @@ export default function OTP({ navigation, route }: Props) {
         : verifyLogin_f({ country_code: removePlusBeforeCountryCode(country_code), phone, otp }),
     onSuccess: async (data) => {
       if (data.status === true) {
-        ls.set('token', data.token)
+        secureLs.set('token', data.token)
         setAuthToken()
         navigation.replace('Setup')
       } else {

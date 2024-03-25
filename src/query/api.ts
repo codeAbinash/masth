@@ -1,4 +1,4 @@
-import { ls } from '@utils/storage'
+import { secureLs } from '@utils/storage'
 import axios from 'axios'
 import { Alert } from 'react-native'
 
@@ -7,7 +7,7 @@ const API = 'https://masth.nexgino.com/api/'
 axios.defaults.headers.common.secret = 'hellothisisocdexindia'
 
 export function setAuthToken() {
-  const token = ls.getString('token')
+  const token = secureLs.getString('token')
   if (token) axios.defaults.headers.common.Authorization = 'Bearer ' + token
 }
 

@@ -2,6 +2,9 @@ import { SmallLoading } from '@components/Loading'
 import { DarkContentTransparentStatusBar } from '@components/StatusBar'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, StackNavigationOptions, createStackNavigator } from '@react-navigation/stack'
+import AppUpdate from '@screens/Account/AppUpdate'
+import Suspended from '@screens/Account/Suspended'
+import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import Home from '@screens/Home'
 import EditProfile from '@screens/Home/Profile/EditProfile'
 import CheckRefer from '@screens/Login/CheckRefer'
@@ -17,16 +20,13 @@ import Refer from '@screens/Refer/Refer'
 import TransactionDetails from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ls } from '@utils/storage'
+import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import React, { useCallback, useEffect } from 'react'
 import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
-import Suspended from '@screens/Account/Suspended'
-import AppUpdate from '@screens/Account/AppUpdate'
-import UnderMaintenance from '@screens/Account/UnderMaintenance'
 
 const Stack = createStackNavigator()
 const { width, height } = Dimensions.get('window')
@@ -61,7 +61,7 @@ export default function App(): React.JSX.Element {
 
 function NavigationDecider({ navigation }: { navigation: StackNav }) {
   const decide = useCallback(async () => {
-    const token = ls.getString('token')
+    const token = secureLs.getString('token')
     if (token) {
       navigation.replace('Home')
     } else {

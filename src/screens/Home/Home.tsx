@@ -11,7 +11,7 @@ import PlayIcon from '@icons/play.svg'
 import NewsFeedImage from '@images/feeds.svg'
 import { setAuthToken } from '@query/api'
 import { colors } from '@utils/colors'
-import { ls } from '@utils/storage'
+import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import { useEffect } from 'react'
 import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
@@ -37,7 +37,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
         <TotalRemoteMining navigation={navigation} />
         <TotalLiveMining />
         <View className='mt-2 flex items-center justify-center'>
-          <Text>{ls.getString('token')}</Text>
+          <Text>{secureLs.getString('token')}</Text>
         </View>
       </View>
     </ScrollView>
