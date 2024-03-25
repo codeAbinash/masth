@@ -53,7 +53,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
           ListHeaderComponent={
             <View className='pb-1'>
               <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
-              <ReferCard percentage={data?.pages.at(-1)?.referred_bonus || '0'} />
+              <ReferCard bonus={data?.pages.at(-1)?.referred_bonus || '0'} />
               <Tabs
                 tabs={[
                   {
@@ -85,14 +85,17 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
   )
 }
 
-function ReferCard({ percentage }: { percentage: string }) {
-  const referText =
-    'Refer a friend and earn 10% commission on every mining they do. Share your referral code with your friends and family and earn more.'
+function ReferCard({ bonus }: { bonus: string }) {
+  const referText = 'Refer a friend and earn 10% bonus on every mining they do. Share your referral code with your friends and family and earn more.'
   return (
     <View className='mt-5 rounded-3xl bg-white p-5'>
       <View>
-        <Text className='text-lg'>Get {percentage}% Commission</Text>
-        <Text className='text-base text-neutral-600'>Every time when your friend started mining</Text>
+        <Text className='text-lg'>
+          Get <Text className='text-accent'>{bonus} MST</Text> for every referral
+        </Text>
+        <Text className='text-base text-neutral-500'>
+          When referred user starts mining, you will get <Text className='text-accent'>{bonus} MST</Text> as a bonus.
+        </Text>
       </View>
       <ReferCode />
       <Button
