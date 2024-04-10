@@ -358,8 +358,6 @@ function LoadingBar({
       mining.refetch()
     } else {
       const extraBalance = (current / total) * coin
-      console.log('Extra balance', extraBalance)
-      console.log('Current balance', balance)
       setBalance(balance + extraBalance)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
