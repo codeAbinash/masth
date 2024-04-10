@@ -100,8 +100,8 @@ android {
         applicationId "com.crypto.miner.masth"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
     }
 
     splits {
@@ -121,16 +121,16 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('release-key.keystore')
-            storePassword '123456789'
-            keyAlias 'your_key_alias'
-            keyPassword '12346789'
+            storeFile file('release.keystore')
+            storePassword 'android'
+            keyAlias 'android'
+            keyPassword 'android'
         }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            applicationIdSuffix ".debug"
+            // applicationIdSuffix ".debug"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.

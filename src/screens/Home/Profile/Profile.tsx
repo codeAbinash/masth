@@ -30,7 +30,7 @@ export default function ProfileScreen({ navigation }: { navigation: StackNav }) 
             source={{ uri: profile?.profile_pic || 'https://picsum.photos/201' }}
             style={{ width: 90, height: 90 }}
           />
-          <Text className='pt-2 text-xl font-bold uppercase' style={{ color: '#2aa3ce' }}>
+          <Text className='pt-2 text-xl font-bold uppercase' style={{ color: '#3f7ae6' }}>
             {profile?.username || 'Loading...'}
           </Text>
         </View>
