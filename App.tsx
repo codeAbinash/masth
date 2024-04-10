@@ -2,7 +2,7 @@ import { SmallLoading } from '@components/Loading'
 import { DarkContentTransparentStatusBar } from '@components/StatusBar'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, StackNavigationOptions, createStackNavigator } from '@react-navigation/stack'
-import AppUpdate from '@screens/Account/AppUpdate'
+import AppUpdate, { type AppUpdateParamList } from '@screens/Account/AppUpdate'
 import Suspended from '@screens/Account/Suspended'
 import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import Home from '@screens/Home'
@@ -28,7 +28,28 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
 
-const Stack = createStackNavigator()
+export type RootStackParamList = {
+  navigationDecider: undefined
+  Login: undefined
+  CheckRefer: undefined
+  Home: undefined
+  SignUp: undefined
+  OTP: undefined
+  Setup: undefined
+  Notifications: undefined
+  NotificationDetails: { id: string }
+  EditProfile: undefined
+  Settings: undefined
+  Transactions: undefined
+  Refer: undefined
+  TransactionDetails: { id: string }
+  SignOut: undefined
+  Suspended: undefined
+  UnderMaintenance: undefined
+  AppUpdate: AppUpdateParamList
+}
+
+const Stack = createStackNavigator<RootStackParamList>()
 const { width, height } = Dimensions.get('window')
 
 const queryClient = new QueryClient({
@@ -123,23 +144,3 @@ function Navigation() {
     </Stack.Navigator>
   )
 }
-
-// const config: TransitionSpec = {
-//   animation: 'spring',
-//   config: {
-//     stiffness: 1000,
-//     damping: 50,
-//     mass: 3,
-//     overshootClamping: false,
-//     restDisplacementThreshold: 0.01,
-//     restSpeedThreshold: 0.01,
-//   },
-// }
-
-// const closeConfig: TransitionSpec = {
-//   animation: 'timing',
-//   config: {
-//     duration: 200,
-//     easing: Easing.linear,
-//   },
-// }

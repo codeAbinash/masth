@@ -175,3 +175,14 @@ export async function check_mining_status_f() {
 export function start_mining_f() {
   return postApi<ServerResponse>('mining/startMining', null)
 }
+
+export interface CheckVersionT {
+  custom_link: null
+  status: boolean
+  store_link: string
+  version_code: string
+}
+
+export function check_version_f() {
+  return postApi<CheckVersionT>('env/check_version', null)
+}

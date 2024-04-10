@@ -1,4 +1,4 @@
-import { ParamListBase } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
+import type { RootStackParamList } from 'App'
 
-export type StackNav = StackNavigationProp<ParamListBase>
+export type StackNav = StackNavigationProp<RootStackParamList>

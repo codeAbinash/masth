@@ -11,9 +11,10 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_mining_status_f, start_mining_f } from '@query/api'
+import { check_mining_status_f, check_version_f, start_mining_f } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
+import { APP_V_CODE } from '@utils/constants'
 import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import LottieView from 'lottie-react-native'
@@ -24,7 +25,18 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 const { width } = Dimensions.get('window')
 
+function handleAppUpdate(navigation: StackNav) {
+  check_version_f().then((appVersion) => {
+    if (APP_V_CODE !== appVersion.version_code) {
+      navigation.replace('AppUpdate', {
+        link: appVersion.store_link || appVersion.custom_link || '',
+      })
+    }
+  })
+}
 export default function Home({ navigation }: { navigation: StackNav }) {
+  useEffect(() => handleAppUpdate(navigation), [navigation])
+
   return (
     <>
       <PopupScreen />
@@ -247,7 +259,6 @@ function WalletBalance() {
     mutationKey: ['startMining'],
     mutationFn: start_mining_f,
     onSuccess: (data) => {
-      console.log(JSON.stringify(data, null, 2))
       console.log('Mining started')
       mining.refetch()
     },
@@ -256,10 +267,6 @@ function WalletBalance() {
   function handleStartMining() {
     startMining.mutate()
   }
-
-  useEffect(() => {
-    console.log(JSON.stringify(mining.data, null, 2))
-  }, [mining.data])
 
   return (
     <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
