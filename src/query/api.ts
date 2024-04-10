@@ -98,6 +98,7 @@ export interface ProfileDataT {
   profile_pic: string | null
   updated_at: string
   username: string
+  coin: string
 }
 export async function profile_f() {
   console.log('Fetch Profile Data')

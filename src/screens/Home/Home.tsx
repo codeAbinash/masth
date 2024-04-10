@@ -1,3 +1,4 @@
+import { useLocalData } from '@/hooks/useHybridData'
 import MasthYellow from '@assets/icons/masth/masth-yellow.svg'
 import { SmallButton } from '@components/Button'
 import { PaddingTop } from '@components/SafePadding'
@@ -11,7 +12,7 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_mining_status_f, check_version_f, start_mining_f } from '@query/api'
+import { ProfileDataT, check_mining_status_f, check_version_f, start_mining_f } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
@@ -249,6 +250,8 @@ function TotalLiveMining() {
 }
 
 function WalletBalance() {
+  const localProfile = useLocalData<ProfileDataT>('profile')
+  const [balance, setBalance] = React.useState(Number(localProfile?.coin || 0))
   const mining = useQuery({
     queryKey: ['miningStatus'],
     queryFn: check_mining_status_f,
@@ -273,7 +276,7 @@ function WalletBalance() {
       <Text className='text-base text-onYellow'>Wallet Balance</Text>
       <View className='flex-row items-end'>
         <Text className='text-onYellow' style={{ fontSize: 40 }}>
-          {(6860.306).toLocaleString()}
+          {balance.toFixed(4)}
         </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
       </View>
@@ -282,7 +285,13 @@ function WalletBalance() {
           <Text className='text-lg'> Checking mining status...</Text>
         </View>
       ) : mining.data && !mining.data?.mining_function ? (
-        <LoadingBar startTime={mining.data?.mining_data.start_time} endTime={mining.data?.mining_data.end_time} mining={mining} />
+        <LoadingBar
+          setBalance={setBalance}
+          startTime={mining.data?.mining_data.start_time}
+          endTime={mining.data?.mining_data.end_time}
+          mining={mining}
+          coin={Number(mining.data.mining_data.coin)}
+        />
       ) : (
         <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
           <View style={{ flex: 0.55 }}>
@@ -311,7 +320,19 @@ function WalletBalance() {
 const ANIM_ASPECT_RATIO = 1440 / 850
 const ANIM_SIZE = 38
 
-function LoadingBar({ startTime, endTime, mining }: { startTime: string; endTime: string; mining: ReturnType<typeof useQuery> }) {
+function LoadingBar({
+  startTime,
+  endTime,
+  mining,
+  coin,
+  setBalance,
+}: {
+  startTime: string
+  endTime: string
+  mining: ReturnType<typeof useQuery>
+  coin: number
+  setBalance: React.Dispatch<React.SetStateAction<number>>
+}) {
   const [start, setStart] = React.useState(new Date(startTime).getTime())
   const [end, setEnd] = React.useState(new Date(endTime).getTime())
   const [now, setNow] = React.useState(new Date().getTime())
@@ -329,10 +350,15 @@ function LoadingBar({ startTime, endTime, mining }: { startTime: string; endTime
     const current = now - start
     setProgress((current / total) * 100)
     // If the mining is finished, refetch the mining status
+
+    const extraBalance = (current / total) * coin
+    console.log('Extra balance', extraBalance)
+    setBalance(extraBalance)
+
     if (current >= total) {
       mining.refetch()
     }
-  }, [end, mining, now, progress, start])
+  }, [coin, end, mining, now, progress, setBalance, start])
 
   return (
     <>

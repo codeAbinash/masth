@@ -23,3 +23,7 @@ export default function useHybridData<T>(query: UseQueryResult<T, Error>, key: s
   }, [query.data, key])
   return useMemo(() => getLocalData<T>(query.data, key), [key, query.data])
 }
+
+export function useLocalData<T>(key: string): T | null {
+  return useMemo(() => getLocalData<T>(undefined, key), [key])
+}
