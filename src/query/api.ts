@@ -10,6 +10,7 @@ export function setAuthToken() {
   const token = secureLs.getString('token')
   if (token) axios.defaults.headers.common.Authorization = 'Bearer ' + token
 }
+setAuthToken()
 
 const DEFAULT_ERR = 'Error occurred. Pease check your internet connection and try again'
 
@@ -151,9 +152,26 @@ export async function get_referred_members_f() {
 
 export interface MiningStatusT {
   status: boolean
+  mining_function: boolean
+  mining_data: MiningData
   message: string
-  is_mining: boolean
+}
+
+export interface MiningData {
+  id: number
+  session_id: string
+  user_id: number
+  start_time: string
+  end_time: string
+  coin: string
+  status: string
+  created_at: string
+  updated_at: string
 }
 export async function check_mining_status_f() {
   return await postApi<MiningStatusT>('mining/checkMiningStatus', null)
+}
+
+export function start_mining_f() {
+  return postApi<ServerResponse>('mining/startMining', null)
 }

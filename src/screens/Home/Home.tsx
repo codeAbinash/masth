@@ -9,26 +9,22 @@ import ChartIcon from '@icons/chart.svg'
 import GraphIcon from '@icons/graph.svg'
 import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
+import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_mining_status_f, setAuthToken } from '@query/api'
+import { check_mining_status_f, start_mining_f } from '@query/api'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
+import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
 import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import Icon from 'react-native-vector-icons/Feather'
+import { default as FeatherIcon, default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import FeatherIcon from 'react-native-vector-icons/Feather'
-import { useQuery } from '@tanstack/react-query'
 
 const { width } = Dimensions.get('window')
 
 export default function Home({ navigation }: { navigation: StackNav }) {
-  useEffect(() => {
-    // Set the authorization token to axios
-    setAuthToken()
-  }, [])
-
   return (
     <>
       <PopupScreen />
@@ -247,12 +243,26 @@ function WalletBalance() {
     retry: 3,
   })
 
+  const startMining = useMutation({
+    mutationKey: ['startMining'],
+    mutationFn: start_mining_f,
+    onSuccess: (data) => {
+      console.log(JSON.stringify(data, null, 2))
+      console.log('Mining started')
+      mining.refetch()
+    },
+  })
+
+  function handleStartMining() {
+    startMining.mutate()
+  }
+
   useEffect(() => {
-    console.log(mining.data)
+    console.log(JSON.stringify(mining.data, null, 2))
   }, [mining.data])
 
   return (
-    <View className='mt-5 rounded-3xl bg-yellowPrimary p-5'>
+    <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
       <Text className='text-base text-onYellow'>Wallet Balance</Text>
       <View className='flex-row items-end'>
         <Text className='text-onYellow' style={{ fontSize: 40 }}>
@@ -260,26 +270,109 @@ function WalletBalance() {
         </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
       </View>
-      <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
-        <View style={{ flex: 0.55 }}>
-          {mining.isLoading ? (
-            <Text className='text-base text-onYellow'>Checking mining status...</Text>
-          ) : (
-            <SmallButton title='Start Mining' LeftUI={<PlayIcon width={17} height={17} />} />
-          )}
+      {mining.isLoading ? (
+        <View className='h-8 justify-center'>
+          <Text className='text-lg'> Checking mining status...</Text>
         </View>
-        <View style={{ flex: 0.45 }} className='flex-row'>
-          <Text style={{ fontSize: 15 }} className='text-onYellow'>
-            50 Masth
-          </Text>
-          <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
-            {' '}
-            / hour
-          </Text>
+      ) : mining.data && !mining.data?.mining_function ? (
+        <LoadingBar startTime={mining.data?.mining_data.start_time} endTime={mining.data?.mining_data.end_time} mining={mining} />
+      ) : (
+        <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
+          <View style={{ flex: 0.55 }}>
+            <SmallButton
+              LeftUI={<PlayIcon width={17} height={17} />}
+              onPress={handleStartMining}
+              title={mining.isLoading ? 'Starting...' : 'Start Mining'}
+              disabled={mining.isLoading}
+            />
+          </View>
+          <View style={{ flex: 0.45 }} className='flex-row'>
+            <Text style={{ fontSize: 15 }} className='text-onYellow'>
+              50 Masth
+            </Text>
+            <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
+              {' '}
+              / hour
+            </Text>
+          </View>
         </View>
-      </View>
+      )}
     </View>
   )
+}
+
+const ANIM_ASPECT_RATIO = 1440 / 850
+const ANIM_SIZE = 38
+
+function LoadingBar({ startTime, endTime, mining }: { startTime: string; endTime: string; mining: ReturnType<typeof useQuery> }) {
+  const [start, setStart] = React.useState(new Date(startTime).getTime())
+  const [end, setEnd] = React.useState(new Date(endTime).getTime())
+  const [now, setNow] = React.useState(new Date().getTime())
+  const [progress, setProgress] = React.useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date().getTime())
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const total = end - start
+    const current = now - start
+    setProgress((current / total) * 100)
+    // If the mining is finished, refetch the mining status
+    if (current >= total) {
+      mining.refetch()
+    }
+  }, [end, mining, now, progress, start])
+
+  return (
+    <>
+      <View className='mt-2 flex-row overflow-hidden rounded-full bg-[#f0efef]'>
+        <View className='flex-row items-center'>
+          <View
+            className='flex-row items-center px-3'
+            style={{
+              backgroundColor: '#67cf5f',
+              width: `${Math.max(progress, 0)}%`,
+              height: 38,
+            }}
+          >
+            <StopRound width={20} height={20} style={{ zIndex: 10 }} />
+          </View>
+          <LottieView
+            source={require('../../assets/anim/loading_anim.lottie')}
+            autoPlay
+            loop
+            style={{
+              width: ANIM_SIZE * ANIM_ASPECT_RATIO,
+              height: ANIM_SIZE,
+              zIndex: -1,
+            }}
+            speed={6}
+          />
+        </View>
+      </View>
+      <View className='mt-1 flex-row justify-between px-1.5'>
+        <Text className='text-center text-neutral-600'>{progress.toFixed(2)}% Completed</Text>
+        <Text className='text-center text-neutral-600'>{timeLeft(end)} Time Left</Text>
+      </View>
+    </>
+  )
+}
+
+function timeLeft(end: number) {
+  const now = new Date().getTime()
+  const diff = end - now
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+  return `${adZero(hours)}:${adZero(minutes)}:${adZero(seconds)}`
+}
+
+function adZero(num: number) {
+  return num < 10 ? `0${num}` : num
 }
 
 function NewsFeed() {
