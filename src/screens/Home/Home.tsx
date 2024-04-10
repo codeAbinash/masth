@@ -342,7 +342,7 @@ function LoadingBar({ startTime, endTime, mining }: { startTime: string; endTime
             className='flex-row items-center px-3'
             style={{
               backgroundColor: '#67cf5f',
-              width: `${Math.max(progress, 0)}%`,
+              width: `${progress > 100 ? 100 : Math.max(progress, 0)}%`,
               height: 38,
             }}
           >
