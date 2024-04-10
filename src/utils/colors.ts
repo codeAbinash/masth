@@ -9,4 +9,5 @@ export const colors = {
   purplePrimary: '#C8D6FF',
   bgGreen: '#D5FAD2',
   bgAqua: '#7FF1F1',
+  accentYellow: '#f99b05',
 }

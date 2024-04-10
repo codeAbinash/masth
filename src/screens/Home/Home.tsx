@@ -1,3 +1,4 @@
+import MasthYellow from '@assets/icons/masth/masth-yellow.svg'
 import { SmallButton } from '@components/Button'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
@@ -13,10 +14,11 @@ import { setAuthToken } from '@query/api'
 import { colors } from '@utils/colors'
 import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
-import { useEffect } from 'react'
-import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import FeatherIcon from 'react-native-vector-icons/Feather'
 
 const { width } = Dimensions.get('window')
 
@@ -27,22 +29,89 @@ export default function Home({ navigation }: { navigation: StackNav }) {
   }, [])
 
   return (
-    <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
-      <View className='pb-10'>
-        <PaddingTop />
-        <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
-        <WalletBalance />
-        <MSTPerUSDCard />
-        <Miners />
-        <TotalRemoteMining navigation={navigation} />
-        <TotalLiveMining />
-        <View className='mt-2 flex items-center justify-center'>
-          <Text>{secureLs.getString('token')}</Text>
+    <>
+      <PopupScreen />
+      <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
+        <View className='pb-10'>
+          <PaddingTop />
+          <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
+          <WalletBalance />
+          <MSTPerUSDCard />
+          <Miners />
+          <TotalRemoteMining navigation={navigation} />
+          <TotalLiveMining />
+          <View className='mt-2 flex items-center justify-center'>
+            <Text>{secureLs.getString('token')}</Text>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   )
 }
+
+const { height } = Dimensions.get('window')
+
+function PopupScreen() {
+  const [modalVisible, setModalVisible] = React.useState(false)
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setModalVisible(true)
+  //   }, 1000)
+  //   return () => clearTimeout(timer)
+  // }, [])
+  return (
+    <View style={styles.centeredView}>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.')
+          setModalVisible(!modalVisible)
+        }}
+        statusBarTranslucent={true}
+      >
+        <View style={styles.centeredView}>
+          <View className='w-full'>
+            <PaddingTop />
+            <View className='mt-5 w-full flex-row justify-between px-5'>
+              <MasthYellow width={width * 0.2} />
+              <FeatherIcon name='x' size={25} color={'white'} onPress={() => setModalVisible(!modalVisible)} />
+            </View>
+          </View>
+          <View>
+            <Image source={require('@images/popup-image.jpg')} style={{ width: width * 0.9, height: width * 0.9, borderRadius: 20 }} />
+            <View className='mt-7 items-center justify-center'>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                className='bg-accentYellow items-center justify-center px-4 py-3 text-white'
+                style={{ minWidth: width * 0.5, borderRadius: 15 }}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text className='text-lg uppercase text-white'>Start Mining</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View>
+            <View style={{ height: 100 }} />
+          </View>
+        </View>
+      </Modal>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    position: 'absolute',
+    width: width,
+    height: height + 100,
+  },
+})
 
 function Miners() {
   return (
