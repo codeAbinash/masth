@@ -287,6 +287,7 @@ function WalletBalance() {
       ) : mining.data && !mining.data?.mining_function ? (
         <LoadingBar
           setBalance={setBalance}
+          realBalance={Number(localProfile?.coin || 0)}
           startTime={mining.data?.mining_data.start_time}
           endTime={mining.data?.mining_data.end_time}
           mining={mining}
@@ -325,12 +326,14 @@ function LoadingBar({
   endTime,
   mining,
   coin,
+  realBalance: balance,
   setBalance,
 }: {
   startTime: string
   endTime: string
   mining: ReturnType<typeof useQuery>
   coin: number
+  realBalance: number
   setBalance: React.Dispatch<React.SetStateAction<number>>
 }) {
   const [start, setStart] = React.useState(new Date(startTime).getTime())
@@ -349,16 +352,18 @@ function LoadingBar({
     const total = end - start
     const current = now - start
     setProgress((current / total) * 100)
+
     // If the mining is finished, refetch the mining status
-
-    const extraBalance = (current / total) * coin
-    console.log('Extra balance', extraBalance)
-    setBalance(extraBalance)
-
     if (current >= total) {
       mining.refetch()
+    } else {
+      const extraBalance = (current / total) * coin
+      console.log('Extra balance', extraBalance)
+      console.log('Current balance', balance)
+      setBalance(balance + extraBalance)
     }
-  }, [coin, end, mining, now, progress, setBalance, start])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [now])
 
   return (
     <>
