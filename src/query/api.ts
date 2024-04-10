@@ -148,3 +148,12 @@ export interface Profile {
 export async function get_referred_members_f() {
   return await postApi<ReferredUserT>('refer/get_referred_members', null)
 }
+
+export interface MiningStatusT {
+  status: boolean
+  message: string
+  is_mining: boolean
+}
+export async function check_mining_status_f() {
+  return await postApi<MiningStatusT>('mining/checkMiningStatus', null)
+}

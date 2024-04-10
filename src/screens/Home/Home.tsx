@@ -10,7 +10,7 @@ import GraphIcon from '@icons/graph.svg'
 import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { setAuthToken } from '@query/api'
+import { check_mining_status_f, setAuthToken } from '@query/api'
 import { colors } from '@utils/colors'
 import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
@@ -19,6 +19,7 @@ import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, Touchabl
 import Icon from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import { useQuery } from '@tanstack/react-query'
 
 const { width } = Dimensions.get('window')
 
@@ -84,7 +85,7 @@ function PopupScreen() {
             <View className='mt-7 items-center justify-center'>
               <TouchableOpacity
                 activeOpacity={0.8}
-                className='bg-accentYellow items-center justify-center px-4 py-3 text-white'
+                className='items-center justify-center bg-accentYellow px-4 py-3 text-white'
                 style={{ minWidth: width * 0.5, borderRadius: 15 }}
                 onPress={() => setModalVisible(!modalVisible)}
               >
@@ -240,6 +241,16 @@ function TotalLiveMining() {
 }
 
 function WalletBalance() {
+  const mining = useQuery({
+    queryKey: ['miningStatus'],
+    queryFn: check_mining_status_f,
+    retry: 3,
+  })
+
+  useEffect(() => {
+    console.log(mining.data)
+  }, [mining.data])
+
   return (
     <View className='mt-5 rounded-3xl bg-yellowPrimary p-5'>
       <Text className='text-base text-onYellow'>Wallet Balance</Text>
@@ -251,7 +262,11 @@ function WalletBalance() {
       </View>
       <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
         <View style={{ flex: 0.55 }}>
-          <SmallButton title='Start Mining' LeftUI={<PlayIcon width={17} height={17} />} />
+          {mining.isLoading ? (
+            <Text className='text-base text-onYellow'>Checking mining status...</Text>
+          ) : (
+            <SmallButton title='Start Mining' LeftUI={<PlayIcon width={17} height={17} />} />
+          )}
         </View>
         <View style={{ flex: 0.45 }} className='flex-row'>
           <Text style={{ fontSize: 15 }} className='text-onYellow'>
