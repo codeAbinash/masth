@@ -20,6 +20,7 @@ import { StackNav } from '@utils/types'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
 import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Tooltip } from 'react-native-paper'
 import { default as FeatherIcon, default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
@@ -303,13 +304,13 @@ function WalletBalance() {
             <SmallButton
               LeftUI={<PlayIcon width={17} height={17} />}
               onPress={handleStartMining}
-              title={mining.isLoading ? 'Starting...' : 'Start Mining'}
-              disabled={mining.isLoading}
+              title={startMining.isPending ? 'Starting...' : 'Start Mining'}
+              disabled={startMining.isPending}
             />
           </View>
           <View style={{ flex: 0.45 }} className='flex-row'>
             <Text style={{ fontSize: 15 }} className='text-onYellow'>
-              50 Masth
+              1 Masth
             </Text>
             <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
               {' '}
@@ -358,7 +359,7 @@ function LoadingBar({
     setProgress((current / total) * 100)
 
     // If the mining is finished, refetch the mining status
-    if (current >= total) {
+    if (current >= total || progress >= 100) {
       mining.refetch()
     } else {
       const extraBalance = (current / total) * coin
@@ -441,9 +442,22 @@ function MSTPerUSDCard() {
       <View style={{ gap: 5 }} className='flex-row items-center'>
         <Text className='text-base text-neutral-600'>MST / USD</Text>
         <Text className='text-base'> 0.99</Text>
-        <View className='p-1.5'>
+        {/* <Tooltip
+          title='Masth,calculates coin value using a smart system created by “Nexgino Technology Solutions”. It considers mining, downloads, and user activity every day for accurate valuation.'
+          enterTouchDelay={0}
+        > */}
+        <TouchableOpacity
+          className='p-1.5'
+          onPress={() =>
+            Alert.alert(
+              'Masth',
+              'Masth,calculates coin value using a smart system created by “Nexgino Technology Solutions”. It considers mining, downloads, and user activity every day for accurate valuation.',
+            )
+          }
+        >
           <Icon name='info' size={17} color={'gray'} />
-        </View>
+        </TouchableOpacity>
+        {/* </Tooltip> */}
       </View>
       <View>
         <Text className='text-base text-greenPrimary'>+0.08 (0.2%)</Text>
