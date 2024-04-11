@@ -10,7 +10,6 @@
     "test": "jest",
     "build": "cd android && gradlew assembleRelease && cd .. && npm run install-release-apk",
     "assembleRelease": "cd android && gradlew assembleRelease",
-    "bundleRelease": "cd android && gradlew bundleRelease",
     "open": "cd android/app/build/outputs/apk/release/ && explorer .",
     "bundle": "cd android && gradlew bundleRelease",
     "clean": "cd android && gradlew clean",
