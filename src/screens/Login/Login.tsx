@@ -1,4 +1,4 @@
-import icons from '@assets/icons/icons'
+import AppIconBlack from '@assets/icons/masth/masth-black.svg'
 import BottomSheet, { BottomSheetRefProps } from '@components/BottomSheet'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
@@ -10,14 +10,15 @@ import { useMutation } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import { removePlusBeforeCountryCode } from '@utils/utils'
 import { useRef, useState } from 'react'
-import { Alert, Dimensions, Image, Text, View } from 'react-native'
+import { Alert, Dimensions, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidPhoneNumber } from './utils'
 
 const { width } = Dimensions.get('window')
 
-const appIconSize = 0.5
+const appIconSize = 0.1
+const aspectRatio = 1060 / 188
 
 export default function Login({ navigation }: { navigation: StackNav }) {
   const sheet = useRef<BottomSheetRefProps>(null)
@@ -47,7 +48,8 @@ export default function Login({ navigation }: { navigation: StackNav }) {
         <View />
         <View>
           <View className='flex items-center justify-center'>
-            <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} />
+            {/* <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} /> */}
+            <AppIconBlack width={width * appIconSize * aspectRatio} height={width * appIconSize * aspectRatio} />
             <Text className='text-center font-mono text-4xl font-bold text-black'>Welcome</Text>
             <Text className='p-4 px-10 pt-1 text-center text-lg text-neutral-500' style={{ lineHeight: 25 }}>
               There are many variations of passages of Lorem Ipsum available

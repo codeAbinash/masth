@@ -4,7 +4,7 @@ import { SmallLoading } from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import { DefaultTransparent } from '@components/StatusBar'
 import TopBar from '@components/TopBar'
-import { ls } from '@utils/storage'
+import { ls, secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import React, { useState } from 'react'
 import { Image, Text, View } from 'react-native'
@@ -16,6 +16,8 @@ export default function SignOut({ navigation }: { navigation: StackNav }) {
 
   function signOut() {
     setIsSignOut(true)
+    ls.clearAll()
+    secureLs.clearAll()
     setTimeout(() => {
       try {
         oneSignalInit()
@@ -23,11 +25,10 @@ export default function SignOut({ navigation }: { navigation: StackNav }) {
       } catch (e) {
         console.log(e)
       } finally {
-        setIsSignOut(false)
-        ls.clearAll()
         navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
       }
     })
+    // setIsSignOut(false)
   }
 
   return (

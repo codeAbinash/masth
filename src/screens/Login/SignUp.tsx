@@ -1,4 +1,5 @@
 import icons from '@assets/icons/icons'
+import AppIconBlack from '@assets/icons/masth/masth-black.svg'
 import BottomSheet, { BottomSheetRefProps } from '@components/BottomSheet'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
@@ -15,8 +16,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
+import { PaddingTop } from '@components/SafePadding'
 
-const appIconSize = 0.45
+const appIconSize = 0.1
+const aspectRatio = 1060 / 188
 
 const { width } = Dimensions.get('window')
 
@@ -84,10 +87,13 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   return (
     <>
       <ScrollView className='bg-white'>
+        <PaddingTop />
         <View className='flex h-full flex-1 justify-between bg-white p-4 pb-2'>
           <View>
             <View className='mt-2 flex items-center justify-center'>
-              <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} />
+              {/* <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} /> */}
+              <AppIconBlack width={width * appIconSize * aspectRatio} height={width * appIconSize * 3} />
+
               <Text className='text-center font-mono text-3xl font-bold text-black'>Let's Sign Up</Text>
               <Text className='p-4 px-10 pt-1 text-center text-lg text-neutral-500' style={{ lineHeight: 25 }}>
                 There are many variations of passages of Lorem Ipsum available
