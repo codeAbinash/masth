@@ -11,8 +11,13 @@ import React from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Receive from './Receive'
 import Send from './Send'
+import useHybridData from '@/hooks/useHybridData'
+import { profile_f, type ProfileT } from '@query/api'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Wallet({ navigation }: { navigation: StackNav }) {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const profile = useHybridData<ProfileT>(profileQuery, 'profile')
   return (
     <KeyboardAvoidingContainer style={{ backgroundColor: colors.bgSecondary }}>
       <ScrollView className='p-5 pb-10'>
@@ -25,12 +30,17 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
             </Text>
             <Text style={{ fontSize: 30 }}>Wallet</Text>
           </View>
-          <TouchableOpacity className='rounded-full border border-neutral-200 bg-white p-2.5' onPress={() => navigation.navigate('Transactions')}>
+          <TouchableOpacity
+            className='rounded-full border border-neutral-200 bg-white p-2.5'
+            onPress={() => {
+              // navigation.navigate('Transactions')
+            }}
+          >
             <SwapIcon height={17} width={17} />
           </TouchableOpacity>
         </View>
         <View>
-          <WalletBalance />
+          <WalletBalance balance={Number(profile?.data.coin || 0)} />
         </View>
         <Tabs
           tabs={[
@@ -43,13 +53,13 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
   )
 }
 
-function WalletBalance() {
+function WalletBalance({ balance }: { balance: number }) {
   return (
     <View className='mt-4 rounded-3xl bg-yellowPrimary p-5'>
       <Text className='text-base text-onYellow'>Wallet Balance</Text>
       <View className='flex-row items-end'>
         <Text className='text-onYellow' style={{ fontSize: 40 }}>
-          {(6860.306).toLocaleString()}
+          {balance.toFixed(4)}
         </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
       </View>

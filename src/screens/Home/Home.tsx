@@ -1,4 +1,4 @@
-import useHybridData, { useLocalData } from '@/hooks/useHybridData'
+import useHybridData from '@/hooks/useHybridData'
 import MasthYellow from '@assets/icons/masth/masth-yellow.svg'
 import { SmallButton } from '@components/Button'
 import { PaddingTop } from '@components/SafePadding'
@@ -16,7 +16,6 @@ import { check_mining_status_f, check_version_f, profile_f, start_mining_f, type
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
-import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
@@ -50,9 +49,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
           <Miners />
           <TotalRemoteMining navigation={navigation} />
           <TotalLiveMining />
-          <View className='mt-2 flex items-center justify-center'>
-            <Text>{secureLs.getString('token')}</Text>
-          </View>
+          <View className='mt-2 flex items-center justify-center'>{/* <Text>{secureLs.getString('token')}</Text> */}</View>
         </View>
       </ScrollView>
     </>

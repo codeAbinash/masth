@@ -1,4 +1,4 @@
-import { UseQueryResult } from '@tanstack/react-query'
+import { UseQueryResult, type UseMutationResult } from '@tanstack/react-query'
 import { ls } from '@utils/storage'
 import { useEffect, useMemo } from 'react'
 
@@ -10,14 +10,14 @@ function getLocalData<T>(queryData: T | undefined, key: string): T | null {
   return null
 }
 
-function setLocalData<T>(profile: T, key: string) {
-  if (profile) {
+function setLocalData<T>(data: T, key: string) {
+  if (data) {
     console.log(`Set local ${key} data`)
-    ls.set('profile', JSON.stringify(profile))
+    ls.set(key, JSON.stringify(data))
   }
 }
 
-export default function useHybridData<T>(query: UseQueryResult<T, Error>, key: string): T | null {
+export default function useHybridData<T>(query: UseQueryResult<T, Error> | UseMutationResult<T, Error>, key: string): T | null {
   useEffect(() => {
     setLocalData(query.data, key)
   }, [query.data, key])

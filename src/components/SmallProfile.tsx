@@ -35,7 +35,12 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
 export function RightSideSmallProfile({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex flex-row gap-2'>
-      <TouchableOpacity className='p-2' onPress={() => navigation.navigate('Notifications')}>
+      <TouchableOpacity
+        className='p-2'
+        onPress={() => {
+          // navigation.navigate('Notifications')
+        }}
+      >
         <NotificationIcon height={20} width={20} />
       </TouchableOpacity>
       <TouchableOpacity className='p-2' onPress={() => navigation.navigate('Settings')}>
