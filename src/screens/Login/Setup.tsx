@@ -7,6 +7,10 @@ import { useEffect } from 'react'
 import { Image, Text, View } from 'react-native'
 import { OneSignal } from 'react-native-onesignal'
 
+export function oneSignalInit() {
+  OneSignal.initialize('7a836c6e-2ed7-4258-bc5b-099b6355d92c')
+}
+
 export default function Setup({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
 
@@ -14,7 +18,7 @@ export default function Setup({ navigation }: { navigation: StackNav }) {
     // Remove this method to stop OneSignal Debugging
     // OneSignal.Debug.setLogLevel(LogLevel.Verbose)
     // OneSignal Initialization
-    OneSignal.initialize('7a836c6e-2ed7-4258-bc5b-099b6355d92c')
+    oneSignalInit()
     // requestPermission will show the native iOS or Android notification permission prompt.
     // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     OneSignal.Notifications.requestPermission(true)

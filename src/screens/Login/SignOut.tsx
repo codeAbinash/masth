@@ -9,6 +9,7 @@ import { StackNav } from '@utils/types'
 import React, { useState } from 'react'
 import { Image, Text, View } from 'react-native'
 import { OneSignal } from 'react-native-onesignal'
+import { oneSignalInit } from './Setup'
 
 export default function SignOut({ navigation }: { navigation: StackNav }) {
   const [isSignOut, setIsSignOut] = useState(false)
@@ -17,6 +18,7 @@ export default function SignOut({ navigation }: { navigation: StackNav }) {
     setIsSignOut(true)
     setTimeout(() => {
       try {
+        oneSignalInit()
         OneSignal.logout()
       } catch (e) {
         console.log(e)
