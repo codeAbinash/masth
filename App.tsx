@@ -9,15 +9,15 @@ import Home from '@screens/Home'
 import EditProfile from '@screens/Home/Profile/EditProfile'
 import CheckRefer from '@screens/Login/CheckRefer'
 import Login from '@screens/Login/Login'
-import OTP from '@screens/Login/OTP'
+import OTP, { type OTPParamList } from '@screens/Login/OTP'
 import Setup from '@screens/Login/Setup'
 import SignOut from '@screens/Login/SignOut'
 import SignUp from '@screens/Login/SignUp'
-import NotificationDetails from '@screens/Others/NotificationDetails'
+import NotificationDetails, { type NotificationsParamList } from '@screens/Others/NotificationDetails'
 import Notifications from '@screens/Others/Notifications'
 import Settings from '@screens/Others/Settings'
 import Refer from '@screens/Refer/Refer'
-import TransactionDetails from '@screens/Transactions/TransactionDetails'
+import TransactionDetails, { type TransactionDetailsParamList } from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { secureLs } from '@utils/storage'
@@ -34,15 +34,15 @@ export type RootStackParamList = {
   CheckRefer: undefined
   Home: undefined
   SignUp: undefined
-  OTP: undefined
+  OTP: OTPParamList
   Setup: undefined
   Notifications: undefined
-  NotificationDetails: { id: string }
+  NotificationDetails: NotificationsParamList
   EditProfile: undefined
   Settings: undefined
   Transactions: undefined
   Refer: undefined
-  TransactionDetails: { id: string }
+  TransactionDetails: TransactionDetailsParamList
   SignOut: undefined
   Suspended: undefined
   UnderMaintenance: undefined

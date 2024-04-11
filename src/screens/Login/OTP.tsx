@@ -14,18 +14,16 @@ import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } fr
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { secureLs } from '../../utils/storage'
 import { isValidOTP } from './utils'
+import type { StackNav } from '@utils/types'
 const { width } = Dimensions.get('window')
 const topIconSize = 0.35
 
-type OTPRouteProps = RouteProp<ParamListBase, 'OTP'>
-type OTPNavigationProps = StackNavigationProp<ParamListBase, 'OTP'>
-
-type Props = {
-  route: OTPRouteProps
-  navigation: OTPNavigationProps
+type ParamList = {
+  OTP: OTPParamList
 }
+export type OTPParamList = { phone: string; country_code: string; isSignUp: boolean }
 
-export default function OTP({ navigation, route }: Props) {
+export default function OTP({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'OTP'> }) {
   const phone = (route.params as { phone: string })?.phone
   const country_code = (route.params as { country_code: string })?.country_code
   const isSignUp = (route.params as { isSignUp: boolean })?.isSignUp

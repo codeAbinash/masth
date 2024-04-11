@@ -133,7 +133,12 @@ function NotificationCard({ message, date, navigation }: { message?: string; dat
     <TouchableOpacity
       activeOpacity={0.6}
       className='flex-row items-center justify-between rounded-2xl bg-white p-2.5 pr-4'
-      onPress={() => navigation.navigate('NotificationDetails', { message, date: date.toISOString() })}
+      onPress={() =>
+        navigation.navigate('NotificationDetails', {
+          message: message || 'No message',
+          date,
+        })
+      }
     >
       <View className='flex-row gap-3' style={{ flex: 1 }}>
         <View style={{ backgroundColor: '#ffeed5' }} className='rounded-xl p-3'>

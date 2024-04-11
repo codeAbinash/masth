@@ -105,7 +105,7 @@ function TransactionCard({
     <TouchableOpacity
       activeOpacity={0.6}
       className='flex-row items-center justify-between rounded-2xl bg-white p-2.5'
-      onPress={() => navigation.navigate('TransactionDetails', { green, message, date: date.toISOString(), amount })}
+      onPress={() => navigation.navigate('TransactionDetails', { green, message: message || '', date: date.toISOString(), amount: amount || 0 })}
     >
       <View className='flex-row items-center gap-3' style={{ flex: 1 }}>
         <View style={{ backgroundColor }} className='rounded-xl p-2.5'>

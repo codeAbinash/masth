@@ -26,7 +26,7 @@ export default function Login({ navigation }: { navigation: StackNav }) {
 
   const loginMutation = useMutation({
     mutationFn: () => loginApi_f({ phone, country_code: removePlusBeforeCountryCode(country_code) }),
-    onSuccess: () => navigation.replace('OTP', { phone, country_code }),
+    onSuccess: () => navigation.replace('OTP', { phone, country_code, isSignUp: false }),
   })
 
   function handelSubmit() {

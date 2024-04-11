@@ -4,13 +4,17 @@ import SettingIcon from '@icons/setting.svg'
 import { ProfileT, profile_f } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
+
+  // useEffect(() => {
+  //   console.log(JSON.stringify(profile, null, 2))
+  // }, [profile])
 
   return (
     <View className='flex flex-row items-center justify-between'>

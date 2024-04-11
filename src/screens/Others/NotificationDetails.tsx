@@ -2,21 +2,21 @@ import { Button } from '@components/Button'
 import { PaddingBottom } from '@components/SafePadding'
 import { DefaultTransparent } from '@components/StatusBar'
 import TopBar from '@components/TopBar'
-import { ParamListBase, RouteProp } from '@react-navigation/native'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { RouteProp } from '@react-navigation/native'
+import type { StackNav } from '@utils/types'
 import React from 'react'
 import { Text, View } from 'react-native'
 
-type TransactionDetailsRouteProp = RouteProp<ParamListBase, 'NotificationDetails'>
-
-type TransactionDetailsNavigationProp = StackNavigationProp<ParamListBase, 'NotificationDetails'>
-
-type Props = {
-  route: TransactionDetailsRouteProp
-  navigation: TransactionDetailsNavigationProp
+type ParamList = {
+  NotificationDetails: NotificationsParamList
 }
 
-export default function NotificationDetails({ navigation, route }: Props) {
+export type NotificationsParamList = {
+  message: string
+  date: Date
+}
+
+export default function NotificationDetails({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'NotificationDetails'> }) {
   return (
     <>
       <DefaultTransparent />

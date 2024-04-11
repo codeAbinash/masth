@@ -166,6 +166,7 @@ export interface MiningData {
   end_time: string
   coin: string
   status: string
+  current_time: string
   created_at: string
   updated_at: string
 }

@@ -12,7 +12,7 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { ProfileDataT, check_mining_status_f, check_version_f, start_mining_f } from '@query/api'
+import { check_mining_status_f, check_version_f, start_mining_f, type ProfileT } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
@@ -250,13 +250,17 @@ function TotalLiveMining() {
 }
 
 function WalletBalance() {
-  const localProfile = useLocalData<ProfileDataT>('profile')
-  const [balance, setBalance] = React.useState(Number(localProfile?.coin || 0))
+  const localProfile = useLocalData<ProfileT>('profile')
+  const [balance, setBalance] = React.useState(Number(localProfile?.data.coin || 0))
   const mining = useQuery({
     queryKey: ['miningStatus'],
     queryFn: check_mining_status_f,
     retry: 3,
   })
+
+  useEffect(() => {
+    console.log(JSON.stringify(mining.data, null, 2))
+  }, [mining.data])
 
   const startMining = useMutation({
     mutationKey: ['startMining'],
@@ -286,8 +290,9 @@ function WalletBalance() {
         </View>
       ) : mining.data && !mining.data?.mining_function ? (
         <LoadingBar
+          currentTime={mining.data.mining_data.current_time}
           setBalance={setBalance}
-          realBalance={Number(localProfile?.coin || 0)}
+          realBalance={Number(localProfile?.data.coin || 0)}
           startTime={mining.data?.mining_data.start_time}
           endTime={mining.data?.mining_data.end_time}
           mining={mining}
@@ -322,6 +327,7 @@ const ANIM_ASPECT_RATIO = 1440 / 850
 const ANIM_SIZE = 38
 
 function LoadingBar({
+  currentTime,
   startTime,
   endTime,
   mining,
@@ -329,6 +335,7 @@ function LoadingBar({
   realBalance: balance,
   setBalance,
 }: {
+  currentTime: string
   startTime: string
   endTime: string
   mining: ReturnType<typeof useQuery>
@@ -338,19 +345,17 @@ function LoadingBar({
 }) {
   const [start, setStart] = React.useState(new Date(startTime).getTime())
   const [end, setEnd] = React.useState(new Date(endTime).getTime())
-  const [now, setNow] = React.useState(new Date().getTime())
+  const [cur, setCur] = React.useState(new Date(currentTime).getTime())
   const [progress, setProgress] = React.useState(0)
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date().getTime())
-    }, 1000)
+    const interval = setInterval(() => setCur((prev) => prev + 1000), 1000)
     return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
     const total = end - start
-    const current = now - start
+    const current = cur - start
     setProgress((current / total) * 100)
 
     // If the mining is finished, refetch the mining status
@@ -361,7 +366,7 @@ function LoadingBar({
       setBalance(balance + extraBalance)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [now])
+  }, [cur])
 
   return (
     <>
@@ -392,14 +397,14 @@ function LoadingBar({
       </View>
       <View className='mt-1 flex-row justify-between px-1.5'>
         <Text className='text-center text-neutral-600'>{progress.toFixed(2)}% Completed</Text>
-        <Text className='text-center text-neutral-600'>{timeLeft(end)} Time Left</Text>
+        <Text className='text-center text-neutral-600'>{timeLeft(cur, end)} Time Left</Text>
       </View>
     </>
   )
 }
 
-function timeLeft(end: number) {
-  const now = new Date().getTime()
+function timeLeft(cur: number, end: number) {
+  const now = new Date(cur).getTime()
   const diff = end - now
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
