@@ -284,7 +284,7 @@ function WalletBalance() {
         </Text>
         <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
       </View>
-      {mining.isLoading ? (
+      {mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching ? (
         <View className='h-8 justify-center'>
           <Text className='text-lg'> Checking mining status...</Text>
         </View>
@@ -356,7 +356,8 @@ function LoadingBar({
   useEffect(() => {
     const total = end - start
     const current = cur - start
-    setProgress((current / total) * 100)
+    const p = Math.max((current / total) * 100, 100)
+    setProgress(p)
 
     // If the mining is finished, refetch the mining status
     if (current >= total || progress >= 100) {
@@ -413,6 +414,7 @@ function timeLeft(cur: number, end: number) {
 }
 
 function adZero(num: number) {
+  if (num <= 0) return '00'
   return num < 10 ? `0${num}` : num
 }
 
