@@ -356,8 +356,8 @@ function LoadingBar({
   useEffect(() => {
     const total = end - start
     const current = cur - start
-    const p = Math.max((current / total) * 100, 100)
-    setProgress(p)
+    const p = (current / total) * 100
+    setProgress(p > 100 ? 100 : p)
 
     // If the mining is finished, refetch the mining status
     if (current >= total || progress >= 100) {
