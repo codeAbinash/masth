@@ -354,6 +354,7 @@ function LoadingBar({
   }, [])
 
   useEffect(() => {
+    let timer: any
     const total = end - start
     const current = cur - start
     const p = (current / total) * 100
@@ -361,11 +362,16 @@ function LoadingBar({
 
     // If the mining is finished, refetch the mining status
     if (current >= total || progress >= 100) {
-      mining.refetch()
+      timer = setTimeout(() => {
+        mining.refetch()
+      }, 5000)
+      setBalance(balance + coin)
     } else {
       const extraBalance = (current / total) * coin
       setBalance(balance + extraBalance)
     }
+
+    return () => timer && clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cur])
 
