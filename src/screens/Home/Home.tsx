@@ -1,4 +1,4 @@
-import { useLocalData } from '@/hooks/useHybridData'
+import useHybridData, { useLocalData } from '@/hooks/useHybridData'
 import MasthYellow from '@assets/icons/masth/masth-yellow.svg'
 import { SmallButton } from '@components/Button'
 import { PaddingTop } from '@components/SafePadding'
@@ -12,7 +12,7 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_mining_status_f, check_version_f, start_mining_f, type ProfileT } from '@query/api'
+import { check_mining_status_f, check_version_f, profile_f, start_mining_f, type ProfileT } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
@@ -250,8 +250,10 @@ function TotalLiveMining() {
 }
 
 function WalletBalance() {
-  const localProfile = useLocalData<ProfileT>('profile')
-  const [balance, setBalance] = React.useState(Number(localProfile?.data.coin || 0))
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
+  const profile = profileQuery.data?.data || localProfile?.data
+  const [balance, setBalance] = React.useState(Number(profile?.coin || 0))
   const mining = useQuery({
     queryKey: ['miningStatus'],
     queryFn: check_mining_status_f,
@@ -292,7 +294,7 @@ function WalletBalance() {
         <LoadingBar
           currentTime={mining.data.mining_data.current_time}
           setBalance={setBalance}
-          realBalance={Number(localProfile?.data.coin || 0)}
+          realBalance={Number(profile?.coin || 0)}
           startTime={mining.data?.mining_data.start_time}
           endTime={mining.data?.mining_data.end_time}
           mining={mining}
