@@ -2,15 +2,18 @@ import useHybridData from '@/hooks/useHybridData'
 import NotificationIcon from '@icons/notification.svg'
 import SettingIcon from '@icons/setting.svg'
 import { ProfileT, profile_f } from '@query/api'
+import { useNavigation, type NavigationProp } from '@react-navigation/native'
 import { useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
-import React, { useEffect } from 'react'
+import type { RootStackParamList } from 'App'
+import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
   // useEffect(() => {
   //   console.log(JSON.stringify(profile, null, 2))
@@ -18,7 +21,7 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
 
   return (
     <View className='flex flex-row items-center justify-between'>
-      <View className='flex flex-row gap-3.5'>
+      <TouchableOpacity className='flex flex-row gap-3.5' activeOpacity={0.7} onPress={() => navigation.navigate('EditProfile')}>
         <Image source={{ uri: profile?.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
@@ -26,7 +29,7 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
             {profile?.name || 'Loading...'}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
       {RightSide ? RightSide : null}
     </View>
   )
