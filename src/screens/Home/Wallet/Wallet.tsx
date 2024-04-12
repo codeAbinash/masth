@@ -51,8 +51,8 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
           tabs={[
             // { title: 'Send', UI: <Send /> },
             { title: 'Send', UI: <ComingSoonSvg width={width * 0.85} /> },
-            { title: 'Receive', UI: <Receive /> },
-            // { title: 'Receive', UI: <ComingSoonSvg width={width * 0.85} /> },
+            // { title: 'Receive', UI: <Receive /> },
+            { title: 'Receive', UI: <ComingSoonSvg width={width * 0.85} /> },
           ]}
         />
       </ScrollView>
