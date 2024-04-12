@@ -7,15 +7,18 @@ import Label from '@components/Label'
 import { SmallLoadingWrapped } from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import { Select } from '@components/Select'
-import { profile_f, ProfileT, updateProfile_f } from '@query/api'
+import { ProfileT, profile_f, updateProfile_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { oneSignalInit } from '@screens/Login/Setup'
 import { isValidEmail, isValidFullName } from '@screens/Login/utils'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { ls, secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
-import { formattedDate } from '@utils/utils'
+import { formattedDate, niceDate } from '@utils/utils'
 import React, { useState } from 'react'
 import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
+import { OneSignal } from 'react-native-onesignal'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -33,6 +36,31 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
   const [dob, setDob] = useState(new Date(profile?.date_of_birth || ''))
 
   const queryClient = useQueryClient()
+
+  const [isSignOut, setIsSignOut] = useState(false)
+
+  function signOut() {
+    Alert.alert('Log Out', 'Are you sure you want to log out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Yes', onPress: signOutHandler },
+    ])
+  }
+
+  function signOutHandler() {
+    setIsSignOut(true)
+    ls.clearAll()
+    secureLs.clearAll()
+    setTimeout(() => {
+      try {
+        oneSignalInit()
+        OneSignal.logout()
+      } catch (e) {
+        console.log(e)
+      } finally {
+        navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
+      }
+    })
+  }
 
   async function selectPic() {
     try {
@@ -152,7 +180,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               onPress={() => {
                 setShowDatePicker(true)
               }}
-              value={dob && formattedDate(dob)}
+              value={dob && niceDate(dob)}
             />
           </View>
           {updateMutation.isPending ? (
@@ -165,6 +193,14 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               LeftUI={<MaterialCommunityIcon name='creation' size={16} color='white' />}
             />
           )}
+          <View style={{ paddingBottom: 10 }}>
+            {isSignOut ? (
+              <Button title='Logging Out...' variant='outline' LeftUI={<SmallLoadingWrapped />} disabled={true} />
+            ) : (
+              <Button title='Log Out?' variant='outline' onPress={signOut} />
+            )}
+            <PaddingBottom />
+          </View>
         </View>
         <PaddingBottom />
       </KeyboardAvoidingContainer>

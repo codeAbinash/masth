@@ -1,19 +1,21 @@
+import useHybridData from '@/hooks/useHybridData'
 import { SmallButton } from '@components/Button'
 import KeyboardAvoidingContainer from '@components/KeyboardAvoidingContainer'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import Tabs from '@components/Tabs'
+import ComingSoonSvg from '@icons/coming-soon-2.svg'
 import LockIcon from '@icons/lock.svg'
 import SwapIcon from '@icons/swap.svg'
+import { profile_f, type ProfileT } from '@query/api'
+import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Receive from './Receive'
-import Send from './Send'
-import useHybridData from '@/hooks/useHybridData'
-import { profile_f, type ProfileT } from '@query/api'
-import { useQuery } from '@tanstack/react-query'
+
+const { width } = Dimensions.get('window')
 
 export default function Wallet({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
@@ -44,8 +46,10 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
         </View>
         <Tabs
           tabs={[
-            { title: 'Send', UI: <Send /> },
+            // { title: 'Send', UI: <Send /> },
+            { title: 'Send', UI: <ComingSoonSvg width={width * 0.85} /> },
             { title: 'Receive', UI: <Receive /> },
+            // { title: 'Receive', UI: <ComingSoonSvg width={width * 0.85} /> },
           ]}
         />
       </ScrollView>

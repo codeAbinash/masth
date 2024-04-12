@@ -1,38 +1,35 @@
-import icons from '@assets/icons/icons'
 import AppIconBlack from '@assets/icons/masth/masth-black.svg'
 import BottomSheet, { BottomSheetRefProps } from '@components/BottomSheet'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import { SmallLoadingWrapped } from '@components/Loading'
+import { PaddingTop } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { signUpApi_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useMutation } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
-import { formattedDate, removePlusBeforeCountryCode } from '@utils/utils'
+import { formattedDate, niceDate, removePlusBeforeCountryCode } from '@utils/utils'
 import React from 'react'
-import { Alert, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
-import { PaddingTop } from '@components/SafePadding'
 
 const appIconSize = 0.1
 const aspectRatio = 1060 / 188
 
 const { width } = Dimensions.get('window')
 
-const LANGUAGES = [
-  { id: 1, name: 'English (UK)' },
+const LANGUAGES = [{ id: 1, name: 'English (UK)' }]
+
+const LANGUAGES_UPCOMING = [
   { id: 2, name: 'Hindi' },
   { id: 3, name: 'Indonesian' },
   { id: 4, name: 'Urdu' },
   { id: 5, name: 'German' },
   { id: 6, name: 'Russian' },
-]
-
-const LANGUAGES_UPCOMING = [
   { id: 7, name: 'Arabic' },
   { id: 8, name: 'Turki' },
   { id: 9, name: 'African' },
@@ -44,7 +41,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   const languageSheet = React.useRef<BottomSheetRefProps>(null)
   const [country_code, setCountry_code] = React.useState('+91')
   const [lang, setLang] = React.useState(LANGUAGES[0].name)
-  const [dob, setDob] = React.useState<Date>(new Date())
+  const [dob, setDob] = React.useState<Date | null>(null)
   const [showDatePicker, setShowDatePicker] = React.useState(false)
   const [phone, setPhone] = React.useState('')
   const [username, setUsername] = React.useState('')
@@ -96,7 +93,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
 
               <Text className='text-center font-mono text-3xl font-bold text-black'>Let's Sign Up</Text>
               <Text className='p-4 px-10 pt-1 text-center text-lg text-neutral-500' style={{ lineHeight: 25 }}>
-                There are many variations of passages of Lorem Ipsum available
+                Join Us And Start Mining Today
               </Text>
             </View>
             <View style={{ gap: 10, marginTop: 10 }}>
@@ -127,7 +124,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
                 onPress={() => {
                   setShowDatePicker(true)
                 }}
-                value={dob && formattedDate(dob)}
+                value={dob ? niceDate(dob) : ''}
               />
               <Select
                 placeholder='Language'

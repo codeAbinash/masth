@@ -13,7 +13,7 @@ import React from 'react'
 import { StatusBar, TouchableOpacity, View } from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
-import Profile from './Profile/Profile'
+import EditProfile from './Profile/EditProfile'
 import Wallet from './Wallet/Wallet'
 
 function HomeIcon(props: { focused: boolean; color: string; size: number }) {
@@ -140,7 +140,7 @@ const Home = () => {
         />
         <Tab.Screen
           name='Profile'
-          component={Profile}
+          component={EditProfile}
           options={{
             tabBarLabel: 'Profile',
             headerShown: false,

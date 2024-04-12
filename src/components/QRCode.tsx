@@ -1,6 +1,7 @@
 import { Dimensions, View, ViewProps } from 'react-native'
 import QRCodeStyled, { GradientProps, useQRCodeData } from 'react-native-qrcode-styled'
 import BlackM from '@assets/icons/m/m-black.svg'
+import { colors } from '@utils/colors'
 
 const { width } = Dimensions.get('window')
 
@@ -32,7 +33,8 @@ export default function QR_CODE({ str, scale = 0.8, ...rest }: QR_CODEProps) {
           {
             type: 'linear',
             options: {
-              colors: ['#2aa3ce', '#466cef'],
+              // colors: ['#2aa3ce', '#466cef'],
+              colors: ['black', 'black'],
               start: [0, 0],
               end: [1, 1],
             },

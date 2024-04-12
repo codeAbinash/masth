@@ -50,9 +50,9 @@ export default function Login({ navigation }: { navigation: StackNav }) {
           <View className='flex items-center justify-center'>
             {/* <Image source={icons.appIcon} style={{ width: width * appIconSize * 1.37, height: width * appIconSize }} /> */}
             <AppIconBlack width={width * appIconSize * aspectRatio} height={width * appIconSize * aspectRatio} />
-            <Text className='text-center font-mono text-4xl font-bold text-black'>Welcome</Text>
+            <Text className='text-center font-mono text-4xl font-bold text-black'>Login</Text>
             <Text className='p-4 px-10 pt-1 text-center text-lg text-neutral-500' style={{ lineHeight: 25 }}>
-              There are many variations of passages of Lorem Ipsum available
+              Welcome Back !
             </Text>
           </View>
           <View style={{ gap: 10, marginTop: 10 }}>

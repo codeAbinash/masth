@@ -3,13 +3,13 @@ import { Button } from '@components/Button'
 import Loading from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import Tabs from '@components/Tabs'
-import { get_referred_members_f, profile_f } from '@query/api'
+import { get_referred_members_f, profile_f, type ProfileT } from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
 import { shareText } from '@utils/utils'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
@@ -24,6 +24,10 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
     },
     initialPageParam: null,
   })
+
+  useEffect(() => {
+    console.log(JSON.stringify(data, null, 2))
+  }, [data])
 
   const loadNext = () => {
     fetchNextPage()
@@ -63,13 +67,12 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
                   {
                     title: 'Inactive Miners',
                     UI: null,
-                    disabled: true,
                   },
                 ]}
               />
               {!data?.pages.at(-1)?.list.data.length && (
                 <View className='flex-1 items-center justify-center py-24'>
-                  <Text className='text-center text-neutral-600'>No Active Miners</Text>
+                  <Text className='text-center text-neutral-600'>No Miners</Text>
                 </View>
               )}
             </View>
@@ -86,18 +89,19 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
 }
 
 function ReferCard({ bonus }: { bonus: string }) {
-  const referText = 'Refer a friend and earn 10% bonus on every mining they do. Share your referral code with your friends and family and earn more.'
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+
+  const referText = `Start Mining Masth Now! Use My Referral Code ${profileQuery.data?.data.refer_code} For A Boosted Initial Mining Rate. Install Masth: Crypto Miner from the Play Store. 💰👇 
+https://play.google.com/store/apps/details?id=com.crypto.miner.masth`
   return (
     <View className='mt-5 rounded-3xl bg-white p-5'>
       <View>
-        <Text className='text-lg'>
-          Get <Text className='text-accent'>{bonus} MST</Text> for every referral
-        </Text>
+        <Text className='text-lg'>What You Get ?</Text>
         <Text className='text-base text-neutral-500'>
-          When referred user starts mining, you will get <Text className='text-accent'>{bonus} MST</Text> as a bonus.
+          You Will Get <Text className='text-accent'>{bonus} MST</Text> Every time When Your Referral Start Mining.
         </Text>
       </View>
-      <ReferCode />
+      <ReferCode profileQuery={profileQuery} />
       <Button
         title='Refer'
         className='mt-4'
@@ -109,8 +113,7 @@ function ReferCard({ bonus }: { bonus: string }) {
   )
 }
 
-function ReferCode() {
-  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+function ReferCode({ profileQuery }: { profileQuery: UseQueryResult<ProfileT, Error> }) {
   const [copied, setCopied] = useState(false)
   const onPress = () => {
     Clipboard.setString(profileQuery.data?.data.refer_code || '')
