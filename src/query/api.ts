@@ -195,6 +195,10 @@ export interface HomeStatisticsT {
   total_miners: number
   total_remote_mining: number
   total_live_mining: number
+  valuation: {
+    currency: string
+    rate: number
+  }
 }
 export function home_statics_f() {
   return postApi<HomeStatisticsT>('home/Statics', null)

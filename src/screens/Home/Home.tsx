@@ -48,6 +48,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
     setLocalData(home?.total_miners, 'total_miners')
     setLocalData(home?.total_remote_mining, 'total_remote_mining')
     setLocalData(home?.total_live_mining, 'total_live_mining')
+    setLocalData(home?.valuation.rate, 'mstPerUSD')
   }, [home])
 
   // useEffect(() => {
@@ -61,7 +62,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
           <PaddingTop />
           <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
           <WalletBalance profile={profile} />
-          <MSTPerUSDCard />
+          <MSTPerUSDCard home={home} />
           <Miners home={home} />
           <TotalRemoteMining navigation={navigation} home={home} />
           <TotalLiveMining home={home} />
@@ -177,7 +178,7 @@ function TotalRemoteMining({ navigation, home }: { navigation: StackNav; home: H
         <View className='items-end'>
           {/* <Text className='text-sm text-greenPrimary'>More than usual</Text> */}
           <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
-            {diff < 0 ? '-' : '+'}
+            {diff < 0 ? '' : '+'}
             {diff.toFixed(4)}
           </Text>
         </View>
@@ -200,7 +201,7 @@ function ActiveMiners({ home }: { home: HomeStatisticsT | null }) {
         <View>
           <View className={`flex-row items-center rounded-full ${diff < 0 ? 'bg-redPrimary' : 'bg-bgGreen'} px-3 py-0.5`} style={{ gap: 8 }}>
             <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
-              {diff < 0 ? '-' : '+'}
+              {diff < 0 ? '' : '+'}
               {diff}
             </Text>
             {diff < 0 ? (
@@ -234,8 +235,7 @@ function TotalMiners({ home }: { home: HomeStatisticsT | null }) {
         <View>
           <View className={`flex-row items-center rounded-full ${diff < 0 ? 'bg-red-500' : 'bg-bgGreen'} px-3 py-0.5`} style={{ gap: 8 }}>
             <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
-              {diff < 0 ? '-' : '+'}
-
+              {diff < 0 ? '' : '+'}
               {diff}
             </Text>
             {diff < 0 ? (
@@ -272,7 +272,7 @@ function TotalLiveMining({ home }: { home: HomeStatisticsT | null }) {
               <View className='flex-row items-center rounded-full bg-bgGreen px-2 py-0.5' style={{ gap: 5 }}>
                 <View className='flex-row items-end'>
                   <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
-                    {diff < 0 ? '-' : '+'}
+                    {diff < 0 ? '' : '+'}
                     {diff.toFixed(3)}
                   </Text>
                   <Text style={{ fontSize: 12 }} className='pb-0.5 pl-1 text-greenPrimary'>
@@ -491,12 +491,15 @@ function NewsFeed() {
   )
 }
 
-function MSTPerUSDCard() {
+function MSTPerUSDCard({ home }: { home: HomeStatisticsT | null }) {
+  const mstPerUSD = Number(useLocalData<number>('mstPerUSD') || 0)
+  const diff = Number(home?.valuation.rate || 0) - mstPerUSD
+  const diffPercent = diff === 0 || mstPerUSD === 0 ? 0 : (diff / mstPerUSD) * 100
   return (
     <View className='mt-4 flex-row items-center justify-between rounded-2xl bg-white p-3.5 px-5'>
       <View style={{ gap: 5 }} className='flex-row items-center'>
-        <Text className='text-base text-neutral-600'>MST / USD</Text>
-        <Text className='text-base'> 0.99</Text>
+        <Text className='text-base text-neutral-600'>MST / {home?.valuation.currency}</Text>
+        <Text className='text-base'>{home?.valuation.rate}</Text>
         {/* <Tooltip
           title='Masth,calculates coin value using a smart system created by “Nexgino Technology Solutions”. It considers mining, downloads, and user activity every day for accurate valuation.'
           enterTouchDelay={0}
@@ -515,7 +518,11 @@ function MSTPerUSDCard() {
         {/* </Tooltip> */}
       </View>
       <View>
-        <Text className='text-base text-greenPrimary'>+0.08 (0.2%)</Text>
+        <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
+          {/* +0.08 (0.2%) */}
+          {diff < 0 ? '' : '+'}
+          {diff.toFixed(2)} ({Math.abs(diffPercent).toFixed(2)}%)
+        </Text>
       </View>
     </View>
   )
