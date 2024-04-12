@@ -9,24 +9,16 @@ import type { RootStackParamList } from 'App'
 import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 
-export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
-  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
-  const profile = profileQuery.data?.data || localProfile?.data
+export default function SmallProfile({ RightSide, profile }: { RightSide?: React.ReactNode; profile: ProfileT | null }) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
-
-  // useEffect(() => {
-  //   console.log(JSON.stringify(profile, null, 2))
-  // }, [profile])
-
   return (
     <View className='flex flex-row items-center justify-between'>
       <TouchableOpacity className='flex flex-row gap-3.5' activeOpacity={0.7} onPress={() => navigation.navigate('EditProfile')}>
-        <Image source={{ uri: profile?.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
+        <Image source={{ uri: profile?.data.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
           <Text className='font-bold' style={{ fontSize: 16 }}>
-            {profile?.name || 'Loading...'}
+            {profile?.data.name || 'Loading...'}
           </Text>
         </View>
       </TouchableOpacity>

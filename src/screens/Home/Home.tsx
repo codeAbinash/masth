@@ -12,7 +12,7 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_mining_status_f, check_version_f, profile_f, start_mining_f, type ProfileT } from '@query/api'
+import { check_mining_status_f, check_version_f, home_statics_f, profile_f, start_mining_f, type HomeStatisticsT, type ProfileT } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
@@ -20,7 +20,6 @@ import { StackNav } from '@utils/types'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
 import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Tooltip } from 'react-native-paper'
 import { default as FeatherIcon, default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
@@ -36,20 +35,32 @@ function handleAppUpdate(navigation: StackNav) {
   })
 }
 export default function Home({ navigation }: { navigation: StackNav }) {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const profile = useHybridData<ProfileT>(profileQuery, 'profile')
   useEffect(() => handleAppUpdate(navigation), [navigation])
 
+  const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
+  const home = useHybridData(homeStatics, 'homeStatics')
+
+  useEffect(() => {
+    console.log(JSON.stringify(home, null, 2))
+  }, [home])
+
+  // useEffect(() => {
+  //   console.log(JSON.stringify(profile, null, 2))
+  // }, [profile])
   return (
     <>
       <PopupScreen />
       <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
         <View className='pb-10'>
           <PaddingTop />
-          <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
-          <WalletBalance />
+          <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} profile={profile} />
+          <WalletBalance profile={profile} />
           <MSTPerUSDCard />
-          <Miners />
-          <TotalRemoteMining navigation={navigation} />
-          <TotalLiveMining />
+          <Miners home={home} />
+          <TotalRemoteMining navigation={navigation} home={home} />
+          <TotalLiveMining home={home} />
           <View className='mt-2 flex items-center justify-center'>{/* <Text>{secureLs.getString('token')}</Text> */}</View>
         </View>
       </ScrollView>
@@ -121,16 +132,16 @@ const styles = StyleSheet.create({
   },
 })
 
-function Miners() {
+function Miners({ home }: { home: HomeStatisticsT | null }) {
   return (
     <View className='mt-4 flex-row' style={{ gap: 18 }}>
-      <ActiveMiners />
-      <TotalMiners />
+      <ActiveMiners home={home} />
+      <TotalMiners home={home} />
     </View>
   )
 }
 
-function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
+function TotalRemoteMining({ navigation, home }: { navigation: StackNav; home: HomeStatisticsT | null }) {
   return (
     <View className='mt-4 rounded-3xl  bg-white p-5'>
       <View className='flex-row justify-between' style={{ gap: 15 }}>
@@ -151,7 +162,7 @@ function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
       <View className='mt-3 flex flex-row items-end justify-between'>
         <View>
           <View className='flex-row items-end gap-x-1'>
-            <Text className='text-2xl'>42.0728</Text>
+            <Text className='text-2xl'>{home?.total_remote_mining || 0}</Text>
             <Text className='mb-0.5 text-base text-neutral-600'>MST</Text>
           </View>
           <Text className='text-base text-neutral-600'>Total Remote Mining</Text>
@@ -165,7 +176,7 @@ function TotalRemoteMining({ navigation }: { navigation: StackNav }) {
   )
 }
 
-function ActiveMiners() {
+function ActiveMiners({ home }: { home: HomeStatisticsT | null }) {
   return (
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
@@ -182,14 +193,14 @@ function ActiveMiners() {
         </View>
       </View>
       <View>
-        <Text className='text-3xl'>24</Text>
+        <Text className='text-3xl'>{home?.active_miners || 0}</Text>
         <Text className='mt-1 text-base text-neutral-600'>Active Miners</Text>
       </View>
     </View>
   )
 }
 
-function TotalMiners() {
+function TotalMiners({ home }: { home: HomeStatisticsT | null }) {
   return (
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
@@ -206,14 +217,14 @@ function TotalMiners() {
         </View>
       </View>
       <View>
-        <Text className='text-3xl'>24</Text>
+        <Text className='text-3xl'>{home?.total_miners || 0}</Text>
         <Text className='mt-1 text-base text-neutral-600'>Total Miners</Text>
       </View>
     </View>
   )
 }
 
-function TotalLiveMining() {
+function TotalLiveMining({ home }: { home: HomeStatisticsT | null }) {
   return (
     <View className='mt-4 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
       <View>
@@ -239,7 +250,7 @@ function TotalLiveMining() {
           </View>
         </View>
         <View className='mt-1 flex-row items-end gap-x-1'>
-          <Text className='text-2xl'>4289192.0728</Text>
+          <Text className='text-2xl'>{home?.total_live_mining || 0}</Text>
           <Text className='mb-0.5 text-base text-neutral-600'>MST</Text>
         </View>
       </View>
@@ -247,11 +258,8 @@ function TotalLiveMining() {
   )
 }
 
-function WalletBalance() {
-  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
-  const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
-  const profile = profileQuery.data?.data || localProfile?.data
-  const [balance, setBalance] = React.useState(Number(profile?.coin || 0))
+function WalletBalance({ profile }: { profile: ProfileT | null }) {
+  const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
   const mining = useQuery({
     queryKey: ['miningStatus'],
     queryFn: check_mining_status_f,
@@ -292,7 +300,7 @@ function WalletBalance() {
         <LoadingBar
           currentTime={mining.data.mining_data.current_time}
           setBalance={setBalance}
-          realBalance={Number(profile?.coin || 0)}
+          realBalance={Number(profile?.data.coin || 0)}
           startTime={mining.data?.mining_data.start_time}
           endTime={mining.data?.mining_data.end_time}
           mining={mining}

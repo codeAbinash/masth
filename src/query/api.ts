@@ -188,3 +188,14 @@ export interface CheckVersionT {
 export function check_version_f() {
   return postApi<CheckVersionT>('env/check_version', null)
 }
+
+export interface HomeStatisticsT {
+  status: boolean
+  active_miners: number
+  total_miners: number
+  total_remote_mining: number
+  total_live_mining: number
+}
+export function home_statics_f() {
+  return postApi<HomeStatisticsT>('home/Statics', null)
+}
