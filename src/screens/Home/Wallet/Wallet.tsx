@@ -7,7 +7,7 @@ import Tabs from '@components/Tabs'
 import ComingSoonSvg from '@icons/coming-soon-2.svg'
 import LockIcon from '@icons/lock.svg'
 import SwapIcon from '@icons/swap.svg'
-import { profile_f, type ProfileT } from '@query/api'
+import { home_statics_f, profile_f, type HomeStatisticsT, type ProfileT } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
@@ -20,6 +20,9 @@ const { width } = Dimensions.get('window')
 export default function Wallet({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const profile = useHybridData<ProfileT>(profileQuery, 'profile')
+  const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
+  const home = useHybridData(homeStatics, 'homeStatics')
+
   return (
     <KeyboardAvoidingContainer style={{ backgroundColor: colors.bgSecondary }}>
       <ScrollView className='p-5 pb-10'>
@@ -42,7 +45,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
           </TouchableOpacity>
         </View>
         <View>
-          <WalletBalance balance={Number(profile?.data.coin || 0)} />
+          <WalletBalance balance={Number(profile?.data.coin || 0)} home={home} />
         </View>
         <Tabs
           tabs={[
@@ -57,7 +60,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
   )
 }
 
-function WalletBalance({ balance }: { balance: number }) {
+function WalletBalance({ balance, home }: { balance: number; home: HomeStatisticsT | null }) {
   return (
     <View className='mt-4 rounded-3xl bg-yellowPrimary p-5'>
       <Text className='text-base text-onYellow'>Wallet Balance</Text>
@@ -72,7 +75,7 @@ function WalletBalance({ balance }: { balance: number }) {
           <SmallButton title='Withdraw' LeftUI={<LockIcon height={16} width={16} />} />
         </View>
         <Text style={{ flex: 0.5, fontSize: 15 }} className='text-onYellow'>
-          MST / USD 0.99
+          MST / {home?.valuation.currency} {home?.valuation.rate}
         </Text>
       </View>
     </View>

@@ -67,6 +67,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
                   {
                     title: 'Inactive Miners',
                     UI: null,
+                    disabled: true,
                   },
                 ]}
               />

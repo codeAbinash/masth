@@ -48,6 +48,10 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   const [username, setUsername] = React.useState('')
   const [name, setName] = React.useState('')
 
+  function setLowercaseUsername(text: string) {
+    setUsername(text.toLowerCase())
+  }
+
   const signUpMutation = useMutation({
     mutationFn: () => signUpApi_f({ username, country_code: removePlusBeforeCountryCode(country_code), dob: formattedDate(dob), lang, name, phone }),
     onSuccess: (data) => {
@@ -98,7 +102,12 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
               </Text>
             </View>
             <View style={{ gap: 10, marginTop: 10 }}>
-              <Input placeholder='Username' LeftUI={<Icon name='at' size={20} color='black' />} onChangeText={setUsername} value={username} />
+              <Input
+                placeholder='Username'
+                LeftUI={<Icon name='at' size={20} color='black' />}
+                onChangeText={setLowercaseUsername}
+                value={username}
+              />
               <Input placeholder='Full Name' LeftUI={<Icon name='account-outline' size={20} color='black' />} onChangeText={setName} value={name} />
               <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
                 <Select

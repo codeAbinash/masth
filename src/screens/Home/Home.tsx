@@ -361,7 +361,7 @@ function WalletBalance({ profile }: { profile: ProfileT | null }) {
             </Text>
             <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
               {' '}
-              / hour
+              / Hour
             </Text>
           </View>
         </View>
@@ -498,8 +498,10 @@ function MSTPerUSDCard({ home }: { home: HomeStatisticsT | null }) {
   return (
     <View className='mt-4 flex-row items-center justify-between rounded-2xl bg-white p-3.5 px-5'>
       <View style={{ gap: 5 }} className='flex-row items-center'>
-        <Text className='text-base text-neutral-600'>MST / {home?.valuation.currency}</Text>
-        <Text className='text-base'>{home?.valuation.rate}</Text>
+        <Text className='text-base text-neutral-600'>
+          MST / {home?.valuation.currency} {home?.valuation.rate}
+        </Text>
+        {/* <Text className='text-base'></Text>  */}
         {/* <Tooltip
           title='Masth,calculates coin value using a smart system created by “Nexgino Technology Solutions”. It considers mining, downloads, and user activity every day for accurate valuation.'
           enterTouchDelay={0}
