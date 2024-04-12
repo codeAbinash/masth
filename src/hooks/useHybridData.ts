@@ -10,7 +10,7 @@ function getLocalData<T>(queryData: T | undefined, key: string): T | null {
   return null
 }
 
-function setLocalData<T>(data: T, key: string) {
+export function setLocalData<T>(data: T, key: string) {
   if (data) {
     console.log(`Set local ${key} data`)
     ls.set(key, JSON.stringify(data))

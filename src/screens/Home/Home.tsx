@@ -1,4 +1,4 @@
-import useHybridData from '@/hooks/useHybridData'
+import useHybridData, { setLocalData, useLocalData } from '@/hooks/useHybridData'
 import MasthYellow from '@assets/icons/masth/masth-yellow.svg'
 import { SmallButton } from '@components/Button'
 import { PaddingTop } from '@components/SafePadding'
@@ -44,6 +44,10 @@ export default function Home({ navigation }: { navigation: StackNav }) {
 
   useEffect(() => {
     console.log(JSON.stringify(home, null, 2))
+    setLocalData(home?.active_miners, 'active_miners')
+    setLocalData(home?.total_miners, 'total_miners')
+    setLocalData(home?.total_remote_mining, 'total_remote_mining')
+    setLocalData(home?.total_live_mining, 'total_live_mining')
   }, [home])
 
   // useEffect(() => {
@@ -55,7 +59,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
       <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
         <View className='pb-10'>
           <PaddingTop />
-          <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} profile={profile} />
+          <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
           <WalletBalance profile={profile} />
           <MSTPerUSDCard />
           <Miners home={home} />
@@ -142,6 +146,9 @@ function Miners({ home }: { home: HomeStatisticsT | null }) {
 }
 
 function TotalRemoteMining({ navigation, home }: { navigation: StackNav; home: HomeStatisticsT | null }) {
+  const totalRemoteMining = Number(useLocalData<number>('total_remote_mining') || 0)
+  const diff = Number(home?.total_remote_mining || 0) - totalRemoteMining
+
   return (
     <View className='mt-4 rounded-3xl  bg-white p-5'>
       <View className='flex-row justify-between' style={{ gap: 15 }}>
@@ -168,8 +175,11 @@ function TotalRemoteMining({ navigation, home }: { navigation: StackNav; home: H
           <Text className='text-base text-neutral-600'>Total Remote Mining</Text>
         </View>
         <View className='items-end'>
-          <Text className='text-sm text-greenPrimary'>More than usual</Text>
-          <Text className='text-sm text-greenPrimary'>1.023 MST</Text>
+          {/* <Text className='text-sm text-greenPrimary'>More than usual</Text> */}
+          <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
+            {diff < 0 ? '-' : '+'}
+            {diff.toFixed(4)}
+          </Text>
         </View>
       </View>
     </View>
@@ -177,6 +187,8 @@ function TotalRemoteMining({ navigation, home }: { navigation: StackNav; home: H
 }
 
 function ActiveMiners({ home }: { home: HomeStatisticsT | null }) {
+  const activeMiners = Number(useLocalData<number>('active_miners') || 0)
+  const diff = Number(home?.active_miners || 0) - activeMiners
   return (
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
@@ -186,9 +198,17 @@ function ActiveMiners({ home }: { home: HomeStatisticsT | null }) {
           </View>
         </View>
         <View>
-          <View className='flex-row items-center rounded-full bg-bgGreen px-3 py-0.5' style={{ gap: 8 }}>
-            <Text className='text-base text-greenPrimary'>+5</Text>
-            <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
+          <View className={`flex-row items-center rounded-full ${diff < 0 ? 'bg-redPrimary' : 'bg-bgGreen'} px-3 py-0.5`} style={{ gap: 8 }}>
+            <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
+              {diff < 0 ? '-' : '+'}
+              {diff}
+            </Text>
+            {diff < 0 ? (
+              <ArrowDownBold width={9} height={9} color={colors.redPrimary} />
+            ) : (
+              <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
+            )}
+            {/* <ArrowUpBold width={9} height={9} color={colors.greenPrimary} /> */}
           </View>
         </View>
       </View>
@@ -201,6 +221,8 @@ function ActiveMiners({ home }: { home: HomeStatisticsT | null }) {
 }
 
 function TotalMiners({ home }: { home: HomeStatisticsT | null }) {
+  const totalMiners = Number(useLocalData<number>('total_miners') || 0)
+  const diff = Number(home?.total_miners || 0) - totalMiners
   return (
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
@@ -210,9 +232,17 @@ function TotalMiners({ home }: { home: HomeStatisticsT | null }) {
           </View>
         </View>
         <View>
-          <View className='flex-row items-center rounded-full bg-red-500/20 px-3 py-0.5' style={{ gap: 8 }}>
-            <Text className='text-base text-red-500'>-5</Text>
-            <ArrowDownBold width={9} height={9} />
+          <View className={`flex-row items-center rounded-full ${diff < 0 ? 'bg-red-500' : 'bg-bgGreen'} px-3 py-0.5`} style={{ gap: 8 }}>
+            <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
+              {diff < 0 ? '-' : '+'}
+
+              {diff}
+            </Text>
+            {diff < 0 ? (
+              <ArrowDownBold width={9} height={9} color={colors.redPrimary} />
+            ) : (
+              <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
+            )}
           </View>
         </View>
       </View>
@@ -225,6 +255,8 @@ function TotalMiners({ home }: { home: HomeStatisticsT | null }) {
 }
 
 function TotalLiveMining({ home }: { home: HomeStatisticsT | null }) {
+  const totalLiveMining = Number(useLocalData<number>('total_live_mining') || 0)
+  const diff = Number(home?.total_live_mining || 0) - totalLiveMining
   return (
     <View className='mt-4 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
       <View>
@@ -239,12 +271,19 @@ function TotalLiveMining({ home }: { home: HomeStatisticsT | null }) {
             <View>
               <View className='flex-row items-center rounded-full bg-bgGreen px-2 py-0.5' style={{ gap: 5 }}>
                 <View className='flex-row items-end'>
-                  <Text className='text-base text-greenPrimary'>+3.2345</Text>
+                  <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
+                    {diff < 0 ? '-' : '+'}
+                    {diff.toFixed(3)}
+                  </Text>
                   <Text style={{ fontSize: 12 }} className='pb-0.5 pl-1 text-greenPrimary'>
                     MST
                   </Text>
                 </View>
-                <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
+                {diff < 0 ? (
+                  <ArrowDownBold width={9} height={9} color={colors.redPrimary} />
+                ) : (
+                  <ArrowUpBold width={9} height={9} color={colors.greenPrimary} />
+                )}
               </View>
             </View>
           </View>

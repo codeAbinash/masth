@@ -9,7 +9,9 @@ import type { RootStackParamList } from 'App'
 import React from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 
-export default function SmallProfile({ RightSide, profile }: { RightSide?: React.ReactNode; profile: ProfileT | null }) {
+export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNode }) {
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
+  const profile = useHybridData<ProfileT>(profileQuery, 'profile')
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
   return (
     <View className='flex flex-row items-center justify-between'>
