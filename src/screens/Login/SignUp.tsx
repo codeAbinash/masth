@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
+import BottomText from './BottomText'
 
 const appIconSize = 0.1
 const aspectRatio = 1060 / 188
@@ -150,7 +151,8 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
               />
             </View>
           </View>
-          <Text className='mt-2 text-center text-gray-600'>By continuing you are accepting our Terms and Conditions</Text>
+          <View className='h-5' />
+          <BottomText />
         </View>
       </ScrollView>
       <BottomSheet ref={sheet}>

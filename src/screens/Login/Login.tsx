@@ -3,7 +3,7 @@ import BottomSheet, { BottomSheetRefProps } from '@components/BottomSheet'
 import { Button } from '@components/Button'
 import { Input } from '@components/Input'
 import { SmallLoading } from '@components/Loading'
-import { PaddingBottom, PaddingTop } from '@components/SafePadding'
+import { PaddingTop } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { loginApi_f } from '@query/api'
 import { useMutation } from '@tanstack/react-query'
@@ -12,6 +12,7 @@ import { removePlusBeforeCountryCode } from '@utils/utils'
 import { useRef, useState } from 'react'
 import { Alert, Dimensions, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import BottomText from './BottomText'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidPhoneNumber } from './utils'
 
@@ -92,10 +93,7 @@ export default function Login({ navigation }: { navigation: StackNav }) {
         <View />
         <View />
         <View />
-        <View>
-          <Text className='text-center text-gray-600'>By continuing you are accepting our Terms and Conditions</Text>
-          <PaddingBottom />
-        </View>
+        <BottomText />
       </View>
       <BottomSheet ref={sheet}>
         <CountryCodeSelector

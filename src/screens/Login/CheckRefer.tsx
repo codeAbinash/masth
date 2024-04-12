@@ -10,11 +10,12 @@ import { StackNav } from '@utils/types'
 import { useState } from 'react'
 import { Alert, Dimensions, Image, Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Octicons'
+import ReferralImage from '@images/referral.svg'
 
 const { width, height } = Dimensions.get('window')
 
-const IMG_WIDTH = width - 50
-const IMG_HEIGHT = (IMG_WIDTH * 749) / 1000
+const IMG_WIDTH = width * 0.8
+const IMG_HEIGHT = width * 0.8
 
 export default function CheckRefer({ navigation }: { navigation: StackNav }) {
   const [refer_code, setRefer_code] = useState('')
@@ -55,7 +56,8 @@ export default function CheckRefer({ navigation }: { navigation: StackNav }) {
         <View className='h-screen flex-1 justify-between p-5'>
           <Text className='text-center text-2xl font-bold'>Are you Referred?</Text>
           <View style={{ gap: 20 }} className='items-center justify-center'>
-            <Image source={Images.referral} style={{ width: IMG_WIDTH, height: IMG_HEIGHT, resizeMode: 'contain', marginBottom: 20 }} />
+            {/* <Image source={Images.referral} style={{ width: IMG_WIDTH, height: IMG_HEIGHT, resizeMode: 'contain', marginBottom: 20 }} /> */}
+            <ReferralImage width={IMG_WIDTH} height={IMG_HEIGHT} style={{ marginBottom: 20 }} />
             <Text className='text-center text-lg'>If you have a referral code, enter it here.</Text>
             <Input
               placeholder='Enter Refer Code'
