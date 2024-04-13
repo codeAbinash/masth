@@ -204,3 +204,13 @@ export interface HomeStatisticsT {
 export function home_statics_f() {
   return postApi<HomeStatisticsT>('home/Statics', null)
 }
+
+export interface PopupDataT {
+  status: boolean
+  banner_image: string
+  action_link: string
+  button_text: string
+}
+export function popup_image_f() {
+  return postApi<PopupDataT>('home/popup_banner', null)
+}

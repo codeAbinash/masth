@@ -12,14 +12,24 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_mining_status_f, check_version_f, home_statics_f, profile_f, start_mining_f, type HomeStatisticsT, type ProfileT } from '@query/api'
+import {
+  check_mining_status_f,
+  check_version_f,
+  home_statics_f,
+  popup_image_f,
+  profile_f,
+  start_mining_f,
+  type HomeStatisticsT,
+  type PopupDataT,
+  type ProfileT,
+} from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
-import { Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, Linking, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { default as FeatherIcon, default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
@@ -27,7 +37,6 @@ const { width } = Dimensions.get('window')
 
 function handleAppUpdate(navigation: StackNav) {
   check_version_f().then((appVersion) => {
-    console.log(appVersion)
     if (APP_V_CODE !== appVersion.version_code && appVersion.force_update) {
       navigation.replace('AppUpdate', {
         link: appVersion.store_link || appVersion.custom_link || '',
@@ -43,8 +52,14 @@ export default function Home({ navigation }: { navigation: StackNav }) {
   const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
   const home = useHybridData(homeStatics, 'homeStatics')
 
+  const popupImage = useQuery({ queryKey: ['popupImage'], queryFn: popup_image_f })
+
   useEffect(() => {
-    console.log(JSON.stringify(home, null, 2))
+    console.log(JSON.stringify(popupImage.data, null, 2))
+  }, [popupImage])
+
+  useEffect(() => {
+    // console.log(JSON.stringify(home, null, 2))
     setLocalData(home?.active_miners, 'active_miners')
     setLocalData(home?.total_miners, 'total_miners')
     setLocalData(home?.total_remote_mining, 'total_remote_mining')
@@ -57,7 +72,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
   // }, [profile])
   return (
     <>
-      <PopupScreen />
+      <PopupScreen popup={popupImage.data} />
       <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
         <View className='pb-10'>
           <PaddingTop />
@@ -76,24 +91,25 @@ export default function Home({ navigation }: { navigation: StackNav }) {
 
 const { height } = Dimensions.get('window')
 
-function PopupScreen() {
+//#region PopupScreen
+function PopupScreen({ popup }: { popup: PopupDataT | undefined }) {
   const [modalVisible, setModalVisible] = React.useState(false)
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setModalVisible(true)
-  //   }, 1000)
-  //   return () => clearTimeout(timer)
-  // }, [])
+
+  useEffect(() => {
+    if (popup?.banner_image) {
+      setModalVisible(true)
+    }
+  }, [popup])
+
+  if (!popup) return null
+
   return (
     <View style={styles.centeredView}>
       <Modal
         animationType='fade'
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.')
-          setModalVisible(!modalVisible)
-        }}
+        onRequestClose={() => setModalVisible(!modalVisible)}
         statusBarTranslucent={true}
       >
         <View style={styles.centeredView}>
@@ -105,17 +121,22 @@ function PopupScreen() {
             </View>
           </View>
           <View>
-            <Image source={require('@images/popup-image.jpg')} style={{ width: width * 0.9, height: width * 0.9, borderRadius: 20 }} />
-            <View className='mt-7 items-center justify-center'>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                className='items-center justify-center bg-accentYellow px-4 py-3 text-white'
-                style={{ minWidth: width * 0.5, borderRadius: 15 }}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text className='text-lg uppercase text-white'>Start Mining</Text>
-              </TouchableOpacity>
-            </View>
+            <Image source={{ uri: popup.banner_image }} style={{ width: width * 0.9, height: width * 0.9, borderRadius: 20 }} />
+            {popup.action_link && (
+              <View className='mt-7 items-center justify-center'>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  className='items-center justify-center bg-accentYellow px-4 py-3 text-white'
+                  style={{ minWidth: width * 0.5, borderRadius: 15 }}
+                  onPress={() => {
+                    Linking.openURL(popup.action_link)
+                    setModalVisible(!modalVisible)
+                  }}
+                >
+                  <Text className='text-lg uppercase text-white'>{popup.button_text || 'Open'}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
           <View>
             <View style={{ height: 100 }} />
@@ -125,6 +146,7 @@ function PopupScreen() {
     </View>
   )
 }
+//#endregion
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -306,9 +328,9 @@ function WalletBalance({ profile }: { profile: ProfileT | null }) {
     retry: 3,
   })
 
-  useEffect(() => {
-    console.log(JSON.stringify(mining.data, null, 2))
-  }, [mining.data])
+  // useEffect(() => {
+  //   console.log(JSON.stringify(mining.data, null, 2))
+  // }, [mining.data])
 
   const startMining = useMutation({
     mutationKey: ['startMining'],
