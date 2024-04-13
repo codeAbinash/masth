@@ -180,6 +180,7 @@ export function start_mining_f() {
 
 export interface CheckVersionT {
   custom_link: null
+  force_update: boolean
   status: boolean
   store_link: string
   version_code: string

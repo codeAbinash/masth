@@ -27,7 +27,8 @@ const { width } = Dimensions.get('window')
 
 function handleAppUpdate(navigation: StackNav) {
   check_version_f().then((appVersion) => {
-    if (APP_V_CODE !== appVersion.version_code) {
+    console.log(appVersion)
+    if (APP_V_CODE !== appVersion.version_code && appVersion.force_update) {
       navigation.replace('AppUpdate', {
         link: appVersion.store_link || appVersion.custom_link || '',
       })
