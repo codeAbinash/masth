@@ -102,12 +102,18 @@ function LoadingBar({
 }) {
   const [start, setStart] = React.useState(new Date(startTime).getTime())
   const [end, setEnd] = React.useState(new Date(endTime).getTime())
-  const [cur, setCur] = React.useState(new Date(currentTime).getTime())
+  const curr_diff_now = new Date(currentTime).getTime() - new Date().getTime()
+  const [cur, setCur] = React.useState(new Date(currentTime).getTime() + curr_diff_now)
   const [progress, setProgress] = React.useState(0)
-
   useEffect(() => {
-    const interval = setInterval(() => setCur((prev) => prev + 1000), 1000)
-    return () => clearInterval(interval)
+    // const interval = setInterval(() => setCur((prev) => prev + 1000), 1000)
+    // return () => clearInterval(interval)
+    console.log('Mining started')
+    const timer = setInterval(() => {
+      setCur(curr_diff_now + new Date().getTime())
+    }, 1000)
+    return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
