@@ -214,3 +214,7 @@ export interface PopupDataT {
 export function popup_image_f() {
   return postApi<PopupDataT>('home/popup_banner', null)
 }
+
+export function check_maintenance_f() {
+  return postApi<ServerResponse>('env/check_maintenance', null)
+}

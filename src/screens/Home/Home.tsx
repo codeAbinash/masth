@@ -1,5 +1,4 @@
 import useHybridData, { setLocalData, useLocalData } from '@/hooks/useHybridData'
-import MasthYellow from '@assets/icons/masth/masth-yellow.svg'
 import { SmallButton } from '@components/Button'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
@@ -12,26 +11,18 @@ import PlayBlackIcon from '@icons/play-black.svg'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import {
-  check_mining_status_f,
-  check_version_f,
-  home_statics_f,
-  popup_image_f,
-  profile_f,
-  start_mining_f,
-  type HomeStatisticsT,
-  type PopupDataT,
-  type ProfileT,
-} from '@query/api'
+import { check_mining_status_f, check_version_f, home_statics_f, profile_f, start_mining_f, type HomeStatisticsT, type ProfileT } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { APP_V_CODE } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
-import { Alert, Dimensions, Image, Linking, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { default as FeatherIcon, default as Icon } from 'react-native-vector-icons/Feather'
+import { Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import MaintenanceNavigation from './Home/MaintenanceNavigation'
+import PopupUi from './Home/PopupUi'
 
 const { width } = Dimensions.get('window')
 
@@ -52,12 +43,6 @@ export default function Home({ navigation }: { navigation: StackNav }) {
   const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
   const home = useHybridData(homeStatics, 'homeStatics')
 
-  const popupImage = useQuery({ queryKey: ['popupImage'], queryFn: popup_image_f })
-
-  useEffect(() => {
-    console.log(JSON.stringify(popupImage.data, null, 2))
-  }, [popupImage])
-
   useEffect(() => {
     // console.log(JSON.stringify(home, null, 2))
     setLocalData(home?.active_miners, 'active_miners')
@@ -67,12 +52,10 @@ export default function Home({ navigation }: { navigation: StackNav }) {
     setLocalData(home?.valuation.rate, 'mstPerUSD')
   }, [home])
 
-  // useEffect(() => {
-  //   console.log(JSON.stringify(profile, null, 2))
-  // }, [profile])
   return (
     <>
-      <PopupScreen popup={popupImage.data} />
+      <PopupUi />
+      <MaintenanceNavigation navigation={navigation} />
       <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className='p-5'>
         <View className='pb-10'>
           <PaddingTop />
@@ -88,77 +71,6 @@ export default function Home({ navigation }: { navigation: StackNav }) {
     </>
   )
 }
-
-const { height } = Dimensions.get('window')
-
-//#region PopupScreen
-function PopupScreen({ popup }: { popup: PopupDataT | undefined }) {
-  const [modalVisible, setModalVisible] = React.useState(false)
-
-  useEffect(() => {
-    if (popup?.banner_image) {
-      setModalVisible(true)
-    }
-  }, [popup])
-
-  if (!popup) return null
-
-  return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType='fade'
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(!modalVisible)}
-        statusBarTranslucent={true}
-      >
-        <View style={styles.centeredView}>
-          <View className='w-full'>
-            <PaddingTop />
-            <View className='mt-5 w-full flex-row justify-between px-5'>
-              <MasthYellow width={width * 0.2} />
-              <FeatherIcon name='x' size={25} color={'white'} onPress={() => setModalVisible(!modalVisible)} />
-            </View>
-          </View>
-          <View>
-            <Image source={{ uri: popup.banner_image }} style={{ width: width * 0.9, height: width * 0.9, borderRadius: 20 }} />
-            {popup.action_link && (
-              <View className='mt-7 items-center justify-center'>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  className='items-center justify-center bg-accentYellow px-4 py-3 text-white'
-                  style={{ minWidth: width * 0.5, borderRadius: 15 }}
-                  onPress={() => {
-                    Linking.openURL(popup.action_link)
-                    setModalVisible(!modalVisible)
-                  }}
-                >
-                  <Text className='text-lg uppercase text-white'>{popup.button_text || 'Open'}</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-          <View>
-            <View style={{ height: 100 }} />
-          </View>
-        </View>
-      </Modal>
-    </View>
-  )
-}
-//#endregion
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    position: 'absolute',
-    width: width,
-    height: height + 100,
-  },
-})
 
 function Miners({ home }: { home: HomeStatisticsT | null }) {
   return (
