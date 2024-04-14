@@ -23,3 +23,5 @@ export function niceDate(date: Date | null) {
     year: 'numeric',
   })
 }
+
+export function blank_fn() {}

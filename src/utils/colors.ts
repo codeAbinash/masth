@@ -10,4 +10,6 @@ export const colors = {
   bgGreen: '#D5FAD2',
   bgAqua: '#7FF1F1',
   accentYellow: '#f99b05',
+  gray: '#444444',
+  orange_500: '#FF6D00',
 }
