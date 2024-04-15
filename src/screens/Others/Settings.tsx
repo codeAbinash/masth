@@ -19,7 +19,7 @@ import type { RootStackParamList } from 'App'
 
 const ICON_SIZE = 20
 const aspect_ratio = 796 / 80
-const { width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const companyWidth = width - 40
 const companyHeight = companyWidth / aspect_ratio
@@ -149,7 +149,7 @@ function PopupUi({ modalVisible, setModalVisible }: { modalVisible: boolean; set
         onRequestClose={() => setModalVisible(!modalVisible)}
         statusBarTranslucent={true}
       >
-        <View style={styles.centeredView}>
+        <View style={[styles.centeredView, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
           <View className='flex items-center justify-center rounded-2xl bg-white px-7 py-7' style={{ width: width * 0.9 }}>
             <Image source={Images.illustration} style={{ width: width * 0.65, height: width * 0.65 }} />
             <Text className='mt-5 text-center text-lg text-gray-500'>To reclaim your coins, enter your old email if you're a existing member</Text>
@@ -169,14 +169,11 @@ function PopupUi({ modalVisible, setModalVisible }: { modalVisible: boolean; set
   )
 }
 
-const { height } = Dimensions.get('window')
-
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
     position: 'absolute',
     width: width,
     height: height + 100,

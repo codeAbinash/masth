@@ -1,14 +1,22 @@
+import { Button, SmallButton } from '@components/Button'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
-import { SmallButton } from '@components/Button'
-import { type ProfileT, check_mining_status_f, start_mining_f } from '@query/api'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import LottieView from 'lottie-react-native'
-import React, { useEffect } from 'react'
-import { View, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
+import { RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads'
+
+const adUnitId = 'ca-app-pub-2907000163900605/7175075918'
+const rewarded = RewardedAd.createForAdRequest(adUnitId)
+const { height, width } = Dimensions.get('window')
 
 export default function MiningOrWalletBalance({ profile }: { profile: ProfileT | null }) {
+  const [isLoaded, setIsLoaded] = useState(false)
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
+  const [modalVisible, setModalVisible] = React.useState(true)
+
   const mining = useQuery({
     queryKey: ['miningStatus'],
     queryFn: check_mining_status_f,
@@ -28,57 +36,133 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     },
   })
 
+  // Load the rewarded ad
+  useEffect(() => {
+    rewarded.load()
+
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      setIsLoaded(true)
+    })
+
+    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+      console.log('User earned reward of ', reward)
+      startMining.mutate()
+    })
+
+    return () => {
+      unsubscribeLoaded()
+      unsubscribeEarned()
+    }
+  }, [startMining])
+
   function handleStartMining() {
-    startMining.mutate()
+    // startMining.mutate()
+    try {
+      if (isLoaded) {
+        rewarded.show()
+      } else {
+        // Ad is not loaded
+        setModalVisible(true)
+      }
+    } catch (error) {
+      setModalVisible(true)
+    }
   }
 
   return (
-    <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
-      <Text className='text-base text-onYellow'>Wallet Balance</Text>
-      <View className='flex-row items-end'>
-        <Text className='text-onYellow' style={{ fontSize: 40 }}>
-          {balance.toFixed(4)}
-        </Text>
-        <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
+    <>
+      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
+        <Text className='text-base text-onYellow'>Wallet Balance</Text>
+        <View className='flex-row items-end'>
+          <Text className='text-onYellow' style={{ fontSize: 40 }}>
+            {balance.toFixed(4)}
+          </Text>
+          <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
+        </View>
+        {mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching ? (
+          <View className='h-8 justify-center'>
+            <Text className='text-lg'> Checking mining status...</Text>
+          </View>
+        ) : mining.data && !mining.data?.mining_function ? (
+          <LoadingBar
+            currentTime={mining.data.mining_data.current_time}
+            setBalance={setBalance}
+            realBalance={Number(profile?.data.coin || 0)}
+            startTime={mining.data?.mining_data.start_time}
+            endTime={mining.data?.mining_data.end_time}
+            mining={mining}
+            coin={Number(mining.data.mining_data.coin)}
+          />
+        ) : (
+          <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
+            <View style={{ flex: 0.55 }}>
+              <SmallButton
+                LeftUI={<PlayIcon width={17} height={17} />}
+                onPress={handleStartMining}
+                title={startMining.isPending ? 'Starting...' : 'Start Mining'}
+                disabled={startMining.isPending}
+              />
+            </View>
+            <View style={{ flex: 0.45 }} className='flex-row'>
+              <Text style={{ fontSize: 15 }} className='text-onYellow'>
+                1 Masth
+              </Text>
+              <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
+                {' '}
+                / Hour
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
-      {mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching ? (
-        <View className='h-8 justify-center'>
-          <Text className='text-lg'> Checking mining status...</Text>
-        </View>
-      ) : mining.data && !mining.data?.mining_function ? (
-        <LoadingBar
-          currentTime={mining.data.mining_data.current_time}
-          setBalance={setBalance}
-          realBalance={Number(profile?.data.coin || 0)}
-          startTime={mining.data?.mining_data.start_time}
-          endTime={mining.data?.mining_data.end_time}
-          mining={mining}
-          coin={Number(mining.data.mining_data.coin)}
-        />
-      ) : (
-        <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
-          <View style={{ flex: 0.55 }}>
-            <SmallButton
-              LeftUI={<PlayIcon width={17} height={17} />}
-              onPress={handleStartMining}
-              title={startMining.isPending ? 'Starting...' : 'Start Mining'}
-              disabled={startMining.isPending}
+      <AdLoafFailedPopupUi modalVisible={modalVisible} setModalVisible={setModalVisible} />
+    </>
+  )
+}
+
+function AdLoafFailedPopupUi({ modalVisible, setModalVisible }: { modalVisible: boolean; setModalVisible: (val: boolean) => void }) {
+  if (!modalVisible) return null
+  return (
+    <View style={[styles.centeredView]}>
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(!modalVisible)}
+        statusBarTranslucent={true}
+      >
+        <View style={[styles.centeredView, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
+          <View className='flex items-center justify-center rounded-3xl bg-white px-7 py-7' style={{ width: width * 0.9 }}>
+            <LottieView
+              source={require('@assets/anim/disconnected.lottie')}
+              autoPlay
+              loop
+              style={{
+                width: width * 0.7,
+                height: width * 0.7,
+              }}
             />
-          </View>
-          <View style={{ flex: 0.45 }} className='flex-row'>
-            <Text style={{ fontSize: 15 }} className='text-onYellow'>
-              1 Masth
+            <Text className='mt-5 text-center text-lg text-gray-500'>
+              Uh-oh! Looks like your device is having trouble connecting to our mining server. Please click on 'Start Mining' again to try again.
             </Text>
-            <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
-              {' '}
-              / Hour
-            </Text>
+            <Button title='Ok, Got it' className='mt-10' onPress={() => setModalVisible(!modalVisible)} />
           </View>
         </View>
-      )}
+      </Modal>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    width: width,
+    height: height + 100,
+  },
+})
 
 const ANIM_ASPECT_RATIO = 1440 / 850
 const ANIM_SIZE = 38
