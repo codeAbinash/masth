@@ -9,6 +9,7 @@ import { PaddingBottom } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { ProfileT, profile_f, updateProfile_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import type { RouteProp } from '@react-navigation/native'
 import { oneSignalInit } from '@screens/Login/Setup'
 import { isValidEmail, isValidFullName } from '@screens/Login/utils'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -20,11 +21,20 @@ import { Alert, Image, Text, TouchableOpacity, View } from 'react-native'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { OneSignal } from 'react-native-onesignal'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Feather from 'react-native-vector-icons/Feather'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 // import { Image } from 'react-native-svg'
 
-export default function Settings({ navigation }: { navigation: StackNav }) {
+type ParamList = {
+  EditProfile: EditProfileParamList
+}
+
+export type EditProfileParamList = {
+  isMigration: boolean
+}
+
+export default function Settings({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'EditProfile'> }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
@@ -38,6 +48,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
   const queryClient = useQueryClient()
 
   const [isSignOut, setIsSignOut] = useState(false)
+
+  const isMigration = route.params?.isMigration
 
   function signOut() {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
@@ -158,7 +170,16 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               LeftUI={<MaterialCommunityIcon name='email-outline' size={20} color='black' />}
               value={email}
               onChangeText={(text) => setEmail(text)}
+              editable={!profile?.email}
             />
+            {isMigration && (
+              <View className='mt-2 flex-row items-center rounded-lg bg-accent p-1.5 px-2.5' style={{ gap: 10 }}>
+                <Feather name='info' size={16} color='white' />
+                <Text className='flex-1 text-xs text-white'>
+                  To reclaim your coins, enter your old email if you're an existing member. The email can't be changed after this step.
+                </Text>
+              </View>
+            )}
           </View>
           <View>
             <Label title='Mobile Number' />

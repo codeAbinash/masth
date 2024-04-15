@@ -1,6 +1,6 @@
 const Images = {
   // LogOut: require('./src/logout.png'),
-  // referral: require('./src/referral.jpg'),
+  illustration: require('./src/illustration.png'),
 }
 
 export default Images

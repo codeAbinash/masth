@@ -6,7 +6,7 @@ import AppUpdate, { type AppUpdateParamList } from '@screens/Account/AppUpdate'
 import Suspended from '@screens/Account/Suspended'
 import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import Home from '@screens/Home'
-import EditProfile from '@screens/Home/Profile/EditProfile'
+import EditProfile, { type EditProfileParamList } from '@screens/Home/Profile/EditProfile'
 import CheckRefer from '@screens/Login/CheckRefer'
 import Login from '@screens/Login/Login'
 import OTP, { type OTPParamList } from '@screens/Login/OTP'
@@ -38,7 +38,7 @@ export type RootStackParamList = {
   Setup: undefined
   Notifications: undefined
   NotificationDetails: NotificationsParamList
-  EditProfile: undefined
+  EditProfile: EditProfileParamList
   Settings: undefined
   Transactions: undefined
   Refer: undefined

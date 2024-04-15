@@ -43,7 +43,7 @@ export default function SignOut({ navigation }: { navigation: StackNav }) {
             <Text className='text-center text-xl font-bold'>Are you sure you want to log out?</Text>
             <Text className='text-center text-base'>You can always sign in later</Text>
           </View>
-          <Image source={Images.LogOut} style={{ width: '100%', height: '70%', resizeMode: 'contain' }} />
+          {/* <Image source={Images.LogOut} style={{ width: '100%', height: '70%', resizeMode: 'contain' }} /> */}
         </View>
         {/* <View>
           <Text>

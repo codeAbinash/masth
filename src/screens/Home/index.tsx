@@ -15,6 +15,7 @@ import GameZone from './GameZone'
 import HomeScreen from './Home'
 import EditProfile from './Profile/EditProfile'
 import Wallet from './Wallet/Wallet'
+import type { StackNav } from '@utils/types'
 
 function HomeIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
@@ -140,7 +141,7 @@ const Home = () => {
         />
         <Tab.Screen
           name='Profile'
-          component={EditProfile}
+          component={WrappedEditProfile}
           options={{
             tabBarLabel: 'Profile',
             headerShown: false,
@@ -149,6 +150,21 @@ const Home = () => {
         />
       </Tab.Navigator>
     </>
+  )
+}
+
+function WrappedEditProfile({ navigation }: { navigation: StackNav }) {
+  return (
+    <EditProfile
+      navigation={navigation}
+      route={{
+        key: 'EditProfile',
+        name: 'EditProfile',
+        params: {
+          isMigration: false,
+        },
+      }}
+    />
   )
 }
 

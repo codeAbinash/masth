@@ -15,8 +15,19 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
   return (
     <View className='flex flex-row items-center justify-between'>
-      <TouchableOpacity className='flex flex-row gap-3.5' activeOpacity={0.7} onPress={() => navigation.navigate('EditProfile')}>
-        <Image source={{ uri: profile?.data.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
+      <TouchableOpacity
+        className='flex flex-row gap-3.5'
+        activeOpacity={0.7}
+        onPress={() =>
+          navigation.navigate('EditProfile', {
+            isMigration: false,
+          })
+        }
+      >
+        <View>
+          <Image source={{ uri: profile?.data.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
+          {!profile?.data.email && <View className='absolute right-0 h-2 w-2 rounded-full bg-red-500' />}
+        </View>
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
           <Text className='font-bold' style={{ fontSize: 16 }}>

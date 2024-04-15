@@ -47,7 +47,11 @@ export default function ProfileScreen({ navigation }: { navigation: StackNav }) 
           title='Edit Profile'
           LeftUI={<Icon name='edit' size={17} color='white' />}
           className='px-5 py-2.5 pl-4'
-          onPress={() => navigation.navigate('EditProfile')}
+          onPress={() =>
+            navigation.navigate('EditProfile', {
+              isMigration: false,
+            })
+          }
         />
         <SmallButton
           title='Log Out'
