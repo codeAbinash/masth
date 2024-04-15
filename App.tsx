@@ -5,6 +5,7 @@ import { CardStyleInterpolators, StackNavigationOptions, createStackNavigator } 
 import AppUpdate, { type AppUpdateParamList } from '@screens/Account/AppUpdate'
 import Suspended from '@screens/Account/Suspended'
 import UnderMaintenance from '@screens/Account/UnderMaintenance'
+import RateUs from '@screens/Extra/RateUs'
 import Home from '@screens/Home'
 import EditProfile, { type EditProfileParamList } from '@screens/Home/Profile/EditProfile'
 import CheckRefer from '@screens/Login/CheckRefer'
@@ -47,6 +48,7 @@ export type RootStackParamList = {
   Suspended: undefined
   UnderMaintenance: undefined
   AppUpdate: AppUpdateParamList
+  RateUs: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -141,6 +143,7 @@ function Navigation() {
       <Stack.Screen name='Suspended' component={Suspended} />
       <Stack.Screen name='UnderMaintenance' component={UnderMaintenance} />
       <Stack.Screen name='AppUpdate' component={AppUpdate} />
+      <Stack.Screen name='RateUs' component={RateUs} options={IOS_BOTTOM_STYLE} />
     </Stack.Navigator>
   )
 }

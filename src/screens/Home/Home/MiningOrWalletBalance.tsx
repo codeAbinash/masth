@@ -2,11 +2,15 @@ import { Button, SmallButton } from '@components/Button'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { ls } from '@utils/storage'
+import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import { RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads'
+import { OneSignal } from 'react-native-onesignal'
 
 const adUnitId = 'ca-app-pub-2907000163900605/7175075918'
 const rewarded = RewardedAd.createForAdRequest(adUnitId)
@@ -15,7 +19,9 @@ const { height, width } = Dimensions.get('window')
 export default function MiningOrWalletBalance({ profile }: { profile: ProfileT | null }) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
-  const [modalVisible, setModalVisible] = React.useState(true)
+  const [modalVisible, setModalVisible] = React.useState(false)
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
   const mining = useQuery({
     queryKey: ['miningStatus'],
@@ -47,18 +53,23 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
       console.log('User earned reward of ', reward)
       startMining.mutate()
+      // If not rated show the rate us screen
+      if (!ls.getString('rated')) {
+        navigation.navigate('RateUs')
+      }
     })
 
     return () => {
       unsubscribeLoaded()
       unsubscribeEarned()
     }
-  }, [startMining])
+  }, [navigation, startMining])
 
   function handleStartMining() {
     // startMining.mutate()
     try {
       if (isLoaded) {
+        OneSignal.Notifications.requestPermission(true)
         rewarded.show()
       } else {
         // Ad is not loaded

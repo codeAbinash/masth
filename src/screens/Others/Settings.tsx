@@ -16,6 +16,7 @@ import { useNavigation, type NavigationProp } from '@react-navigation/native'
 import { colors } from '@utils/colors'
 import { blank_fn } from '@utils/utils'
 import type { RootStackParamList } from 'App'
+import { ABOUT_US_PAGE_LINK, DELETE_ACCOUNT_LINK, MAIL_TO_LINK, PLAY_STORE_LINK, PRIVACY_LINK, WHITE_PAPER_LINK } from '@utils/constants'
 
 const ICON_SIZE = 20
 const aspect_ratio = 796 / 80
@@ -59,13 +60,13 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               name='Privacy'
               right={<RightArrow />}
               left={<MaterialCommunity name='shield-check-outline' size={ICON_SIZE} color={colors.gray} />}
-              onPress={() => Linking.openURL('https://minemasth.com/privacy.html')}
+              onPress={() => Linking.openURL(PRIVACY_LINK)}
             />
             <Option
               name='White Paper'
               right={<RightArrow />}
               left={<MaterialCommunity name='text-box-outline' size={ICON_SIZE} color={colors.gray} />}
-              onPress={() => Linking.openURL('https://minemasth.com/whitepaper.html')}
+              onPress={() => Linking.openURL(WHITE_PAPER_LINK)}
               borderBottom={false}
             />
             {/* <Option
@@ -91,13 +92,13 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               name='About us'
               right={<RightArrow />}
               left={<Feather name='info' size={ICON_SIZE} color={colors.gray} />}
-              onPress={() => Linking.openURL('https://minemasth.com/about.html')}
+              onPress={() => Linking.openURL(ABOUT_US_PAGE_LINK)}
             />
             <Option
               name='Rate us'
               right={<RightArrow />}
               left={<Feather name='star' size={ICON_SIZE} color={colors.gray} />}
-              onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.crypto.miner.masth')}
+              onPress={() => Linking.openURL(PLAY_STORE_LINK)}
             />
             {/* <Option
       name='Share this app'
@@ -109,7 +110,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               name='Get help'
               right={<RightArrow />}
               left={<Feather name='help-circle' size={ICON_SIZE} color={colors.gray} />}
-              onPress={() => Linking.openURL('mailto:support@minemasth.com')}
+              onPress={() => Linking.openURL(MAIL_TO_LINK)}
               borderBottom={false}
             />
           </OptionWrapper>
@@ -120,7 +121,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               right={<RightArrow color={colors.redPrimary} />}
               mid={<Text className='text-base text-redPrimary'>Delete Account</Text>}
               left={<Feather name='trash-2' size={ICON_SIZE} color={colors.redPrimary} />}
-              onPress={() => Linking.openURL('https://minemasth.com/deleteacount.html')}
+              onPress={() => Linking.openURL(DELETE_ACCOUNT_LINK)}
               borderBottom={false}
             />
           </OptionWrapper>

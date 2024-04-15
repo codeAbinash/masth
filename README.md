@@ -7,7 +7,7 @@ Play Store Link - https://play.google.com/store/apps/details?id=com.crypto.miner
 Extra things done
 
 - Settings UI
-  <!-- - Rate us dialog -->
+- Rate us dialog
 - Account migration dialog
 - Account migration notification in edit profile section
 - Add profile dot in small profile image

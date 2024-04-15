@@ -14,6 +14,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
 import Miner from './Miner'
+import { PLAY_STORE_LINK } from '@utils/constants'
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
@@ -93,7 +94,7 @@ function ReferCard({ bonus }: { bonus: string }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
 
   const referText = `Start Mining Masth Now! Use My Referral Code ${profileQuery.data?.data.refer_code} For A Boosted Initial Mining Rate. Install Masth: Crypto Miner from the Play Store. 💰👇 
-https://play.google.com/store/apps/details?id=com.crypto.miner.masth`
+${PLAY_STORE_LINK}`
   return (
     <View className='mt-5 rounded-3xl bg-white p-5'>
       <View>
