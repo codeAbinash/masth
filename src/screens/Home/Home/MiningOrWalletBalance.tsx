@@ -4,6 +4,7 @@ import StopRound from '@icons/stop-round.svg'
 import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { rewardAdId } from '@utils/constants'
 import { ls } from '@utils/storage'
 import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
@@ -12,7 +13,7 @@ import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import { RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads'
 import { OneSignal } from 'react-native-onesignal'
 
-const adUnitId = 'ca-app-pub-2907000163900605/7175075918'
+const adUnitId = rewardAdId
 const rewarded = RewardedAd.createForAdRequest(adUnitId)
 const { height, width } = Dimensions.get('window')
 
@@ -29,10 +30,6 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     retry: 3,
   })
 
-  useEffect(() => {
-    console.log(isLoaded)
-  }, [isLoaded])
-
   // useEffect(() => {
   //   console.log(JSON.stringify(mining.data, null, 2))
   // }, [mining.data])
@@ -48,30 +45,29 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
 
   // Load the rewarded ad
   useEffect(() => {
-    try {
-      rewarded.load()
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      setIsLoaded(true)
+      console.log('Ad loaded')
+    })
 
-      const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-        setIsLoaded(true)
-      })
-
-      const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-        console.log('User earned reward of ', reward)
-        startMining.mutate()
-        // If not rated show the rate us screen
-        if (!ls.getString('rated')) {
-          navigation.navigate('RateUs')
-        }
-      })
-
-      return () => {
-        unsubscribeLoaded()
-        unsubscribeEarned()
+    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+      console.log('User earned reward of ', reward)
+      startMining.mutate()
+      console.log('Mining started')
+      // If not rated show the rate us screen
+      console.log('Rated', ls.getString('rated'))
+      if (!ls.getString('rated')) {
+        navigation.navigate('RateUs')
       }
-    } catch (error) {
-      setModalVisible(true)
+    })
+
+    rewarded.load()
+    return () => {
+      unsubscribeLoaded()
+      unsubscribeEarned()
     }
-  }, [navigation, startMining])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation])
 
   function handleStartMining() {
     try {
@@ -84,12 +80,13 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
       }
     } catch (error) {
       setModalVisible(true)
+      rewarded.load()
       console.log('Error in showing ad', error)
     }
   }
   return (
     <>
-      <View className={`${mining.data?.mining_function ? 'bg-yellowPrimary' : 'bg-white'} mt-5 rounded-3xl p-5`}>
+      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
         <Text className='text-base text-onYellow'>Wallet Balance</Text>
         <View className='flex-row items-end'>
           <Text className='text-onYellow' style={{ fontSize: 40 }}>

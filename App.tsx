@@ -28,6 +28,12 @@ import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
+import mobileAds from 'react-native-google-mobile-ads'
+mobileAds()
+  .initialize()
+  .then((adapterStatuses) => {
+    // Initialization complete!
+  })
 
 export type RootStackParamList = {
   navigationDecider: undefined

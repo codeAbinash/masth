@@ -10,3 +10,8 @@ export const DELETE_ACCOUNT_LINK = 'https://minemasth.com/deleteacount.html'
 export const PRIVACY_LINK = 'https://minemasth.com/privacy.html'
 export const WHITE_PAPER_LINK = 'https://minemasth.com/whitepaper.html'
 export const TERMS_AND_CONDITIONS_LINK = 'https://minemasth.com/terms_and_conditions.html'
+
+// Other ads settings can be found in the app.json file
+
+export const rewardAdId = 'ca-app-pub-2907000163900605/7175075918'
+// export const bannerAdId = 'ca-app-pub-2907000163900605~2761721016'

@@ -47,7 +47,7 @@ export default function RateUs({ navigation }: { navigation: StackNav }) {
             title='Rate us'
             onPress={() => {
               navigation.goBack()
-              ls.set('rated', true)
+              ls.set('rated', 'true')
               Linking.openURL(PLAY_STORE_LINK)
             }}
           />
