@@ -3,7 +3,7 @@ import { Option, OptionWrapper, RightArrow, RightarrowWithText } from '@componen
 import { PaddingBottom } from '@components/SafePadding'
 import { StackNav } from '@utils/types'
 import React from 'react'
-import { Image, Linking, ScrollView, Text, View } from 'react-native'
+import { Dimensions, Image, Linking, ScrollView, Text, View } from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -12,6 +12,11 @@ import { colors } from '@utils/colors'
 import { blank_fn } from '@utils/utils'
 
 const ICON_SIZE = 20
+const aspect_ratio = 796 / 80
+const { width } = Dimensions.get('window')
+
+const companyWidth = width - 40
+const companyHeight = companyWidth / aspect_ratio
 
 export default function Settings({ navigation }: { navigation: StackNav }) {
   return (
@@ -102,10 +107,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
           />
         </OptionWrapper>
         <View>
-          <Text className='mt-10 text-center text-base text-neutral-500'>Built by</Text>
-          <View className='overflow-hidden rounded-xl'>
-            <Image source={icons.company} className='w-full ' style={{ resizeMode: 'contain' }} />
-          </View>
+          <Text className='mb-2 mt-16 text-center text-base text-neutral-500'>Built by</Text>
+          <Image source={icons.company} className='h-12 w-full' style={{ resizeMode: 'contain', width: companyWidth, height: companyHeight }} />
         </View>
         <View className='h-10' />
         <PaddingBottom />
