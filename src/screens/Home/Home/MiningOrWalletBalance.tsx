@@ -29,6 +29,10 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     retry: 3,
   })
 
+  useEffect(() => {
+    console.log(isLoaded)
+  }, [isLoaded])
+
   // useEffect(() => {
   //   console.log(JSON.stringify(mining.data, null, 2))
   // }, [mining.data])
@@ -44,29 +48,32 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
 
   // Load the rewarded ad
   useEffect(() => {
-    rewarded.load()
+    try {
+      rewarded.load()
 
-    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-      setIsLoaded(true)
-    })
+      const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+        setIsLoaded(true)
+      })
 
-    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-      console.log('User earned reward of ', reward)
-      startMining.mutate()
-      // If not rated show the rate us screen
-      if (!ls.getString('rated')) {
-        navigation.navigate('RateUs')
+      const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+        console.log('User earned reward of ', reward)
+        startMining.mutate()
+        // If not rated show the rate us screen
+        if (!ls.getString('rated')) {
+          navigation.navigate('RateUs')
+        }
+      })
+
+      return () => {
+        unsubscribeLoaded()
+        unsubscribeEarned()
       }
-    })
-
-    return () => {
-      unsubscribeLoaded()
-      unsubscribeEarned()
+    } catch (error) {
+      setModalVisible(true)
     }
   }, [navigation, startMining])
 
   function handleStartMining() {
-    // startMining.mutate()
     try {
       if (isLoaded) {
         OneSignal.Notifications.requestPermission(true)
@@ -77,12 +84,12 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
       }
     } catch (error) {
       setModalVisible(true)
+      console.log('Error in showing ad', error)
     }
   }
-
   return (
     <>
-      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
+      <View className={`${mining.data?.mining_function ? 'bg-yellowPrimary' : 'bg-white'} mt-5 rounded-3xl p-5`}>
         <Text className='text-base text-onYellow'>Wallet Balance</Text>
         <View className='flex-row items-end'>
           <Text className='text-onYellow' style={{ fontSize: 40 }}>
@@ -90,45 +97,55 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
           </Text>
           <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
         </View>
-        {mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching ? (
+        {
+          /* {mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching ? (
           <View className='h-8 justify-center'>
             <Text className='text-lg'> Checking mining status...</Text>
           </View>
-        ) : mining.data && !mining.data?.mining_function ? (
-          <LoadingBar
-            currentTime={mining.data.mining_data.current_time}
-            setBalance={setBalance}
-            realBalance={Number(profile?.data.coin || 0)}
-            startTime={mining.data?.mining_data.start_time}
-            endTime={mining.data?.mining_data.end_time}
-            mining={mining}
-            coin={Number(mining.data.mining_data.coin)}
-          />
-        ) : (
-          <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
-            <View style={{ flex: 0.55 }}>
-              <SmallButton
-                LeftUI={<PlayIcon width={17} height={17} />}
-                onPress={handleStartMining}
-                title={startMining.isPending ? 'Starting...' : 'Start Mining'}
-                disabled={startMining.isPending}
-              />
+        ) : */
+          mining.data && !mining.data?.mining_function ? (
+            <LoadingBar
+              currentTime={mining.data.mining_data.current_time}
+              setBalance={setBalance}
+              realBalance={Number(profile?.data.coin || 0)}
+              startTime={mining.data?.mining_data.start_time}
+              endTime={mining.data?.mining_data.end_time}
+              mining={mining}
+              coin={Number(mining.data.mining_data.coin)}
+            />
+          ) : (
+            <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
+              <View style={{ flex: 0.55 }}>
+                <SmallButton
+                  LeftUI={<PlayIcon width={17} height={17} />}
+                  onPress={handleStartMining}
+                  title={getStatusString(mining, startMining.isPending, isLoaded)}
+                  disabled={startMining.isPending || mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching || !isLoaded}
+                />
+              </View>
+              <View style={{ flex: 0.45 }} className='flex-row'>
+                <Text style={{ fontSize: 15 }} className='text-onYellow'>
+                  1 Masth
+                </Text>
+                <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
+                  {' '}
+                  / Hour
+                </Text>
+              </View>
             </View>
-            <View style={{ flex: 0.45 }} className='flex-row'>
-              <Text style={{ fontSize: 15 }} className='text-onYellow'>
-                1 Masth
-              </Text>
-              <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
-                {' '}
-                / Hour
-              </Text>
-            </View>
-          </View>
-        )}
+          )
+        }
       </View>
       <AdLoafFailedPopupUi modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </>
   )
+}
+
+function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean, isLoaded: boolean): string {
+  if (mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching) return 'Connecting...'
+  if (!isLoaded) return 'Connecting....'
+  if (isPending) return 'Starting...'
+  return 'Start Mining'
 }
 
 function AdLoafFailedPopupUi({ modalVisible, setModalVisible }: { modalVisible: boolean; setModalVisible: (val: boolean) => void }) {

@@ -22,7 +22,7 @@ const ICON_SIZE = 20
 const aspect_ratio = 796 / 80
 const { width, height } = Dimensions.get('window')
 
-const companyWidth = width - 40
+const companyWidth = width * 0.9 - 40
 const companyHeight = companyWidth / aspect_ratio
 
 export default function Settings({ navigation }: { navigation: StackNav }) {
@@ -125,8 +125,8 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               borderBottom={false}
             />
           </OptionWrapper>
-          <View>
-            <Text className='mb-2 mt-16 text-center text-base text-neutral-500'>Built by</Text>
+          <View className='items-center justify-center'>
+            <Text className='mb-2 mt-8 text-center text-base text-neutral-500'>Built by</Text>
             <Image source={icons.company} className='h-12 w-full' style={{ resizeMode: 'contain', width: companyWidth, height: companyHeight }} />
           </View>
           <View className='h-10' />
