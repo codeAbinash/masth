@@ -3,14 +3,14 @@ import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, type UseMutationResult } from '@tanstack/react-query'
 import { rewardAdId } from '@utils/constants'
 import { ls } from '@utils/storage'
 import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
-import { RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads'
+import { AdEventType, RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads'
 import { OneSignal } from 'react-native-onesignal'
 
 const adUnitId = rewardAdId
@@ -21,6 +21,7 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
   const [isLoaded, setIsLoaded] = useState(false)
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
   const [modalVisible, setModalVisible] = React.useState(false)
+  const [isFailed, setIsFailed] = React.useState(false)
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
@@ -43,39 +44,52 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     },
   })
 
+  function startMiningHandler() {
+    startMining.mutate()
+    console.log('Mining started')
+    // If not rated show the rate us screen
+    console.log('Rated', ls.getString('rated'))
+    if (!ls.getString('rated')) {
+      navigation.navigate('RateUs')
+    }
+  }
+
   // Load the rewarded ad
   useEffect(() => {
+    rewarded.load()
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
       setIsLoaded(true)
       console.log('Ad loaded')
     })
 
     const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-      console.log('User earned reward of ', reward)
-      startMining.mutate()
-      console.log('Mining started')
-      // If not rated show the rate us screen
-      console.log('Rated', ls.getString('rated'))
-      if (!ls.getString('rated')) {
-        navigation.navigate('RateUs')
-      }
+      console.log('User earned reward of', reward)
+      startMiningHandler()
     })
 
-    rewarded.load()
+    const unsubscribeError = rewarded.addAdEventListener(AdEventType.ERROR, (error) => {
+      // Ad failed to load so set the isLoaded to true so that the user can start mining
+      console.log('Ad failed to load', error)
+      setIsFailed(true)
+    })
+
     return () => {
       unsubscribeLoaded()
       unsubscribeEarned()
+      unsubscribeError()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation])
 
   function handleStartMining() {
     try {
-      if (isLoaded) {
+      if (isLoaded && !isFailed) {
         OneSignal.Notifications.requestPermission(true)
         rewarded.show()
+        console.log('Showing Ad...')
+      } else if (isFailed) {
+        startMiningHandler()
       } else {
-        // Ad is not loaded
         setModalVisible(true)
       }
     } catch (error) {
@@ -116,8 +130,8 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
                 <SmallButton
                   LeftUI={<PlayIcon width={17} height={17} />}
                   onPress={handleStartMining}
-                  title={getStatusString(mining, startMining.isPending, isLoaded)}
-                  disabled={startMining.isPending || mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching || !isLoaded}
+                  title={getStatusString(mining, startMining.isPending, isLoaded, isFailed)}
+                  disabled={getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>, isFailed, isLoaded)}
                 />
               </View>
               <View style={{ flex: 0.45 }} className='flex-row'>
@@ -138,8 +152,18 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
   )
 }
 
-function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean, isLoaded: boolean): string {
+function getIsButtonDisabled(
+  mining: ReturnType<typeof useQuery>,
+  startMining: ReturnType<typeof useMutation>,
+  isFailed: boolean,
+  isLoaded: boolean,
+): boolean {
+  return mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching || startMining.isPending || !(isFailed || isLoaded)
+}
+
+function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean, isLoaded: boolean, isFailed: boolean): string {
   if (mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching) return 'Connecting...'
+  if (isFailed) return 'Start Mining'
   if (!isLoaded) return 'Connecting....'
   if (isPending) return 'Starting...'
   return 'Start Mining'

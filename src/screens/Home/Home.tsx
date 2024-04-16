@@ -189,6 +189,7 @@ function TotalMiners({ home }: { home: HomeStatisticsT | null }) {
 function TotalLiveMining({ home }: { home: HomeStatisticsT | null }) {
   const totalLiveMining = Number(useLocalData<number>('total_live_mining') || 0)
   const diff = Number(home?.total_live_mining || 0) - totalLiveMining
+  const diffPercent = diff === 0 || totalLiveMining === 0 ? 0 : (diff / totalLiveMining) * 100
   return (
     <View className='mt-4 flex-row rounded-3xl bg-white p-5' style={{ gap: 15 }}>
       <View>
@@ -204,12 +205,12 @@ function TotalLiveMining({ home }: { home: HomeStatisticsT | null }) {
               <View className='flex-row items-center rounded-full bg-bgGreen px-2 py-0.5' style={{ gap: 5 }}>
                 <View className='flex-row items-end'>
                   <Text className={`text-base ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
-                    {diff < 0 ? '' : '+'}
-                    {diff.toFixed(3)}
+                    {diffPercent < 0 ? '' : '+'}
+                    {diffPercent.toFixed(2)} %
                   </Text>
-                  <Text style={{ fontSize: 12 }} className='pb-0.5 pl-1 text-greenPrimary'>
+                  {/* <Text style={{ fontSize: 12 }} className='pb-0.5 pl-1 text-greenPrimary'>
                     MST
-                  </Text>
+                  </Text> */}
                 </View>
                 {diff < 0 ? (
                   <ArrowDownBold width={9} height={9} color={colors.redPrimary} />
