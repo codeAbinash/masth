@@ -50,7 +50,9 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     // If not rated show the rate us screen
     console.log('Rated', ls.getString('rated'))
     if (!ls.getString('rated')) {
-      navigation.navigate('RateUs')
+      setTimeout(() => {
+        navigation.navigate('RateUs')
+      }, 2000)
     }
   }
 
