@@ -120,10 +120,10 @@ export default function Settings({ navigation, route }: { navigation: StackNav; 
     if (!dob) {
       return Alert.alert('Date of Birth Required', 'Please select your date of birth.')
     }
-    const emailStatus = isValidEmail(email.trim())
-    if (!emailStatus.status) {
-      return Alert.alert('Invalid Email', emailStatus.message)
-    }
+    // const emailStatus = isValidEmail(email.trim())
+    // if (!emailStatus.status) {
+    //   return Alert.alert('Invalid Email', emailStatus.message)
+    // }
     updateMutation.mutate()
   }
 

@@ -29,7 +29,7 @@ export default function PopupUi() {
         onRequestClose={() => setModalVisible(!modalVisible)}
         statusBarTranslucent={true}
       >
-        <View style={styles.centeredView}>
+        <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(!modalVisible)} activeOpacity={1}>
           <View className='w-full'>
             <PaddingTop />
             <View className='mt-5 w-full flex-row justify-between px-5'>
@@ -50,7 +50,7 @@ export default function PopupUi() {
                     setModalVisible(!modalVisible)
                   }}
                 >
-                  <Text className='text-lg uppercase text-white'>{popupImage.data.button_text || 'Open'}</Text>
+                  <Text className='text-lg text-white'>{popupImage.data.button_text || 'Open'}</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -58,7 +58,7 @@ export default function PopupUi() {
           <View>
             <View style={{ height: 100 }} />
           </View>
-        </View>
+        </TouchableOpacity>
       </Modal>
     </View>
   )
