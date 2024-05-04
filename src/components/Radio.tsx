@@ -18,7 +18,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({ options, value, onChange, sty
           <TouchableOpacity
             key={index}
             className={`items-center justify-center rounded-2xl border-neutral-300 bg-white p-2 px-5 ${
-              value === item.key ? 'border-yellowPrimary bg-yellowPrimary' : ''
+              value === item.key ? 'border-secondary bg-secondary' : ''
             }`}
             onPress={() => onChange(item.key)}
             style={{ borderWidth: 1.5 }}

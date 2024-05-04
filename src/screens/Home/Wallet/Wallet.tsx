@@ -62,7 +62,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
 
 function WalletBalance({ balance, home }: { balance: number; home: HomeStatisticsT | null }) {
   return (
-    <View className='mt-4 rounded-3xl bg-yellowPrimary p-5'>
+    <View className='mt-4 rounded-3xl bg-secondary p-5'>
       <Text className='text-base text-onYellow'>Wallet Balance</Text>
       <View className='flex-row items-end'>
         <Text className='text-onYellow' style={{ fontSize: 40 }}>

@@ -29,6 +29,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
 import mobileAds from 'react-native-google-mobile-ads'
+import Mining from '@screens/Home/Mining'
 mobileAds()
   .initialize()
   .then((adapterStatuses) => {
@@ -55,6 +56,7 @@ export type RootStackParamList = {
   UnderMaintenance: undefined
   AppUpdate: AppUpdateParamList
   RateUs: undefined
+  Mining: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -150,6 +152,7 @@ function Navigation() {
       <Stack.Screen name='UnderMaintenance' component={UnderMaintenance} />
       <Stack.Screen name='AppUpdate' component={AppUpdate} />
       <Stack.Screen name='RateUs' component={RateUs} options={IOS_BOTTOM_STYLE} />
+      <Stack.Screen name='Mining' component={Mining} />
     </Stack.Navigator>
   )
 }

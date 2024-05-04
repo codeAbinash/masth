@@ -4,7 +4,7 @@ export const colors = {
   bluePrimary: '#3b82f6',
   redPrimary: '#ef4444',
   accent: '#ff9a00',
-  yellowPrimary: '#ffdeac',
+  secondary: '#ffdeac',
   onYellow: '#333333',
   purplePrimary: '#C8D6FF',
   bgGreen: '#D5FAD2',

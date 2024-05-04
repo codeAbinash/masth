@@ -102,7 +102,7 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
   }
   return (
     <>
-      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-yellowPrimary'} mt-5 rounded-3xl p-5`}>
+      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-secondary'} rounded-3xl p-5`}>
         <Text className='text-base text-onYellow'>Wallet Balance</Text>
         <View className='flex-row items-end'>
           <Text className='text-onYellow' style={{ fontSize: 40 }}>

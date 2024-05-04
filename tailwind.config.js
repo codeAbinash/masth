@@ -10,7 +10,7 @@ module.exports = {
         bgSecondary: '#f7f7f7',
         redPrimary: '#ef4444',
         accent: '#ff9a00',
-        yellowPrimary: '#ffdeac',
+        secondary: '#ffdeab',
         onYellow: '#333333',
         purplePrimary: '#C8D6FF',
         bgGreen: '#D5FAD2',
