@@ -50,6 +50,7 @@ export default function ProfileScreen({ navigation }: { navigation: StackNav }) 
           onPress={() =>
             navigation.navigate('EditProfile', {
               isMigration: false,
+              isShowHeader: true,
             })
           }
         />

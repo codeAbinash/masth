@@ -5,7 +5,7 @@ import { Input } from '@components/Input'
 import KeyboardAvoidingContainer from '@components/KeyboardAvoidingContainer'
 import Label from '@components/Label'
 import { SmallLoadingWrapped } from '@components/Loading'
-import { PaddingBottom } from '@components/SafePadding'
+import { PaddingBottom, PaddingTop } from '@components/SafePadding'
 import { Select } from '@components/Select'
 import { ProfileT, profile_f, updateProfile_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -32,9 +32,10 @@ type ParamList = {
 
 export type EditProfileParamList = {
   isMigration: boolean
+  isShowHeader: boolean
 }
 
-export default function Settings({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'EditProfile'> }) {
+export default function EditProfile({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'EditProfile'> }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
@@ -50,6 +51,9 @@ export default function Settings({ navigation, route }: { navigation: StackNav; 
   const [isSignOut, setIsSignOut] = useState(false)
 
   const isMigration = route.params?.isMigration
+  const isShowHeader = route.params?.isShowHeader
+
+  console.log(isShowHeader)
 
   function signOut() {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
@@ -129,7 +133,11 @@ export default function Settings({ navigation, route }: { navigation: StackNav; 
 
   return (
     <View className='flex-1 bg-bgSecondary'>
-      <BackHeader navigation={navigation} title='Edit Profile' RightComponent={<RightSettingIcon navigation={navigation} />} />
+      {isShowHeader ? (
+        <BackHeader navigation={navigation} title='Edit Profile' RightComponent={<RightSettingIcon navigation={navigation} />} />
+      ) : (
+        <PaddingTop />
+      )}
       <KeyboardAvoidingContainer className='px-5'>
         <View className='mt-5 items-center justify-center'>
           <View className='relative'>

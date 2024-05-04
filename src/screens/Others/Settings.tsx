@@ -43,6 +43,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               onPress={() =>
                 navigation.navigate('EditProfile', {
                   isMigration: false,
+                  isShowHeader: true,
                 })
               }
             />
@@ -159,7 +160,7 @@ function PopupUi({ modalVisible, setModalVisible }: { modalVisible: boolean; set
               title='Next'
               onPress={() => {
                 setModalVisible(!modalVisible)
-                navigation.navigate('EditProfile', { isMigration: true })
+                navigation.navigate('EditProfile', { isMigration: true, isShowHeader: true })
               }}
               className='mt-3'
             />

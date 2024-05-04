@@ -21,6 +21,7 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
         onPress={() =>
           navigation.navigate('EditProfile', {
             isMigration: false,
+            isShowHeader: true,
           })
         }
       >

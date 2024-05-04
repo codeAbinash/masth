@@ -162,6 +162,7 @@ function WrappedEditProfile({ navigation }: { navigation: StackNav }) {
         name: 'EditProfile',
         params: {
           isMigration: false,
+          isShowHeader: false,
         },
       }}
     />
