@@ -4,17 +4,15 @@ import StopRound from '@icons/stop-round.svg'
 import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useMutation, useQuery, type UseMutationResult } from '@tanstack/react-query'
-import { rewardAdId } from '@utils/constants'
 import { ls } from '@utils/storage'
 import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
 import React, { useEffect, useState } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
-import { AdEventType, RewardedAd, RewardedAdEventType } from 'react-native-google-mobile-ads'
 import { OneSignal } from 'react-native-onesignal'
 
-const adUnitId = rewardAdId
-const rewarded = RewardedAd.createForAdRequest(adUnitId)
+// const adUnitId = rewardAdId
+// const rewarded = RewardedAd.createForAdRequest(adUnitId)
 const { height, width } = Dimensions.get('window')
 
 export default function MiningOrWalletBalance({ profile }: { profile: ProfileT | null }) {
@@ -58,27 +56,27 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
 
   // Load the rewarded ad
   useEffect(() => {
-    rewarded.load()
-    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-      setIsLoaded(true)
-      console.log('Ad loaded')
-    })
+    // rewarded.load()
+    // const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+    //   setIsLoaded(true)
+    //   console.log('Ad loaded')
+    // })
 
-    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-      console.log('User earned reward of', reward)
-      startMiningHandler()
-    })
+    // const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+    //   console.log('User earned reward of', reward)
+    //   startMiningHandler()
+    // })
 
-    const unsubscribeError = rewarded.addAdEventListener(AdEventType.ERROR, (error) => {
-      // Ad failed to load so set the isLoaded to true so that the user can start mining
-      console.log('Ad failed to load', error)
-      setIsFailed(true)
-    })
+    // const unsubscribeError = rewarded.addAdEventListener(AdEventType.ERROR, (error) => {
+    //   // Ad failed to load so set the isLoaded to true so that the user can start mining
+    //   console.log('Ad failed to load', error)
+    //   setIsFailed(true)
+    // })
 
     return () => {
-      unsubscribeLoaded()
-      unsubscribeEarned()
-      unsubscribeError()
+      // unsubscribeLoaded()
+      // unsubscribeEarned()
+      // unsubscribeError()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation])
@@ -87,7 +85,7 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     try {
       if (isLoaded && !isFailed) {
         OneSignal.Notifications.requestPermission(true)
-        rewarded.show()
+        // rewarded.show()
         console.log('Showing Ad...')
       } else if (isFailed) {
         startMiningHandler()
@@ -96,7 +94,7 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
       }
     } catch (error) {
       setModalVisible(true)
-      rewarded.load()
+      // rewarded.load()
       console.log('Error in showing ad', error)
     }
   }

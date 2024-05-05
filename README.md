@@ -9,5 +9,7 @@ Extra things done
 - Settings UI
 - Rate us dialog
 - Account migration dialog
-- Account migration notification in edit profile section
-- Add profile dot in small profile image
+  - Account migration notification in edit profile section
+  - Add profile dot in small profile image
+- Ads
+  - Google Admob ads

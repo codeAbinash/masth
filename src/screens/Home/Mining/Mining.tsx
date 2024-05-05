@@ -6,36 +6,26 @@ import ChartIcon from '@icons/chart.svg'
 import GraphIcon from '@icons/graph.svg'
 import PlayBlackIcon from '@icons/play-black.svg'
 import NewsFeedImage from '@images/feeds.svg'
-import { check_version_f, home_statics_f, profile_f, type HomeStatisticsT, type ProfileT } from '@query/api'
+import { home_statics_f, profile_f, type HomeStatisticsT, type ProfileT } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
-import { APP_V_CODE, MST_PER_USD_MESSAGE } from '@utils/constants'
+import { MST_PER_USD_MESSAGE } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import React, { useEffect } from 'react'
-import { Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, ScrollView, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import { default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import MaintenanceNavigation from './Home/MaintenanceNavigation'
-import MiningOrWalletBalance from './Home/MiningOrWalletBalance'
+import MiningOrWalletBalance from './MiningOrWalletBalance'
 // import PopupUi from './Home/PopupUi'
 import BackHeader from '@components/BackHeader'
+import { DefaultTransparent } from '@components/StatusBar'
 
 const { width } = Dimensions.get('window')
-
-function handleAppUpdate(navigation: StackNav) {
-  check_version_f().then((appVersion) => {
-    if (APP_V_CODE !== appVersion.version_code && appVersion.force_update) {
-      navigation.replace('AppUpdate', {
-        link: appVersion.store_link || appVersion.custom_link || '',
-      })
-    }
-  })
-}
+// const adUnitId = TestIds.REWARDED
+// const rewarded = RewardedAd.createForAdRequest(adUnitId)
 export default function Mining({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const profile = useHybridData<ProfileT>(profileQuery, 'profile')
-  useEffect(() => handleAppUpdate(navigation), [navigation])
-
   const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
   const home = useHybridData(homeStatics, 'homeStatics')
 
@@ -51,7 +41,10 @@ export default function Mining({ navigation }: { navigation: StackNav }) {
   return (
     <>
       {/* <PopupUi /> */}
-      <MaintenanceNavigation navigation={navigation} />
+      <DefaultTransparent />
+      {/* <View className='p-5'>
+        <TopBar />
+      </View> */}
       <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }}>
         <BackHeader navigation={navigation} title='Initiate Mining' />
         <View className='p-5 pb-10 pt-0'>
@@ -126,7 +119,7 @@ function ActiveMiners({ home }: { home: HomeStatisticsT | null }) {
     <View className='flex-1 rounded-3xl bg-white' style={{ gap: 15, padding: 17 }}>
       <View className='flex-row items-center justify-between'>
         <View>
-          <View className='bg-secondary rounded-xl p-2'>
+          <View className='rounded-xl bg-secondary p-2'>
             <PlayBlackIcon width={18} height={18} />
           </View>
         </View>

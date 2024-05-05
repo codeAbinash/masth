@@ -1,33 +1,57 @@
+import useHybridData, { setLocalData, useLocalData } from '@/hooks/useHybridData'
+import Images from '@assets/images/images'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
-import { colors } from '@utils/colors'
-import type { NavProp } from '@utils/types'
-import React from 'react'
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import PopupUi from './Home/PopupUi'
-import { Button } from '@components/Button'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import DoubleArrow from '@icons/double-arrow.svg'
-import UsersIcon from '@icons/users.svg'
-import Images from '@assets/images/images'
-import SendIcon from '@icons/send.svg'
-import { useNavigation, type NavigationProp } from '@react-navigation/native'
-import type { RootStackParamList } from 'App'
-import Carousel from 'react-native-reanimated-carousel'
-import GraphIcon from '@icons/graph.svg'
 import CurvesIcon from '@icons/curves.svg'
+import SendIcon from '@icons/send.svg'
+import UsersIcon from '@icons/users.svg'
+import { check_version_f, home_statics_f, type HomeStatisticsT } from '@query/api'
+import { useNavigation, type NavigationProp } from '@react-navigation/native'
+import { useQuery } from '@tanstack/react-query'
+import { colors } from '@utils/colors'
+import { APP_V_CODE } from '@utils/constants'
+import type { NavProp, StackNav } from '@utils/types'
+import type { RootStackParamList } from 'App'
+import React, { useEffect } from 'react'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Carousel from 'react-native-reanimated-carousel'
+import InitiateMining from './Home/InitiateMining'
+import MaintenanceNavigation from './Mining/MaintenanceNavigation'
+import PopupUi from './Mining/PopupUi'
+
+// const adUnitId = TestIds.REWARDED
+// const rewarded = RewardedAd.createForAdRequest(adUnitId)
+
+function handleAppUpdate(navigation: StackNav) {
+  check_version_f().then((appVersion) => {
+    if (APP_V_CODE !== appVersion.version_code && appVersion.force_update) {
+      navigation.replace('AppUpdate', {
+        link: appVersion.store_link || appVersion.custom_link || '',
+      })
+    }
+  })
+}
 
 export default function HomeScreen({ navigation }: NavProp) {
+  const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
+  const home = useHybridData(homeStatics, 'homeStatics')
+  useEffect(() => handleAppUpdate(navigation), [navigation])
+  useEffect(() => {
+    setLocalData(home?.valuation.rate, 'mstPerUSD')
+  }, [home])
+
   return (
     <>
-      <PopupUi />
+      <MaintenanceNavigation navigation={navigation} />
+      {!__DEV__ && <PopupUi />}
       <ScrollView style={{ backgroundColor: colors.bgSecondary, flex: 1 }} className=''>
         <View className='p-5'>
           <PaddingTop />
           <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
           <TodayMined />
           <LiveUsers />
-          <Detailed />
+          <Detailed home={home} />
         </View>
         <Banners />
         <View className='h-10' />
@@ -51,21 +75,8 @@ function TodayMined() {
         </Text>
         <Text className='mb-1 ml-2 text-2xl text-accent'>MST</Text>
       </View>
-      <ButtonFullSecondary />
+      <InitiateMining />
     </View>
-  )
-}
-function ButtonFullSecondary() {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
-  return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      className='bg-secondary mt-5 flex-row items-center justify-center rounded-full p-4'
-      onPress={() => navigation.navigate('Mining')}
-    >
-      <DoubleArrow height={11} width={11} color='black' />
-      <Text className='pl-3 text-base text-black'>Initiate Mining</Text>
-    </TouchableOpacity>
   )
 }
 
@@ -104,11 +115,11 @@ const styles = StyleSheet.create({
   },
 })
 
-function Detailed() {
+function Detailed({ home }: { home: HomeStatisticsT | null }) {
   return (
     <View className='mt-6 flex-row' style={{ gap: 15 }}>
       <ReferAndEarn />
-      <Graph />
+      <Graph home={home} />
     </View>
   )
 }
@@ -132,16 +143,22 @@ function ReferAndEarn() {
   )
 }
 
-function Graph() {
+function Graph({ home }: { home: HomeStatisticsT | null }) {
+  const mstPerUSD = Number(useLocalData<number>('mstPerUSD') || 0)
+  const diff = Number(home?.valuation.rate || 0) - mstPerUSD
+  const diffPercent = diff === 0 || mstPerUSD === 0 ? 0 : (diff / mstPerUSD) * 100
   return (
     <View className='aspect-square flex-1 justify-center rounded-3xl bg-white p-5 py-4'>
       <Text className='text-lg text-gray-500'>
-        MST/USD <Text className='text-black'>0.99</Text>
+        MST/{home?.valuation.currency} <Text className='text-black'>{home?.valuation.rate}</Text>
       </Text>
       <View className='w-full flex-1 items-center justify-center'>
-        <CurvesIcon color={colors.greenPrimary} />
+        <CurvesIcon color={diff < 0 ? colors.redPrimary : colors.greenPrimary} />
       </View>
-      <Text className='text-xl text-greenPrimary'>+0.08(0.2%)</Text>
+      <Text className={`text-xl ${diff < 0 ? 'text-redPrimary' : 'text-greenPrimary'}`}>
+        {diff < 0 ? '' : '+'}
+        {diff.toFixed(2)} ({Math.abs(diffPercent).toFixed(2)}%)
+      </Text>
     </View>
   )
 }

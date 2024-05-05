@@ -7,6 +7,7 @@ import Suspended from '@screens/Account/Suspended'
 import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import RateUs from '@screens/Extra/RateUs'
 import Home from '@screens/Home'
+import Mining from '@screens/Home/Mining/Mining'
 import EditProfile, { type EditProfileParamList } from '@screens/Home/Profile/EditProfile'
 import CheckRefer from '@screens/Login/CheckRefer'
 import Login from '@screens/Login/Login'
@@ -28,13 +29,13 @@ import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
-import mobileAds from 'react-native-google-mobile-ads'
-import Mining from '@screens/Home/Mining'
-mobileAds()
-  .initialize()
-  .then((adapterStatuses) => {
-    // Initialization complete!
-  })
+
+
+// mobileAds()
+//   .initialize()
+//   .then((adapterStatuses) => {
+//     // Initialization complete!
+//   })
 
 export type RootStackParamList = {
   navigationDecider: undefined
