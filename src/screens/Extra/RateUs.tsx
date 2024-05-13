@@ -38,7 +38,7 @@ export default function RateUs({ navigation }: { navigation: StackNav }) {
             <AntDesign name='star' size={30} color={colors.accent} />
             <AntDesign name='star' size={30} color={colors.accent} />
             <AntDesign name='star' size={30} color={colors.accent} />
-            <AntDesign name='staro' size={30} color={colors.gray} />
+            <AntDesign name='star' size={30} color={colors.accent} />
           </View>
         </View>
         <View style={{ gap: 10 }} className='px-5'>

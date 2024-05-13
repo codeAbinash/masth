@@ -1,25 +1,24 @@
 import { Button, SmallButton } from '@components/Button'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
-import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
+import { check_mining_status_f, profile_f, start_mining_f, type ProfileT } from '@query/api'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useMutation, useQuery, type UseMutationResult } from '@tanstack/react-query'
 import { ls } from '@utils/storage'
 import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
-import { OneSignal } from 'react-native-onesignal'
 
 // const adUnitId = rewardAdId
 // const rewarded = RewardedAd.createForAdRequest(adUnitId)
 const { height, width } = Dimensions.get('window')
 
 export default function MiningOrWalletBalance({ profile }: { profile: ProfileT | null }) {
-  const [isLoaded, setIsLoaded] = useState(false)
+  // const [isLoaded, setIsLoaded] = useState(false)
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
   const [modalVisible, setModalVisible] = React.useState(false)
-  const [isFailed, setIsFailed] = React.useState(false)
+  // const [isFailed, setIsFailed] = React.useState(false)
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
@@ -28,7 +27,6 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
     queryFn: check_mining_status_f,
     retry: 3,
   })
-
   // useEffect(() => {
   //   console.log(JSON.stringify(mining.data, null, 2))
   // }, [mining.data])
@@ -44,7 +42,6 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
 
   function startMiningHandler() {
     startMining.mutate()
-    console.log('Mining started')
     // If not rated show the rate us screen
     console.log('Rated', ls.getString('rated'))
     if (!ls.getString('rated')) {
@@ -82,25 +79,26 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
   }, [navigation])
 
   function handleStartMining() {
-    try {
-      if (isLoaded && !isFailed) {
-        OneSignal.Notifications.requestPermission(true)
-        // rewarded.show()
-        console.log('Showing Ad...')
-      } else if (isFailed) {
-        startMiningHandler()
-      } else {
-        setModalVisible(true)
-      }
-    } catch (error) {
-      setModalVisible(true)
-      // rewarded.load()
-      console.log('Error in showing ad', error)
-    }
+    // try {
+    //   if (isLoaded && !isFailed) {
+    //     OneSignal.Notifications.requestPermission(true)
+    //     // rewarded.show()
+    //     console.log('Showing Ad...')
+    //   } else if (isFailed) {
+    //     startMiningHandler()
+    //   } else {
+    //     setModalVisible(true)
+    //   }
+    // } catch (error) {
+    //   setModalVisible(true)
+    //   // rewarded.load()
+    //   console.log('Error in showing ad', error)
+    // }
+    startMiningHandler()
   }
   return (
     <>
-      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-secondary'} rounded-3xl p-5`}>
+      <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-secondary'} mt-5 rounded-3xl p-5`}>
         <Text className='text-base text-onYellow'>Wallet Balance</Text>
         <View className='flex-row items-end'>
           <Text className='text-onYellow' style={{ fontSize: 40 }}>
@@ -130,8 +128,8 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
                 <SmallButton
                   LeftUI={<PlayIcon width={17} height={17} />}
                   onPress={handleStartMining}
-                  title={getStatusString(mining, startMining.isPending, isLoaded, isFailed)}
-                  disabled={getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>, isFailed, isLoaded)}
+                  title={getStatusString(mining, startMining.isPending)}
+                  disabled={getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>)}
                 />
               </View>
               <View style={{ flex: 0.45 }} className='flex-row'>
@@ -155,16 +153,16 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
 function getIsButtonDisabled(
   mining: ReturnType<typeof useQuery>,
   startMining: ReturnType<typeof useMutation>,
-  isFailed: boolean,
-  isLoaded: boolean,
+  // isFailed: boolean,
+  // isLoaded: boolean,
 ): boolean {
-  return mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching || startMining.isPending || !(isFailed || isLoaded)
+  return mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching || startMining.isPending
 }
 
-function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean, isLoaded: boolean, isFailed: boolean): string {
+function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean): string {
   if (mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching) return 'Connecting...'
-  if (isFailed) return 'Start Mining'
-  if (!isLoaded) return 'Connecting....'
+  // if (isFailed) return 'Start Mining'
+  // if (!isLoaded) return 'Connecting....'
   if (isPending) return 'Starting...'
   return 'Start Mining'
 }
@@ -238,6 +236,13 @@ function LoadingBar({
   const curr_diff_now = new Date(currentTime).getTime() - new Date().getTime()
   const [cur, setCur] = React.useState(new Date(currentTime).getTime() + curr_diff_now)
   const [progress, setProgress] = React.useState(0)
+
+  const profile = useQuery({
+    queryKey: ['profile'],
+    queryFn: profile_f,
+    retry: 3,
+  })
+
   useEffect(() => {
     // const interval = setInterval(() => setCur((prev) => prev + 1000), 1000)
     // return () => clearInterval(interval)
@@ -260,6 +265,7 @@ function LoadingBar({
     if (current >= total || progress >= 100) {
       timer = setTimeout(() => {
         mining.refetch()
+        profile.refetch()
       }, 5000)
       setBalance(balance + coin)
     } else {

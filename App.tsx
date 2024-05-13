@@ -7,7 +7,6 @@ import Suspended from '@screens/Account/Suspended'
 import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import RateUs from '@screens/Extra/RateUs'
 import Home from '@screens/Home'
-import Mining from '@screens/Home/Mining/Mining'
 import EditProfile, { type EditProfileParamList } from '@screens/Home/Profile/EditProfile'
 import CheckRefer from '@screens/Login/CheckRefer'
 import Login from '@screens/Login/Login'
@@ -24,18 +23,30 @@ import Transactions from '@screens/Transactions/Transactions'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
+import { InitializationEvents as InitEvent, IronSource } from 'ironsource-mediation'
 import React, { useCallback, useEffect } from 'react'
-import { Dimensions, SafeAreaView, View } from 'react-native'
+import { Alert, AppState, Dimensions, SafeAreaView, View, type AppStateStatus } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
 
+const TEST_ID = '1dc3db545'
+const APP_ID = '1e79f2065'
+const APP_KEY = __DEV__ ? TEST_ID : APP_ID
 
-// mobileAds()
-//   .initialize()
-//   .then((adapterStatuses) => {
-//     // Initialization complete!
-//   })
+async function initIronSource() {
+  try {
+    IronSource.validateIntegration().catch((e) => console.error(e))
+    await IronSource.setAdaptersDebug(true)
+    await IronSource.shouldTrackNetworkState(true)
+    await IronSource.setConsent(true)
+    await IronSource.setMetaData('is_child_directed', ['false'])
+    await IronSource.init(APP_KEY)
+  } catch (e) {
+    // console.error(e)
+    Alert.alert('IronSource Initialization Error')
+  }
+}
 
 export type RootStackParamList = {
   navigationDecider: undefined
@@ -58,6 +69,8 @@ export type RootStackParamList = {
   AppUpdate: AppUpdateParamList
   RateUs: undefined
   Mining: undefined
+  Blank: undefined
+  Banner: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -73,6 +86,32 @@ const queryClient = new QueryClient({
 })
 
 export default function App(): React.JSX.Element {
+  //
+  // const [isInitialized, setIsInitialized] = useState(false)
+  // const [statusText, setStatusText] = useState('Initializing...')
+  // useEffect(() => {}, [statusText])
+
+  useEffect(() => {
+    // InitializationListener
+    InitEvent.onInitializationComplete.setListener(() => {
+      console.log('onInitializationComplete')
+      // setIsInitialized(true)
+    })
+
+    // init the SDK after all child components mounted
+    //   and the app becomes active
+    const subscription = AppState.addEventListener('change', (state: AppStateStatus) => {
+      if (state === 'active') {
+        initIronSource()
+        subscription.remove()
+      }
+    })
+
+    return () => {
+      InitEvent.removeAllListeners()
+      subscription.remove()
+    }
+  }, [])
   return (
     // <SafeAreaProvider>
     <QueryClientProvider client={queryClient}>
@@ -153,7 +192,7 @@ function Navigation() {
       <Stack.Screen name='UnderMaintenance' component={UnderMaintenance} />
       <Stack.Screen name='AppUpdate' component={AppUpdate} />
       <Stack.Screen name='RateUs' component={RateUs} options={IOS_BOTTOM_STYLE} />
-      <Stack.Screen name='Mining' component={Mining} />
+      <Stack.Screen name='Mining' component={Home} />
     </Stack.Navigator>
   )
 }
