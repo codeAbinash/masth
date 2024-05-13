@@ -165,8 +165,8 @@ export interface Profile {
   username: string
 }
 
-export async function get_referred_members_f() {
-  return await postApi<ReferredUserT>('refer/get_referred_members', null)
+export async function get_referred_members_f({ pageParam }: { pageParam: number }) {
+  return await postApi<ReferredUserT>(`refer/get_referred_members?page=${pageParam}`, null)
 }
 
 export interface MiningStatusT {

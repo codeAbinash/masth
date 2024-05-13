@@ -22,9 +22,10 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
     queryKey: ['referredUsers'],
     queryFn: get_referred_members_f,
     getNextPageParam: (lastPage, _pages) => {
-      return lastPage.list.next_page_url
+      if (!lastPage.list.next_page_url) return undefined
+      return lastPage.list.current_page + 1
     },
-    initialPageParam: null,
+    initialPageParam: 1,
   })
 
   useEffect(() => {
@@ -55,9 +56,9 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
             contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
             data={data?.pages.map((page) => page.list.data).flat()}
             renderItem={({ item }) => <Miner {...item.profile[0]} />}
-            keyExtractor={(item) => item.user_id}
+            keyExtractor={(item) => item.profile[0].username}
             onEndReached={loadNext}
-            onEndReachedThreshold={0.2}
+            onEndReachedThreshold={0.3}
             ListHeaderComponent={
               <View className='pb-1'>
                 <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
