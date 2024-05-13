@@ -84,6 +84,9 @@ const queryClient = new QueryClient({
       retry: 1,
       onError: showErr,
     },
+    queries: {
+      retry: 1,
+    },
   },
 })
 

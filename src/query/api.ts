@@ -1,6 +1,7 @@
-import { secureLs } from '@utils/storage'
+import { ls, secureLs } from '@utils/storage'
 import axios from 'axios'
 import { Alert } from 'react-native'
+import RNRestart from 'react-native-restart'
 
 const API = 'https://masth.nexgino.com/api/'
 
@@ -19,16 +20,33 @@ interface ServerResponse {
   status: boolean
 }
 
+let popupCount = 0
 async function postApi<T>(url: string, data: any) {
   try {
     if (data) return (await axios.post<T>(API + url, data)).data
     else return (await axios.post<T>(API + url)).data
   } catch (error: any) {
+    if (error?.response?.status === 401 || error?.response.data.message === 'Unauthenticated.') ShowAlertAndRestart()
     console.log(JSON.stringify(error.response.data, null, 2))
     const errors = error?.response.data.errors
     const singleError = errors[Object.keys(errors)[0]][0]
-    if (error?.response?.status === 401 || error?.response.data.message === 'Unauthenticated.') throw new Error('Unauthenticated')
     throw new Error(singleError || DEFAULT_ERR)
+  }
+}
+
+function ShowAlertAndRestart() {
+  if (popupCount < 1) {
+    popupCount++
+    Alert.alert('Session Expired', 'Please login again', [
+      {
+        text: 'OK',
+        onPress: () => {
+          secureLs.clearAll()
+          ls.clearAll()
+          RNRestart.Restart()
+        },
+      },
+    ])
   }
 }
 
