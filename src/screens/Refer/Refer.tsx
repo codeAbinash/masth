@@ -47,7 +47,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
 
   return (
     <>
-      <InterstitialAd />
+      {!__DEV__ && <InterstitialAd />}
       <View className='flex-1 bg-bgSecondary'>
         <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
         <View>
