@@ -1,7 +1,7 @@
 import { Button, SmallButton } from '@components/Button'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
-import { check_mining_status_f, profile_f, start_mining_f, type ProfileT } from '@query/api'
+import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useMutation, useQuery, type UseMutationResult } from '@tanstack/react-query'
 import { ls } from '@utils/storage'
@@ -14,7 +14,7 @@ import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 // const rewarded = RewardedAd.createForAdRequest(adUnitId)
 const { height, width } = Dimensions.get('window')
 
-export default function MiningOrWalletBalance({ profile }: { profile: ProfileT | null }) {
+export default function MiningOrWalletBalance({ profile, profileQuery }: { profile: ProfileT | null; profileQuery: ReturnType<typeof useQuery> }) {
   // const [isLoaded, setIsLoaded] = useState(false)
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
   const [modalVisible, setModalVisible] = React.useState(false)
@@ -52,31 +52,31 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
   }
 
   // Load the rewarded ad
-  useEffect(() => {
-    // rewarded.load()
-    // const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-    //   setIsLoaded(true)
-    //   console.log('Ad loaded')
-    // })
+  // useEffect(() => {
+  //   rewarded.load()
+  //   const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+  //     setIsLoaded(true)
+  //     console.log('Ad loaded')
+  //   })
 
-    // const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-    //   console.log('User earned reward of', reward)
-    //   startMiningHandler()
-    // })
+  //   const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+  //     console.log('User earned reward of', reward)
+  //     startMiningHandler()
+  //   })
 
-    // const unsubscribeError = rewarded.addAdEventListener(AdEventType.ERROR, (error) => {
-    //   // Ad failed to load so set the isLoaded to true so that the user can start mining
-    //   console.log('Ad failed to load', error)
-    //   setIsFailed(true)
-    // })
+  //   const unsubscribeError = rewarded.addAdEventListener(AdEventType.ERROR, (error) => {
+  //     // Ad failed to load so set the isLoaded to true so that the user can start mining
+  //     console.log('Ad failed to load', error)
+  //     setIsFailed(true)
+  //   })
 
-    return () => {
-      // unsubscribeLoaded()
-      // unsubscribeEarned()
-      // unsubscribeError()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation])
+  //   return () => {
+  //     unsubscribeLoaded()
+  //     unsubscribeEarned()
+  //     unsubscribeError()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [navigation])
 
   function handleStartMining() {
     // try {
@@ -121,6 +121,7 @@ export default function MiningOrWalletBalance({ profile }: { profile: ProfileT |
               endTime={mining.data?.mining_data.end_time}
               mining={mining}
               coin={Number(mining.data.mining_data.coin)}
+              profileQuery={profileQuery}
             />
           ) : (
             <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
@@ -222,6 +223,7 @@ function LoadingBar({
   coin,
   realBalance: balance,
   setBalance,
+  profileQuery,
 }: {
   currentTime: string
   startTime: string
@@ -230,23 +232,17 @@ function LoadingBar({
   coin: number
   realBalance: number
   setBalance: React.Dispatch<React.SetStateAction<number>>
+  profileQuery: ReturnType<typeof useQuery>
 }) {
-  const [start, setStart] = React.useState(new Date(startTime).getTime())
-  const [end, setEnd] = React.useState(new Date(endTime).getTime())
-  const curr_diff_now = new Date(currentTime).getTime() - new Date().getTime()
+  const start = new Date(startTime).getTime()
+  const end = new Date(endTime).getTime()
+  const curr_diff_now = Math.abs(new Date(currentTime).getTime() - new Date().getTime())
   const [cur, setCur] = React.useState(new Date(currentTime).getTime() + curr_diff_now)
   const [progress, setProgress] = React.useState(0)
-
-  const profile = useQuery({
-    queryKey: ['profile'],
-    queryFn: profile_f,
-    retry: 3,
-  })
 
   useEffect(() => {
     // const interval = setInterval(() => setCur((prev) => prev + 1000), 1000)
     // return () => clearInterval(interval)
-    console.log('Mining started')
     const timer = setInterval(() => {
       setCur(curr_diff_now + new Date().getTime())
     }, 1000)
@@ -265,7 +261,7 @@ function LoadingBar({
     if (current >= total || progress >= 100) {
       timer = setTimeout(() => {
         mining.refetch()
-        profile.refetch()
+        profileQuery.refetch()
       }, 5000)
       setBalance(balance + coin)
     } else {

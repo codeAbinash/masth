@@ -5,8 +5,10 @@ import { PaddingBottom } from '@components/SafePadding'
 import Tabs from '@components/Tabs'
 import { get_referred_members_f, profile_f, type ProfileT } from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
+import InterstitialAd from '@screens/Ads/InterstitialAd'
 import { useInfiniteQuery, useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
+import { PLAY_STORE_LINK } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import { shareText } from '@utils/utils'
 import React, { useEffect, useState } from 'react'
@@ -14,7 +16,6 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
 import Miner from './Miner'
-import { PLAY_STORE_LINK } from '@utils/constants'
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
@@ -45,48 +46,51 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
     )
 
   return (
-    <View className='flex-1 bg-bgSecondary'>
-      <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
-      <View>
-        <FlatList
-          contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
-          data={data?.pages.map((page) => page.list.data).flat()}
-          renderItem={({ item }) => <Miner {...item.profile[0]} />}
-          keyExtractor={(item) => item.user_id}
-          onEndReached={loadNext}
-          onEndReachedThreshold={0.2}
-          ListHeaderComponent={
-            <View className='pb-1'>
-              <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
-              <ReferCard bonus={data?.pages.at(-1)?.referred_bonus || '0'} />
-              <Tabs
-                tabs={[
-                  {
-                    title: 'Active Miners',
-                    UI: null,
-                  },
-                  {
-                    title: 'Inactive Miners',
-                    UI: null,
-                    disabled: true,
-                  },
-                ]}
-              />
-              {!data?.pages.at(-1)?.list.data.length && (
-                <View className='flex-1 items-center justify-center py-24'>
-                  <Text className='text-center text-neutral-600'>No Miners</Text>
-                </View>
-              )}
-            </View>
-          }
-          ListFooterComponent={
-            <View className='pb-32'>
-              <PaddingBottom />
-            </View>
-          }
-        />
+    <>
+      <InterstitialAd />
+      <View className='flex-1 bg-bgSecondary'>
+        <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
+        <View>
+          <FlatList
+            contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
+            data={data?.pages.map((page) => page.list.data).flat()}
+            renderItem={({ item }) => <Miner {...item.profile[0]} />}
+            keyExtractor={(item) => item.user_id}
+            onEndReached={loadNext}
+            onEndReachedThreshold={0.2}
+            ListHeaderComponent={
+              <View className='pb-1'>
+                <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
+                <ReferCard bonus={data?.pages.at(-1)?.referred_bonus || '0'} />
+                <Tabs
+                  tabs={[
+                    {
+                      title: 'Active Miners',
+                      UI: null,
+                    },
+                    {
+                      title: 'Inactive Miners',
+                      UI: null,
+                      disabled: true,
+                    },
+                  ]}
+                />
+                {!data?.pages.at(-1)?.list.data.length && (
+                  <View className='flex-1 items-center justify-center py-24'>
+                    <Text className='text-center text-neutral-600'>No Miners</Text>
+                  </View>
+                )}
+              </View>
+            }
+            ListFooterComponent={
+              <View className='pb-32'>
+                <PaddingBottom />
+              </View>
+            }
+          />
+        </View>
       </View>
-    </View>
+    </>
   )
 }
 

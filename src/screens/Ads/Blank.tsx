@@ -1,5 +1,5 @@
 import { Button } from '@components/Button'
-import { p, showAlert, e } from '@utils/utils'
+import { p, showAlert } from '@utils/utils'
 import {
   IronSource,
   LevelPlayRewardedVideoEvents,
@@ -8,7 +8,7 @@ import {
   type IronSourceRVPlacement,
 } from 'ironsource-mediation'
 import React from 'react'
-import { Alert, Text, View } from 'react-native'
+import { Alert, View } from 'react-native'
 
 const REWARDED_VIDEO_PLACEMENT = 'Home_Screen'
 

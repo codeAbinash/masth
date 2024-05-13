@@ -13,10 +13,11 @@ import Images from '@assets/images/images'
 import { Button } from '@components/Button'
 import { ProfileT } from '@query/api'
 import { useNavigation, type NavigationProp } from '@react-navigation/native'
+import InterstitialAd from '@screens/Ads/InterstitialAd'
 import { colors } from '@utils/colors'
+import { ABOUT_US_PAGE_LINK, DELETE_ACCOUNT_LINK, MAIL_TO_LINK, PLAY_STORE_LINK, PRIVACY_LINK, WHITE_PAPER_LINK } from '@utils/constants'
 import { blank_fn } from '@utils/utils'
 import type { RootStackParamList } from 'App'
-import { ABOUT_US_PAGE_LINK, DELETE_ACCOUNT_LINK, MAIL_TO_LINK, PLAY_STORE_LINK, PRIVACY_LINK, WHITE_PAPER_LINK } from '@utils/constants'
 
 const ICON_SIZE = 20
 const aspect_ratio = 796 / 80
@@ -31,6 +32,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
 
   return (
     <>
+      <InterstitialAd />
       <View className='flex-1 bg-bgSecondary'>
         {/* <StatusBar backgroundColor={'white'} barStyle='dark-content' /> */}
         <BackHeader navigation={navigation} title='Settings' RightComponent={<RightSettingIcon navigation={navigation} />} />

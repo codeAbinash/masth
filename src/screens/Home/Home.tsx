@@ -50,7 +50,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
         <View className='p-5 pb-10 pt-5'>
           <PaddingTop />
           <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
-          <MiningOrWalletBalance profile={profile} />
+          <MiningOrWalletBalance profile={profile} profileQuery={profileQuery} />
           <MSTPerUSDCard home={home} />
           <Miners home={home} />
           <TotalRemoteMining navigation={navigation} home={home} />

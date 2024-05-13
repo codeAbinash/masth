@@ -31,8 +31,10 @@ import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
 
 const TEST_ID = '1dc3db545'
-const APP_ID = '1e79f2065'
-const APP_KEY = __DEV__ ? TEST_ID : APP_ID
+// const APP_ID = '1e79f2065'
+// const APP_KEY = __DEV__ ? TEST_ID : APP_ID
+
+const APP_KEY = TEST_ID
 
 async function initIronSource() {
   try {
@@ -172,7 +174,6 @@ function Navigation() {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      {/* <Stack.Screen name='Test' component={TestScreen} /> */}
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
       <Stack.Screen name='CheckRefer' component={CheckRefer} />

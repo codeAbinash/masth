@@ -8,12 +8,12 @@ import ComingSoonSvg from '@icons/coming-soon-2.svg'
 import LockIcon from '@icons/lock.svg'
 import SwapIcon from '@icons/swap.svg'
 import { home_statics_f, profile_f, type HomeStatisticsT, type ProfileT } from '@query/api'
+import InterstitialAd from '@screens/Ads/InterstitialAd'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
 import React from 'react'
 import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import Receive from './Receive'
 
 const { width } = Dimensions.get('window')
 
@@ -24,39 +24,42 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
   const home = useHybridData(homeStatics, 'homeStatics')
 
   return (
-    <KeyboardAvoidingContainer style={{ backgroundColor: colors.bgSecondary }}>
-      <ScrollView className='p-5 pb-10'>
-        <PaddingTop />
-        <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
-        <View className='mt-3 flex-row items-center justify-between'>
-          <View className='flex flex-row'>
-            <Text className='text-neutral-500' style={{ fontSize: 27 }}>
-              Your,{' '}
-            </Text>
-            <Text style={{ fontSize: 30 }}>Wallet</Text>
+    <>
+      <InterstitialAd />
+      <KeyboardAvoidingContainer style={{ backgroundColor: colors.bgSecondary }}>
+        <ScrollView className='p-5 pb-10'>
+          <PaddingTop />
+          <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
+          <View className='mt-3 flex-row items-center justify-between'>
+            <View className='flex flex-row'>
+              <Text className='text-neutral-500' style={{ fontSize: 27 }}>
+                Your,{' '}
+              </Text>
+              <Text style={{ fontSize: 30 }}>Wallet</Text>
+            </View>
+            <TouchableOpacity
+              className='rounded-full border border-neutral-200 bg-white p-2.5'
+              onPress={() => {
+                // navigation.navigate('Transactions')
+              }}
+            >
+              <SwapIcon height={17} width={17} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            className='rounded-full border border-neutral-200 bg-white p-2.5'
-            onPress={() => {
-              // navigation.navigate('Transactions')
-            }}
-          >
-            <SwapIcon height={17} width={17} />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <WalletBalance balance={Number(profile?.data.coin || 0)} home={home} />
-        </View>
-        <Tabs
-          tabs={[
-            // { title: 'Send', UI: <Send /> },
-            { title: 'Send', UI: <ComingSoonSvg width={width * 0.85} /> },
-            // { title: 'Receive', UI: <Receive /> },
-            { title: 'Receive', UI: <ComingSoonSvg width={width * 0.85} /> },
-          ]}
-        />
-      </ScrollView>
-    </KeyboardAvoidingContainer>
+          <View>
+            <WalletBalance balance={Number(profile?.data.coin || 0)} home={home} />
+          </View>
+          <Tabs
+            tabs={[
+              // { title: 'Send', UI: <Send /> },
+              { title: 'Send', UI: <ComingSoonSvg width={width * 0.85} /> },
+              // { title: 'Receive', UI: <Receive /> },
+              { title: 'Receive', UI: <ComingSoonSvg width={width * 0.85} /> },
+            ]}
+          />
+        </ScrollView>
+      </KeyboardAvoidingContainer>
+    </>
   )
 }
 
