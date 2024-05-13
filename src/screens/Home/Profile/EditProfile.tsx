@@ -66,6 +66,7 @@ export default function EditProfile({ navigation, route }: { navigation: StackNa
     setIsSignOut(true)
     ls.clearAll()
     secureLs.clearAll()
+    queryClient.clear()
     setTimeout(() => {
       try {
         oneSignalInit()
