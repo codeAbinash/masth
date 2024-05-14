@@ -15,7 +15,7 @@ import { ProfileT } from '@query/api'
 import { useNavigation, type NavigationProp } from '@react-navigation/native'
 import InterstitialAd from '@screens/Ads/InterstitialAd'
 import { colors } from '@utils/colors'
-import { ABOUT_US_PAGE_LINK, DELETE_ACCOUNT_LINK, MAIL_TO_LINK, PLAY_STORE_LINK, PRIVACY_LINK, WHITE_PAPER_LINK } from '@utils/constants'
+import { ABOUT_US_PAGE_LINK, APP_V_CODE, DELETE_ACCOUNT_LINK, MAIL_TO_LINK, PLAY_STORE_LINK, PRIVACY_LINK, WHITE_PAPER_LINK } from '@utils/constants'
 import { blank_fn } from '@utils/utils'
 import type { RootStackParamList } from 'App'
 
@@ -128,8 +128,9 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               borderBottom={false}
             />
           </OptionWrapper>
+          <Text className='mt-5 text-center text-base text-neutral-500'>Masth Version {APP_V_CODE}</Text>
           <View className='items-center justify-center'>
-            <Text className='mb-2 mt-8 text-center text-base text-neutral-500'>Built by</Text>
+            <Text className='mb-2 mt-5 text-center text-base text-neutral-500'>Built by</Text>
             <Image source={icons.company} className='h-12 w-full' style={{ resizeMode: 'contain', width: companyWidth, height: companyHeight }} />
           </View>
           <View className='h-10' />

@@ -61,7 +61,6 @@
     "@tsconfig/react-native": "^2.0.2",
     "@types/color": "^3.0.6",
     "@types/jest": "^29.2.1",
-    "@types/lodash": "^4.14.202",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.2.6",
     "@types/react-native-vector-icons": "^6.4.18",
