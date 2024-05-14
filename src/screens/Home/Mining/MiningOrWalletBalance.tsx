@@ -96,13 +96,14 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     // }
     startMiningHandler()
   }
+
   return (
     <>
       <View className={`${!mining.data?.mining_function ? 'bg-white' : 'bg-secondary'} mt-5 rounded-3xl p-5`}>
         <Text className='text-base text-onYellow'>Wallet Balance</Text>
         <View className='flex-row items-end'>
           <Text className='text-onYellow' style={{ fontSize: 40 }}>
-            {balance.toFixed(4)}
+            {Math.max(balance, Number(profile?.data.coin || 0)).toFixed(4)}
           </Text>
           <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
         </View>
