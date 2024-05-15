@@ -9,6 +9,7 @@ import LockIcon from '@icons/lock.svg'
 import SwapIcon from '@icons/swap.svg'
 import { home_statics_f, profile_f, type HomeStatisticsT, type ProfileT } from '@query/api'
 import InterstitialAd from '@screens/Ads/InterstitialAd'
+import RewardAd from '@screens/Ads/RewardAd'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
@@ -25,7 +26,8 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
 
   return (
     <>
-      <InterstitialAd />
+      {/* <InterstitialAd /> */}
+      <RewardAd />
       <KeyboardAvoidingContainer style={{ backgroundColor: colors.bgSecondary }}>
         <ScrollView className='p-5 pb-10'>
           <PaddingTop />

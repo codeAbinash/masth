@@ -29,6 +29,13 @@ import { Alert, AppState, Dimensions, SafeAreaView, View, type AppStateStatus } 
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
+import mobileAds from 'react-native-google-mobile-ads'
+
+mobileAds()
+  .initialize()
+  .then((adapterStatuses) => {
+    console.log('Adapter Statuses', adapterStatuses)
+  })
 
 const TEST_ID = '1dc3db545'
 const APP_ID = '1e79f2065'

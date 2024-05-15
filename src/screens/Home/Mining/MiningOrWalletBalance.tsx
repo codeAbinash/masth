@@ -46,7 +46,7 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     console.log('Rated', ls.getString('rated'))
     if (!ls.getString('rated')) {
       setTimeout(() => {
-        navigation.navigate('RateUs')
+        !__DEV__ && navigation.navigate('RateUs')
       }, 2000)
     }
   }

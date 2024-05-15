@@ -13,6 +13,6 @@ export const TERMS_AND_CONDITIONS_LINK = 'https://minemasth.com/terms_and_condit
 
 // Other ads settings can be found in the app.json file
 
-// export const rewardAdId = 'ca-app-pub-2907000163900605/7175075918'
-// export const bannerAdId = 'ca-app-pub-2907000163900605~2761721016'
-export const rewardAdId = 'ca-app-pub-3940256099942544/5224354917' // Test ad id
+export const ADMOB_AD_ID = 'ca-app-pub-2907000163900605/7175075918'
+export const ADMOB_APP_ID = 'ca-app-pub-2907000163900605~2761721016'
+// export const rewardAdId = 'ca-app-pub-3940256099942544/5224354917' // Test ad id
