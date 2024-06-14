@@ -1,4 +1,8 @@
+import { check_version_f } from '@query/api'
 import { Share } from 'react-native'
+import { Alert } from 'react-native'
+import { APP_V_CODE } from './constants'
+import type { StackNav } from './types'
 
 export async function shareText(message: string) {
   try {
@@ -24,8 +28,6 @@ export function niceDate(date: Date | null) {
   })
 }
 
-import { Alert } from 'react-native'
-
 // Utils
 export const p = console.log
 export const e = console.error
@@ -39,3 +41,21 @@ export const showAlert = (title: string, messages?: string[]) => {
 export const prettyJSON = (obj: any) => JSON.stringify(obj, null, 2)
 
 export function blank_fn() {}
+
+export function handleAppUpdate(navigation: StackNav) {
+  check_version_f().then((appVersion) => {
+    const localV = Number(APP_V_CODE)
+    const serverV = Number(appVersion.version_code)
+    const shouldUpdate = serverV > localV && appVersion.force_update
+    console.log('shouldUpdate', shouldUpdate)
+    if (shouldUpdate) {
+      if (__DEV__) {
+        console.warn('App Update Available')
+        return
+      }
+      navigation.replace('AppUpdate', {
+        link: appVersion.store_link || appVersion.custom_link || '',
+      })
+    }
+  })
+}

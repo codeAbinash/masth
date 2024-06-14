@@ -1,4 +1,4 @@
-export const APP_V_CODE = '3.2'
+export const APP_V_CODE = '3.3'
 
 export const MST_PER_USD_MESSAGE =
   'Masth,calculates coin value using a smart system created by “Nexgino Technology Solutions”. It considers mining, downloads, and user activity every day for accurate valuation.'
@@ -16,3 +16,5 @@ export const TERMS_AND_CONDITIONS_LINK = 'https://minemasth.com/terms_and_condit
 export const ADMOB_AD_ID = 'ca-app-pub-2907000163900605/7175075918'
 export const ADMOB_APP_ID = 'ca-app-pub-2907000163900605~2761721016'
 // export const rewardAdId = 'ca-app-pub-3940256099942544/5224354917' // Test ad id
+
+export const UNITY_GAME_ID = '4785439'

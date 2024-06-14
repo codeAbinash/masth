@@ -2,7 +2,6 @@ apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
-
 import com.android.build.OutputFile
 
 /**
@@ -100,8 +99,8 @@ android {
         applicationId "com.crypto.miner.masth"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "3.2"
+        versionCode 6
+        versionName "3.3"
     }
 
     splits {

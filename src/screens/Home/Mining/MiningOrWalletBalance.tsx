@@ -4,21 +4,27 @@ import StopRound from '@icons/stop-round.svg'
 import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { useMutation, useQuery, type UseMutationResult } from '@tanstack/react-query'
+import { UNITY_GAME_ID } from '@utils/constants'
 import { ls } from '@utils/storage'
 import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
+import { OneSignal } from 'react-native-onesignal'
+import UnityAds from 'react-native-unity-ads-monetization'
 
-// const adUnitId = rewardAdId
-// const rewarded = RewardedAd.createForAdRequest(adUnitId)
 const { height, width } = Dimensions.get('window')
 
+enum AdState {
+  NOT_LOADED,
+  LOADED,
+  FAILED,
+}
+
 export default function MiningOrWalletBalance({ profile, profileQuery }: { profile: ProfileT | null; profileQuery: ReturnType<typeof useQuery> }) {
-  // const [isLoaded, setIsLoaded] = useState(false)
+  const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
   const [modalVisible, setModalVisible] = React.useState(false)
-  // const [isFailed, setIsFailed] = React.useState(false)
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
 
@@ -27,9 +33,6 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     queryFn: check_mining_status_f,
     retry: 3,
   })
-  // useEffect(() => {
-  //   console.log(JSON.stringify(mining.data, null, 2))
-  // }, [mining.data])
 
   const startMining = useMutation({
     mutationKey: ['startMining'],
@@ -40,10 +43,30 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     },
   })
 
+  function loadAd() {
+    UnityAds.initialize(UNITY_GAME_ID, true).then((_) => UnityAds.loadAd('Rewarded_Android'))
+    UnityAds.setOnUnityAdsLoadListener({
+      onAdLoaded: (placementId) => {
+        setAdState(AdState.LOADED)
+      },
+      onAdLoadFailed: function (placementId: string, message: string): void {
+        setAdState(AdState.FAILED)
+        console.log('Ad failed to load', message)
+      },
+    })
+  }
+
+  useEffect(() => {
+    loadAd()
+  }, [])
+
+  function showAd() {
+    UnityAds.showAd('Rewarded_Android')
+  }
+
   function startMiningHandler() {
+    if (adState === 1) showAd() // Show the ad if it is loaded
     startMining.mutate()
-    // If not rated show the rate us screen
-    console.log('Rated', ls.getString('rated'))
     if (!ls.getString('rated')) {
       setTimeout(() => {
         !__DEV__ && navigation.navigate('RateUs')
@@ -94,6 +117,7 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     //   // rewarded.load()
     //   console.log('Error in showing ad', error)
     // }
+    OneSignal.Notifications.requestPermission(true)
     startMiningHandler()
   }
 
@@ -130,8 +154,8 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
                 <SmallButton
                   LeftUI={<PlayIcon width={17} height={17} />}
                   onPress={handleStartMining}
-                  title={getStatusString(mining, startMining.isPending)}
-                  disabled={getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>)}
+                  title={getStatusString(mining, startMining.isPending, adState)}
+                  disabled={adState === 0 || getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>)}
                 />
               </View>
               <View style={{ flex: 0.45 }} className='flex-row'>
@@ -161,7 +185,8 @@ function getIsButtonDisabled(
   return mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching || startMining.isPending
 }
 
-function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean): string {
+function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean, adState: AdState): string {
+  if (adState === 0) return 'Connecting...'
   if (mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching) return 'Connecting...'
   // if (isFailed) return 'Start Mining'
   // if (!isLoaded) return 'Connecting....'

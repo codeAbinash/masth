@@ -23,39 +23,11 @@ import Transactions from '@screens/Transactions/Transactions'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { secureLs } from '@utils/storage'
 import { StackNav } from '@utils/types'
-import { InitializationEvents as InitEvent, IronSource } from 'ironsource-mediation'
 import React, { useCallback, useEffect } from 'react'
-import { Alert, AppState, Dimensions, SafeAreaView, View, type AppStateStatus } from 'react-native'
+import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import { setAuthToken, showErr } from './src/query/api'
-import mobileAds from 'react-native-google-mobile-ads'
-
-mobileAds()
-  .initialize()
-  .then((adapterStatuses) => {
-    console.log('Adapter Statuses', adapterStatuses)
-  })
-
-const TEST_ID = '1dc3db545'
-const APP_ID = '1e79f2065'
-const APP_KEY = __DEV__ ? TEST_ID : APP_ID
-
-// const APP_KEY = TEST_ID
-
-async function initIronSource() {
-  try {
-    IronSource.validateIntegration().catch((e) => console.error(e))
-    await IronSource.setAdaptersDebug(true)
-    await IronSource.shouldTrackNetworkState(true)
-    await IronSource.setConsent(true)
-    await IronSource.setMetaData('is_child_directed', ['false'])
-    await IronSource.init(APP_KEY)
-  } catch (e) {
-    // console.error(e)
-    Alert.alert('IronSource Initialization Error')
-  }
-}
 
 export type RootStackParamList = {
   navigationDecider: undefined
@@ -80,6 +52,7 @@ export type RootStackParamList = {
   Mining: undefined
   Blank: undefined
   Banner: undefined
+  Unity: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -103,27 +76,27 @@ export default function App(): React.JSX.Element {
   // const [statusText, setStatusText] = useState('Initializing...')
   // useEffect(() => {}, [statusText])
 
-  useEffect(() => {
-    // InitializationListener
-    InitEvent.onInitializationComplete.setListener(() => {
-      console.log('onInitializationComplete')
-      // setIsInitialized(true)
-    })
+  // useEffect(() => {
+  //   // InitializationListener
+  //   InitEvent.onInitializationComplete.setListener(() => {
+  //     console.log('onInitializationComplete')
+  //     // setIsInitialized(true)
+  //   })
 
-    // init the SDK after all child components mounted
-    //   and the app becomes active
-    const subscription = AppState.addEventListener('change', (state: AppStateStatus) => {
-      if (state === 'active') {
-        initIronSource()
-        subscription.remove()
-      }
-    })
+  //   // init the SDK after all child components mounted
+  //   //   and the app becomes active
+  //   const subscription = AppState.addEventListener('change', (state: AppStateStatus) => {
+  //     if (state === 'active') {
+  //       initIronSource()
+  //       subscription.remove()
+  //     }
+  //   })
 
-    return () => {
-      InitEvent.removeAllListeners()
-      subscription.remove()
-    }
-  }, [])
+  //   return () => {
+  //     InitEvent.removeAllListeners()
+  //     subscription.remove()
+  //   }
+  // }, [])
   return (
     // <SafeAreaProvider>
     <QueryClientProvider client={queryClient}>
@@ -184,6 +157,7 @@ function Navigation() {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
+      {/* <Stack.Screen name='Unity' component={Unity} /> */}
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
       <Stack.Screen name='CheckRefer' component={CheckRefer} />

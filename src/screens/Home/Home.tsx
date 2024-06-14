@@ -1,4 +1,6 @@
 import useHybridData, { setLocalData, useLocalData } from '@/hooks/useHybridData'
+import { PaddingTop } from '@components/SafePadding'
+import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import ThreeUserIcon from '@icons/3user.svg'
 import ArrowDownBold from '@icons/arrow-down-bold.svg'
 import ArrowUpBold from '@icons/arrow-up-bold.svg'
@@ -11,14 +13,12 @@ import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { MST_PER_USD_MESSAGE } from '@utils/constants'
 import { StackNav } from '@utils/types'
+import { handleAppUpdate } from '@utils/utils'
 import React, { useEffect } from 'react'
 import { Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MiningOrWalletBalance from './Mining/MiningOrWalletBalance'
-// import PopupUi from './Home/PopupUi'
-import { PaddingTop } from '@components/SafePadding'
-import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import PopupUi from './Mining/PopupUi'
 
 const { width } = Dimensions.get('window')
@@ -29,6 +29,8 @@ export default function Home({ navigation }: { navigation: StackNav }) {
   const profile = useHybridData<ProfileT>(profileQuery, 'profile')
   const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
   const home = useHybridData(homeStatics, 'homeStatics')
+
+  useEffect(() => handleAppUpdate(navigation), [navigation])
 
   useEffect(() => {
     // console.log(JSON.stringify(home, null, 2))
