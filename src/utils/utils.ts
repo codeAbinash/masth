@@ -47,7 +47,6 @@ export function handleAppUpdate(navigation: StackNav) {
     const localV = Number(APP_V_CODE)
     const serverV = Number(appVersion.version_code)
     const shouldUpdate = serverV > localV && appVersion.force_update
-    console.log('shouldUpdate', shouldUpdate)
     if (shouldUpdate) {
       if (__DEV__) {
         console.warn('App Update Available')

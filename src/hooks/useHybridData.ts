@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 
 function getLocalData<T>(queryData: T | undefined, key: string): T | null {
   if (queryData) return queryData
-  else console.log(`Get local ${key} data`)
+  // else console.log(`Get local ${key} data`)
   const data = ls.getString(key)
   if (data) return JSON.parse(data)
   return null
@@ -12,7 +12,7 @@ function getLocalData<T>(queryData: T | undefined, key: string): T | null {
 
 export function setLocalData<T>(data: T, key: string) {
   if (data) {
-    console.log(`Set local ${key} data`)
+    // console.log(`Set local ${key} data`)
     ls.set(key, JSON.stringify(data))
   }
 }

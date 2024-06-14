@@ -20,6 +20,7 @@ import { default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MiningOrWalletBalance from './Mining/MiningOrWalletBalance'
 import PopupUi from './Mining/PopupUi'
+import MaintenanceNavigation from './Mining/MaintenanceNavigation'
 
 const { width } = Dimensions.get('window')
 // const adUnitId = TestIds.REWARDED
@@ -43,6 +44,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
 
   return (
     <>
+      <MaintenanceNavigation navigation={navigation} />
       {!__DEV__ && <PopupUi />}
       {/* <View className='p-5'>
         <TopBar />

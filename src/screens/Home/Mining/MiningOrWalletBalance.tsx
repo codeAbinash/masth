@@ -10,7 +10,6 @@ import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
-import { OneSignal } from 'react-native-onesignal'
 import UnityAds from 'react-native-unity-ads-monetization'
 
 const { height, width } = Dimensions.get('window')
@@ -43,83 +42,40 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     },
   })
 
-  function loadAd() {
-    UnityAds.initialize(UNITY_GAME_ID, true).then((_) => UnityAds.loadAd('Rewarded_Android'))
-    UnityAds.setOnUnityAdsLoadListener({
-      onAdLoaded: (placementId) => {
-        setAdState(AdState.LOADED)
-      },
-      onAdLoadFailed: function (placementId: string, message: string): void {
-        setAdState(AdState.FAILED)
-        console.log('Ad failed to load', message)
-      },
-    })
-  }
-
-  useEffect(() => {
-    loadAd()
-  }, [])
-
-  function showAd() {
-    UnityAds.showAd('Rewarded_Android')
-  }
-
-  function startMiningHandler() {
-    if (adState === 1) showAd() // Show the ad if it is loaded
+  function handleStartMining() {
     startMining.mutate()
     if (!ls.getString('rated')) {
       setTimeout(() => {
         !__DEV__ && navigation.navigate('RateUs')
       }, 2000)
     }
+    if (adState === 1) showAd() // Show the ad if it is loaded
   }
 
-  // Load the rewarded ad
-  // useEffect(() => {
-  //   rewarded.load()
-  //   const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
-  //     setIsLoaded(true)
-  //     console.log('Ad loaded')
-  //   })
-
-  //   const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
-  //     console.log('User earned reward of', reward)
-  //     startMiningHandler()
-  //   })
-
-  //   const unsubscribeError = rewarded.addAdEventListener(AdEventType.ERROR, (error) => {
-  //     // Ad failed to load so set the isLoaded to true so that the user can start mining
-  //     console.log('Ad failed to load', error)
-  //     setIsFailed(true)
-  //   })
-
-  //   return () => {
-  //     unsubscribeLoaded()
-  //     unsubscribeEarned()
-  //     unsubscribeError()
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [navigation])
-
-  function handleStartMining() {
-    // try {
-    //   if (isLoaded && !isFailed) {
-    //     OneSignal.Notifications.requestPermission(true)
-    //     // rewarded.show()
-    //     console.log('Showing Ad...')
-    //   } else if (isFailed) {
-    //     startMiningHandler()
-    //   } else {
-    //     setModalVisible(true)
-    //   }
-    // } catch (error) {
-    //   setModalVisible(true)
-    //   // rewarded.load()
-    //   console.log('Error in showing ad', error)
-    // }
-    OneSignal.Notifications.requestPermission(true)
-    startMiningHandler()
+  function loadAd() {
+    console.log('Loading ad')
+    UnityAds.initialize(UNITY_GAME_ID, true).then((_) => UnityAds.loadAd('Rewarded_Android'))
+    UnityAds.setOnUnityAdsLoadListener({
+      onAdLoaded: (placementId) => {
+        console.log('Ad loaded')
+        setAdState(AdState.LOADED)
+      },
+      onAdLoadFailed: function (placementId: string, message: string): void {
+        setAdState(AdState.FAILED)
+      },
+    })
   }
+
+  function showAd() {
+    UnityAds.showAd('Rewarded_Android')
+  }
+
+  useEffect(() => {
+    console.log('Mining data', mining.data?.mining_function)
+    if (mining.data?.mining_function) {
+      loadAd()
+    }
+  }, [mining.data?.mining_function])
 
   return (
     <>
@@ -131,45 +87,40 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
           </Text>
           <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
         </View>
-        {
-          /* {mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching ? (
-          <View className='h-8 justify-center'>
-            <Text className='text-lg'> Checking mining status...</Text>
-          </View>
-        ) : */
-          mining.data && !mining.data?.mining_function ? (
-            <LoadingBar
-              currentTime={mining.data.mining_data.current_time}
-              setBalance={setBalance}
-              realBalance={Number(profile?.data.coin || 0)}
-              startTime={mining.data?.mining_data.start_time}
-              endTime={mining.data?.mining_data.end_time}
-              mining={mining}
-              coin={Number(mining.data.mining_data.coin)}
-              profileQuery={profileQuery}
-            />
-          ) : (
-            <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
-              <View style={{ flex: 0.55 }}>
-                <SmallButton
-                  LeftUI={<PlayIcon width={17} height={17} />}
-                  onPress={handleStartMining}
-                  title={getStatusString(mining, startMining.isPending, adState)}
-                  disabled={adState === 0 || getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>)}
-                />
-              </View>
-              <View style={{ flex: 0.45 }} className='flex-row'>
-                <Text style={{ fontSize: 15 }} className='text-onYellow'>
-                  1 Masth
-                </Text>
-                <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
-                  {' '}
-                  / Hour
-                </Text>
-              </View>
+        {mining.data && !mining.data?.mining_function ? (
+          <LoadingBar
+            currentTime={mining.data.mining_data.current_time}
+            setBalance={setBalance}
+            realBalance={Number(profile?.data.coin || 0)}
+            startTime={mining.data?.mining_data.start_time}
+            endTime={mining.data?.mining_data.end_time}
+            mining={mining}
+            coin={Number(mining.data.mining_data.coin)}
+            profileQuery={profileQuery}
+          />
+        ) : (
+          <View className='mt-3 flex-row items-center justify-between' style={{ gap: 15 }}>
+            <View style={{ flex: 0.55 }}>
+              <SmallButton
+                LeftUI={<PlayIcon width={17} height={17} />}
+                onPress={handleStartMining}
+                title={getStatusString(mining, startMining.isPending, adState)}
+                disabled={
+                  adState === AdState.NOT_LOADED || getIsButtonDisabled(mining, startMining as UseMutationResult<unknown, unknown, unknown, unknown>)
+                }
+              />
             </View>
-          )
-        }
+            <View style={{ flex: 0.45 }} className='flex-row'>
+              <Text style={{ fontSize: 15 }} className='text-onYellow'>
+                1 Masth
+              </Text>
+              <Text style={{ fontSize: 15 }} className='text-onYellow opacity-60'>
+                {' '}
+                / Hour
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
       <AdLoafFailedPopupUi modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </>
@@ -186,7 +137,7 @@ function getIsButtonDisabled(
 }
 
 function getStatusString(mining: ReturnType<typeof useQuery>, isPending: boolean, adState: AdState): string {
-  if (adState === 0) return 'Connecting...'
+  if (adState === AdState.NOT_LOADED) return 'Connecting...'
   if (mining.isLoading || mining.isPending || mining.isFetching || mining.isRefetching) return 'Connecting...'
   // if (isFailed) return 'Start Mining'
   // if (!isLoaded) return 'Connecting....'
