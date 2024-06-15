@@ -18,3 +18,5 @@ export const ADMOB_APP_ID = 'ca-app-pub-2907000163900605~2761721016'
 // export const rewardAdId = 'ca-app-pub-3940256099942544/5224354917' // Test ad id
 
 export const UNITY_GAME_ID = '4785439'
+
+export const ONE_SIGNAL_APP_ID = '7a836c6e-2ed7-4258-bc5b-099b6355d92c'

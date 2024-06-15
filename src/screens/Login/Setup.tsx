@@ -2,13 +2,14 @@ import icons from '@assets/icons/icons'
 import { PaddingBottom, PaddingTop } from '@components/SafePadding'
 import { profile_f } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
+import { ONE_SIGNAL_APP_ID } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import { useEffect } from 'react'
 import { Image, Text, View } from 'react-native'
 import { OneSignal } from 'react-native-onesignal'
 
 export function oneSignalInit() {
-  OneSignal.initialize('7a836c6e-2ed7-4258-bc5b-099b6355d92c')
+  OneSignal.initialize(ONE_SIGNAL_APP_ID)
 }
 
 export default function Setup({ navigation }: { navigation: StackNav }) {
