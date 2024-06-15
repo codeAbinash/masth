@@ -43,13 +43,17 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
   })
 
   function handleStartMining() {
+    if (adState === AdState.LOADED) showAd() // Show the ad if it is loaded
+    else if (adState === AdState.FAILED) startMiningFn() // Start mining if the ad is failed
+  }
+
+  function startMiningFn() {
     startMining.mutate()
     if (!ls.getString('rated')) {
       setTimeout(() => {
         !__DEV__ && navigation.navigate('RateUs')
       }, 2000)
     }
-    if (adState === 1) showAd() // Show the ad if it is loaded
   }
 
   function loadAd() {
@@ -57,11 +61,28 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     UnityAds.initialize(UNITY_GAME_ID, true).then((_) => UnityAds.loadAd('Rewarded_Android'))
     UnityAds.setOnUnityAdsLoadListener({
       onAdLoaded: (placementId) => {
-        console.log('Ad loaded')
+        console.log('Ad loaded', placementId)
         setAdState(AdState.LOADED)
       },
       onAdLoadFailed: function (placementId: string, message: string): void {
         setAdState(AdState.FAILED)
+        console.error(`UnityAds.onAdLoadFailed: ${placementId}, ${message}`)
+      },
+    })
+    UnityAds.setOnUnityAdsShowListener({
+      onShowStart: (placementId: string) => {
+        console.log(`UnityAds.onShowStart: ${placementId}`)
+      },
+      onShowComplete: (placementId: string, state: 'SKIPPED' | 'COMPLETED') => {
+        console.log(`UnityAds.onShowComplete: ${placementId}, ${state}`)
+        startMiningFn()
+      },
+      onShowFailed: (placementId: string, message: string) => {
+        console.error(`UnityAds.onShowFailed: ${placementId}, ${message}`)
+        startMiningFn()
+      },
+      onShowClick: (placementId: string) => {
+        console.log(`UnityAds.onShowClick: ${placementId}`)
       },
     })
   }
@@ -75,6 +96,7 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     if (mining.data?.mining_function) {
       loadAd()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mining.data?.mining_function])
 
   return (
