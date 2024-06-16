@@ -11,6 +11,8 @@ import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
 import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import UnityAds from 'react-native-unity-ads-monetization'
+import { useBannedNavigation } from './ExtraNavs'
+import type { StackNavigationProp } from '@react-navigation/stack'
 
 const { height, width } = Dimensions.get('window')
 
@@ -25,13 +27,15 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
   const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
   const [modalVisible, setModalVisible] = React.useState(false)
 
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
 
   const mining = useQuery({
     queryKey: ['miningStatus'],
     queryFn: check_mining_status_f,
     retry: 3,
   })
+
+  useBannedNavigation(navigation, mining.data)
 
   const startMining = useMutation({
     mutationKey: ['startMining'],

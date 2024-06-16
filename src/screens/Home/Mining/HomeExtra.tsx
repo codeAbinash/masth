@@ -17,7 +17,7 @@ import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-nat
 import { TouchableOpacity } from 'react-native-gesture-handler'
 // import Carousel from 'react-native-reanimated-carousel'
 import InitiateMining from '../Home/InitiateMining'
-import MaintenanceNavigation from './MaintenanceNavigation'
+import MaintenanceNavigation from './ExtraNavs'
 import PopupUi from './PopupUi'
 
 // const adUnitId = TestIds.REWARDED

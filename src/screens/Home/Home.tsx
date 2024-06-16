@@ -20,7 +20,7 @@ import { default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import MiningOrWalletBalance from './Mining/MiningOrWalletBalance'
 import PopupUi from './Mining/PopupUi'
-import MaintenanceNavigation from './Mining/MaintenanceNavigation'
+import MaintenanceNavigation, { useBannedNavigation } from './Mining/ExtraNavs'
 
 const { width } = Dimensions.get('window')
 // const adUnitId = TestIds.REWARDED
@@ -30,6 +30,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
   const profile = useHybridData<ProfileT>(profileQuery, 'profile')
   const homeStatics = useQuery({ queryKey: ['homeStatics'], queryFn: home_statics_f })
   const home = useHybridData(homeStatics, 'homeStatics')
+  useBannedNavigation(navigation, profileQuery.data)
 
   useEffect(() => handleAppUpdate(navigation), [navigation])
 

@@ -15,9 +15,10 @@ setAuthToken()
 
 const DEFAULT_ERR = 'Error occurred. Pease check your internet connection and try again'
 
-interface ServerResponse {
+export interface ServerResponse {
   message: string
   status: boolean
+  blocked?: boolean
 }
 
 let popupCount = 0

@@ -3,7 +3,7 @@ import { DarkContentTransparentStatusBar } from '@components/StatusBar'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, StackNavigationOptions, createStackNavigator } from '@react-navigation/stack'
 import AppUpdate, { type AppUpdateParamList } from '@screens/Account/AppUpdate'
-import Suspended from '@screens/Account/Suspended'
+import Suspended, { type SuspendedParamList } from '@screens/Account/Suspended'
 import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import RateUs from '@screens/Extra/RateUs'
 import Home from '@screens/Home'
@@ -45,7 +45,7 @@ export type RootStackParamList = {
   Refer: undefined
   TransactionDetails: TransactionDetailsParamList
   SignOut: undefined
-  Suspended: undefined
+  Suspended: SuspendedParamList
   UnderMaintenance: undefined
   AppUpdate: AppUpdateParamList
   RateUs: undefined
