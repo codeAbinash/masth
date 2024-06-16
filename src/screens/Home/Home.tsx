@@ -40,7 +40,7 @@ export default function Home({ navigation }: { navigation: StackNav }) {
     setLocalData(home?.total_miners, 'total_miners')
     setLocalData(home?.total_remote_mining, 'total_remote_mining')
     setLocalData(home?.total_live_mining, 'total_live_mining')
-    setLocalData(home?.valuation.rate, 'mstPerUSD')
+    setLocalData(home?.valuation?.rate, 'mstPerUSD')
   }, [home])
 
   return (
@@ -250,13 +250,13 @@ function NewsFeed() {
 
 function MSTPerUSDCard({ home }: { home: HomeStatisticsT | null }) {
   const mstPerUSD = Number(useLocalData<number>('mstPerUSD') || 0)
-  const diff = Number(home?.valuation.rate || 0) - mstPerUSD
+  const diff = Number(home?.valuation?.rate || 0) - mstPerUSD
   const diffPercent = diff === 0 || mstPerUSD === 0 ? 0 : (diff / mstPerUSD) * 100
   return (
     <View className='mt-4 flex-row items-center justify-between rounded-2xl bg-white p-3.5 px-5'>
       <View style={{ gap: 5 }} className='flex-row items-center'>
         <Text className='text-base text-neutral-600'>
-          MST / {home?.valuation.currency} {home?.valuation.rate}
+          MST / {home?.valuation?.currency} {home?.valuation?.rate}
         </Text>
         {/* <Text className='text-base'></Text>  */}
         {/* <Tooltip

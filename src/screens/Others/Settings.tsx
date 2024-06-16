@@ -50,7 +50,7 @@ export default function Settings({ navigation }: { navigation: StackNav }) {
               }
             />
 
-            {!profile?.data.email && (
+            {!profile?.data?.email && (
               <Option
                 name='Account Migration'
                 right={<RightArrow />}

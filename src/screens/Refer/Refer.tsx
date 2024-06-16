@@ -22,7 +22,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
     queryKey: ['referredUsers'],
     queryFn: get_referred_members_f,
     getNextPageParam: (lastPage, _pages) => {
-      if (!lastPage.list.next_page_url) return undefined
+      if (!lastPage.list?.next_page_url) return undefined
       return lastPage.list.current_page + 1
     },
     initialPageParam: 1,
@@ -54,7 +54,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
         <View>
           <FlatList
             contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
-            data={data?.pages.map((page) => page.list.data).flat()}
+            data={data?.pages.map((page) => page.list?.data || []).flat()}
             renderItem={({ item }) => <Miner {...item.profile[0]} />}
             keyExtractor={(item) => item.profile[0].username}
             onEndReached={loadNext}
@@ -76,7 +76,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
                     },
                   ]}
                 />
-                {!data?.pages.at(-1)?.list.data.length && (
+                {!data?.pages.at(-1)?.list?.data.length && (
                   <View className='flex-1 items-center justify-center py-24'>
                     <Text className='text-center text-neutral-600'>No Miners</Text>
                   </View>
@@ -98,7 +98,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
 function ReferCard({ bonus }: { bonus: string }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
 
-  const referText = `Start Mining Masth Now! Use My Referral Code ${profileQuery.data?.data.refer_code} For A Boosted Initial Mining Rate. Install Masth: Crypto Miner from the Play Store. 💰👇 
+  const referText = `Start Mining Masth Now! Use My Referral Code ${profileQuery.data?.data?.refer_code} For A Boosted Initial Mining Rate. Install Masth: Crypto Miner from the Play Store. 💰👇 
 ${PLAY_STORE_LINK}`
   return (
     <View className='mt-5 rounded-3xl bg-white p-5'>
@@ -123,7 +123,7 @@ ${PLAY_STORE_LINK}`
 function ReferCode({ profileQuery }: { profileQuery: UseQueryResult<ProfileT, Error> }) {
   const [copied, setCopied] = useState(false)
   const onPress = () => {
-    Clipboard.setString(profileQuery.data?.data.refer_code || '')
+    Clipboard.setString(profileQuery.data?.data?.refer_code || '')
     setCopied(true)
     setTimeout(() => {
       setCopied(false)
@@ -136,7 +136,7 @@ function ReferCode({ profileQuery }: { profileQuery: UseQueryResult<ProfileT, Er
           <Text className='text-base'>Refer Code: </Text>
         </View>
         <View>
-          <Text className='text-base text-accent'>{profileQuery.data?.data.refer_code || 'Loading...'}</Text>
+          <Text className='text-base text-accent'>{profileQuery.data?.data?.refer_code || 'Loading...'}</Text>
         </View>
       </View>
       <TouchableOpacity className='pr-1' onPress={onPress}>

@@ -48,7 +48,7 @@ export default function Wallet({ navigation }: { navigation: StackNav }) {
             </TouchableOpacity>
           </View>
           <View>
-            <WalletBalance balance={Number(profile?.data.coin || 0)} home={home} />
+            <WalletBalance balance={Number(profile?.data?.coin || 0)} home={home} />
           </View>
           <Tabs
             tabs={[
@@ -79,7 +79,7 @@ function WalletBalance({ balance, home }: { balance: number; home: HomeStatistic
           <SmallButton title='Withdraw' LeftUI={<LockIcon height={16} width={16} />} />
         </View>
         <Text style={{ flex: 0.5, fontSize: 15 }} className='text-onYellow'>
-          MST / {home?.valuation.currency} {home?.valuation.rate}
+          MST / {home?.valuation?.currency} {home?.valuation?.rate}
         </Text>
       </View>
     </View>

@@ -24,7 +24,7 @@ enum AdState {
 
 export default function MiningOrWalletBalance({ profile, profileQuery }: { profile: ProfileT | null; profileQuery: ReturnType<typeof useQuery> }) {
   const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
-  const [balance, setBalance] = React.useState(Number(profile?.data.coin || 0))
+  const [balance, setBalance] = React.useState(Number(profile?.data?.coin || 0))
   const [modalVisible, setModalVisible] = React.useState(false)
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
@@ -35,8 +35,6 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     retry: 3,
   })
 
-  useBannedNavigation(navigation, mining.data)
-
   const startMining = useMutation({
     mutationKey: ['startMining'],
     mutationFn: start_mining_f,
@@ -45,6 +43,8 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
       mining.refetch()
     },
   })
+
+  useBannedNavigation(navigation, startMining.data)
 
   function handleStartMining() {
     if (adState === AdState.LOADED) showAd() // Show the ad if it is loaded
@@ -109,15 +109,15 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
         <Text className='text-base text-onYellow'>Wallet Balance</Text>
         <View className='flex-row items-end'>
           <Text className='text-onYellow' style={{ fontSize: 40 }}>
-            {Math.max(balance, Number(profile?.data.coin || 0)).toFixed(4)}
+            {Math.max(balance, Number(profile?.data?.coin || 0)).toFixed(4)}
           </Text>
           <Text className='mb-1.5 ml-1 text-2xl text-onYellow'>MST</Text>
         </View>
-        {mining.data && !mining.data?.mining_function ? (
+        {mining.data && !mining.data?.mining_function && mining.data.mining_data ? (
           <LoadingBar
             currentTime={mining.data.mining_data.current_time}
             setBalance={setBalance}
-            realBalance={Number(profile?.data.coin || 0)}
+            realBalance={Number(profile?.data?.coin || 0)}
             startTime={mining.data?.mining_data.start_time}
             endTime={mining.data?.mining_data.end_time}
             mining={mining}

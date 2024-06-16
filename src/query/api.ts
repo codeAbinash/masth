@@ -19,6 +19,7 @@ export interface ServerResponse {
   message: string
   status: boolean
   blocked?: boolean
+  data?: any
 }
 
 let popupCount = 0
@@ -97,10 +98,11 @@ export async function verifyLogin_f(data: VerifyLoginAPI) {
 }
 
 export interface ProfileT {
-  data: ProfileDataT
-  message: string
-  refer_claimed: boolean
   status: boolean
+  message: string
+  data?: ProfileDataT
+  refer_claimed?: boolean
+  blocked?: boolean
 }
 
 export interface ProfileDataT {
@@ -142,9 +144,9 @@ export async function skip_refer_f() {
 
 export interface ReferredUserT {
   status: boolean
-  referred_bonus: string
-  coins_earned: number
-  list: List
+  referred_bonus?: string
+  coins_earned?: number
+  list?: List
 }
 
 export interface List {
@@ -172,8 +174,8 @@ export async function get_referred_members_f({ pageParam }: { pageParam: number 
 
 export interface MiningStatusT {
   status: boolean
-  mining_function: boolean
-  mining_data: MiningData
+  mining_function?: boolean
+  mining_data?: MiningData
   message: string
 }
 
@@ -211,11 +213,11 @@ export function check_version_f() {
 
 export interface HomeStatisticsT {
   status: boolean
-  active_miners: number
-  total_miners: number
-  total_remote_mining: number
-  total_live_mining: number
-  valuation: {
+  active_miners?: number
+  total_miners?: number
+  total_remote_mining?: number
+  total_live_mining?: number
+  valuation?: {
     currency: string
     rate: number
   }
@@ -226,9 +228,9 @@ export function home_statics_f() {
 
 export interface PopupDataT {
   status: boolean
-  banner_image: string
-  action_link: string
-  button_text: string
+  banner_image?: string
+  action_link?: string
+  button_text?: string
 }
 export function popup_image_f() {
   return postApi<PopupDataT>('home/popup_banner', null)

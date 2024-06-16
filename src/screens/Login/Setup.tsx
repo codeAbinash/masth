@@ -29,7 +29,7 @@ export default function Setup({ navigation }: { navigation: StackNav }) {
     // })
 
     if (profileQuery.data) {
-      const phone = (profileQuery?.data?.data.country_code || '') + profileQuery.data?.data.phone_number
+      const phone = (profileQuery?.data?.data?.country_code || '') + profileQuery.data?.data?.phone_number
       OneSignal.login(phone)
       console.log('OneSignal: logged in:', phone)
       // Check if referred

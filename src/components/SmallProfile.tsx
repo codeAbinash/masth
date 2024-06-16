@@ -26,13 +26,13 @@ export default function SmallProfile({ RightSide }: { RightSide?: React.ReactNod
         }
       >
         <View>
-          <Image source={{ uri: profile?.data.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
-          {!profile?.data.email && <View className='absolute right-0 h-2 w-2 rounded-full bg-red-500' />}
+          <Image source={{ uri: profile?.data?.profile_pic || 'https://picsum.photos/100' }} className='h-10 w-10 rounded-full bg-neutral-200' />
+          {!profile?.data?.email && <View className='absolute right-0 h-2 w-2 rounded-full bg-red-500' />}
         </View>
         <View>
           <Text className='text-sm text-neutral-500'>Welcome</Text>
           <Text className='font-bold' style={{ fontSize: 16 }}>
-            {profile?.data.name || 'Loading...'}
+            {profile?.data?.name || 'Loading...'}
           </Text>
         </View>
       </TouchableOpacity>

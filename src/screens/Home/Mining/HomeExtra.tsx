@@ -38,7 +38,7 @@ export default function HomeScreen({ navigation }: NavProp) {
   const home = useHybridData(homeStatics, 'homeStatics')
   useEffect(() => handleAppUpdate(navigation), [navigation])
   useEffect(() => {
-    setLocalData(home?.valuation.rate, 'mstPerUSD')
+    setLocalData(home?.valuation?.rate, 'mstPerUSD')
   }, [home])
 
   return (
@@ -145,12 +145,12 @@ function ReferAndEarn() {
 
 function Graph({ home }: { home: HomeStatisticsT | null }) {
   const mstPerUSD = Number(useLocalData<number>('mstPerUSD') || 0)
-  const diff = Number(home?.valuation.rate || 0) - mstPerUSD
+  const diff = Number(home?.valuation?.rate || 0) - mstPerUSD
   const diffPercent = diff === 0 || mstPerUSD === 0 ? 0 : (diff / mstPerUSD) * 100
   return (
     <View className='aspect-square flex-1 justify-center rounded-3xl bg-white p-5 py-4'>
       <Text className='text-lg text-gray-500'>
-        MST/{home?.valuation.currency} <Text className='text-black'>{home?.valuation.rate}</Text>
+        MST/{home?.valuation?.currency} <Text className='text-black'>{home?.valuation?.rate}</Text>
       </Text>
       <View className='w-full flex-1 items-center justify-center'>
         <CurvesIcon color={diff < 0 ? colors.redPrimary : colors.greenPrimary} />

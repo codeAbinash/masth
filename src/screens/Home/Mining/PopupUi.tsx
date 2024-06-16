@@ -46,7 +46,7 @@ export default function PopupUi() {
                   className='items-center justify-center bg-accentYellow px-4 py-3 text-white'
                   style={{ minWidth: width * 0.5, borderRadius: 15 }}
                   onPress={() => {
-                    Linking.openURL(popupImage.data.action_link)
+                    Linking.openURL(popupImage.data?.action_link || '')
                     setModalVisible(!modalVisible)
                   }}
                 >
