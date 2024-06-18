@@ -268,8 +268,9 @@ function LoadingBar({
   }, [])
 
   useEffect(() => {
-    setCur(new Date(currentTime).getTime() + passedTime)
-  }, [currentTime, passedTime])
+    setCur(new Date(currentTime).getTime())
+    setPassedTime(0)
+  }, [currentTime])
 
   useEffect(() => {
     let timer: any
