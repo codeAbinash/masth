@@ -2,17 +2,18 @@ import { Button, SmallButton } from '@components/Button'
 import PlayIcon from '@icons/play.svg'
 import StopRound from '@icons/stop-round.svg'
 import { check_mining_status_f, start_mining_f, type ProfileT } from '@query/api'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
+import type { StackNavigationProp } from '@react-navigation/stack'
 import { useMutation, useQuery, type UseMutationResult } from '@tanstack/react-query'
 import { UNITY_GAME_ID } from '@utils/constants'
 import { ls } from '@utils/storage'
 import { RootStackParamList } from 'App'
 import LottieView from 'lottie-react-native'
 import React, { useEffect } from 'react'
-import { Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
+import { AppState, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import UnityAds from 'react-native-unity-ads-monetization'
 import { useBannedNavigation } from './ExtraNavs'
-import type { StackNavigationProp } from '@react-navigation/stack'
+import { log } from '@utils/utils'
 
 const { height, width } = Dimensions.get('window')
 
@@ -35,6 +36,20 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
     retry: 3,
   })
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', () => {
+      if (AppState.currentState === 'active') {
+        log('Mining status updated on app active state')
+        mining.refetch()
+      }
+    })
+    return () => subscription.remove()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  useEffect(() => {
+    console.log(mining.data)
+  }, [mining.data])
+
   const startMining = useMutation({
     mutationKey: ['startMining'],
     mutationFn: start_mining_f,
@@ -43,12 +58,12 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
       mining.refetch()
     },
   })
-
   useBannedNavigation(navigation, startMining.data)
 
   function handleStartMining() {
     if (adState === AdState.LOADED) showAd() // Show the ad if it is loaded
     else if (adState === AdState.FAILED) startMiningFn() // Start mining if the ad is failed
+    __DEV__ && startMiningFn()
   }
 
   function startMiningFn() {
@@ -98,7 +113,8 @@ export default function MiningOrWalletBalance({ profile, profileQuery }: { profi
   useEffect(() => {
     console.log('Mining data', mining.data?.mining_function)
     if (mining.data?.mining_function) {
-      loadAd()
+      !__DEV__ && loadAd()
+      __DEV__ && setAdState(AdState.LOADED)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mining.data?.mining_function])
@@ -239,19 +255,21 @@ function LoadingBar({
 }) {
   const start = new Date(startTime).getTime()
   const end = new Date(endTime).getTime()
-  const curr_diff_now = Math.abs(new Date(currentTime).getTime() - new Date().getTime())
-  const [cur, setCur] = React.useState(new Date(currentTime).getTime() + curr_diff_now)
+  const [passedTime, setPassedTime] = React.useState(0)
+  const [cur, setCur] = React.useState(new Date(currentTime).getTime())
   const [progress, setProgress] = React.useState(0)
 
   useEffect(() => {
-    // const interval = setInterval(() => setCur((prev) => prev + 1000), 1000)
-    // return () => clearInterval(interval)
-    const timer = setInterval(() => {
-      setCur(curr_diff_now + new Date().getTime())
+    const interval = setInterval(() => {
+      setCur((prev) => prev + 1000)
+      setPassedTime((prev) => prev + 1000)
     }, 1000)
-    return () => clearInterval(timer)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    setCur(new Date(currentTime).getTime() + passedTime)
+  }, [currentTime, passedTime])
 
   useEffect(() => {
     let timer: any

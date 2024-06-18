@@ -6,6 +6,7 @@ module.exports = {
     'react-native/no-inline-styles': 'off',
     'prettier/prettier': 'off',
     'react/react-in-jsx-scope': 'off',
+    'react-hooks/exhaustive-deps' : 'warn',
     'jsx-quotes': ['warn', 'prefer-single'],
     semi: ['warn', 'never'],
     curly: ['off', 'never'],
