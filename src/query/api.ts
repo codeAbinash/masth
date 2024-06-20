@@ -63,6 +63,21 @@ export async function loginApi_f({ phone, country_code }: { phone: string; count
 
 // All functions below are for fetching data from the server and there are types for the data that is fetched
 
+export interface UserDetailT {
+  status: boolean
+  message: string
+  data?: {
+    name?: string
+    username?: string
+    profile_pic?: string
+  }
+}
+
+export async function userDetail_f(username: string) {
+  return await postApi<UserDetailT>('wallet/getNameByUsername', { username })
+}
+
+
 type SignUpAPI = {
   username: string
   dob: string
