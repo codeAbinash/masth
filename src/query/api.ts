@@ -63,6 +63,10 @@ export async function loginApi_f({ phone, country_code }: { phone: string; count
 
 // All functions below are for fetching data from the server and there are types for the data that is fetched
 
+export function send_coin_f({ username, coins }: { username: string; coins: number }) {
+  return postApi<ServerResponse>('wallet/sendCoin', { username, coins })
+}
+
 export interface UserDetailT {
   status: boolean
   message: string

@@ -30,8 +30,7 @@ export default function Sending({ navigation, route }: { navigation: StackNav; r
     console.log('userQuery', userQuery.data)
     if (userQuery.data && userQuery.data?.status === false) {
       console.log('User not found. Please check the receiver address.')
-      Alert.alert('Error', 'User not found. Please check the receiver address.')
-      navigation.goBack()
+      Alert.alert('User not found', 'User not found. Please check the receiver address.', [{ text: 'OK', onPress: () => navigation.goBack() }])
     }
   }, [navigation, userQuery.data])
 
@@ -41,9 +40,7 @@ export default function Sending({ navigation, route }: { navigation: StackNav; r
       {
         text: 'Yes',
         onPress: () => {
-          // send money
-          Alert.alert('Success', `Successfully sent ${amount} ${Currency} to ${receiver}`)
-          navigation.goBack()
+          navigation.replace('SendingMoney', { amount, receiver })
         },
       },
     ])

@@ -31,6 +31,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import './src/ignoreWarnings'
 import { setAuthToken, showErr } from './src/query/api'
+import SendingMoney, { type SendingMoneyParamList } from '@screens/Home/Wallet/SendingMoney'
 
 export type RootStackParamList = {
   navigationDecider: undefined
@@ -58,6 +59,7 @@ export type RootStackParamList = {
   Unity: undefined
   QR: undefined
   SendingDetails: SendingParamList
+  SendingMoney: SendingMoneyParamList
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -185,6 +187,7 @@ function Navigation() {
       <Stack.Screen name='RateUs' component={RateUs} options={IOS_BOTTOM_STYLE} />
       <Stack.Screen name='Mining' component={Home} />
       <Stack.Screen name='SendingDetails' component={Sending} options={IOS_BOTTOM_STYLE} />
+      <Stack.Screen name='SendingMoney' component={SendingMoney} options={{ ...IOS_BOTTOM_STYLE, gestureEnabled: false }} />
       <Stack.Screen
         name='QR'
         component={QRScanner}
