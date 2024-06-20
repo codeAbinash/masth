@@ -1,7 +1,7 @@
 import { check_version_f } from '@query/api'
 import { Share } from 'react-native'
 import { Alert } from 'react-native'
-import { APP_V_CODE } from './constants'
+import { APP_V_CODE, Name } from './constants'
 import type { StackNav } from './types'
 
 export async function shareText(message: string) {
@@ -63,4 +63,12 @@ export function log(...args: any[]) {
   if (__DEV__) {
     console.log(...args)
   }
+}
+
+export function qrString(username: string) {
+  return `${username}@${Name}`
+}
+
+export function getUserNameFromQR(qr: string) {
+  return qr.split(`@${Name}`)[0]
 }

@@ -11,5 +11,5 @@ Extra things done
 - Account migration dialog
   - Account migration notification in edit profile section
   - Add profile dot in small profile image
-- Ads
-  - Google Admob ads
+
+https://stackoverflow.com/questions/71702392/viewproptypes-will-be-removed-from-react-native-migrate-to-viewproptypes-export

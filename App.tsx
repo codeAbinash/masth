@@ -8,6 +8,7 @@ import UnderMaintenance from '@screens/Account/UnderMaintenance'
 import RateUs from '@screens/Extra/RateUs'
 import Home from '@screens/Home'
 import EditProfile, { type EditProfileParamList } from '@screens/Home/Profile/EditProfile'
+import Sending, { type SendingParamList } from '@screens/Home/Wallet/Sending'
 import CheckRefer from '@screens/Login/CheckRefer'
 import Login from '@screens/Login/Login'
 import OTP, { type OTPParamList } from '@screens/Login/OTP'
@@ -17,6 +18,7 @@ import SignUp from '@screens/Login/SignUp'
 import NotificationDetails, { type NotificationsParamList } from '@screens/Others/NotificationDetails'
 import Notifications from '@screens/Others/Notifications'
 import Settings from '@screens/Others/Settings'
+import QRScanner from '@screens/QRScanner'
 import Refer from '@screens/Refer/Refer'
 import TransactionDetails, { type TransactionDetailsParamList } from '@screens/Transactions/TransactionDetails'
 import Transactions from '@screens/Transactions/Transactions'
@@ -27,6 +29,7 @@ import React, { useCallback, useEffect } from 'react'
 import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
+import './src/ignoreWarnings'
 import { setAuthToken, showErr } from './src/query/api'
 
 export type RootStackParamList = {
@@ -53,6 +56,8 @@ export type RootStackParamList = {
   Blank: undefined
   Banner: undefined
   Unity: undefined
+  QR: undefined
+  SendingDetails: SendingParamList
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -158,6 +163,7 @@ function Navigation() {
       }}
     >
       {/* <Stack.Screen name='Unity' component={Unity} /> */}
+
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
       <Stack.Screen name='CheckRefer' component={CheckRefer} />
@@ -178,6 +184,14 @@ function Navigation() {
       <Stack.Screen name='AppUpdate' component={AppUpdate} />
       <Stack.Screen name='RateUs' component={RateUs} options={IOS_BOTTOM_STYLE} />
       <Stack.Screen name='Mining' component={Home} />
+      <Stack.Screen name='SendingDetails' component={Sending} options={IOS_BOTTOM_STYLE} />
+      <Stack.Screen
+        name='QR'
+        component={QRScanner}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+        }}
+      />
     </Stack.Navigator>
   )
 }

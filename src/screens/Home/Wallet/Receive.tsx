@@ -4,6 +4,7 @@ import QR_CODE from '@components/QRCode'
 import { profile_f, ProfileT } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
+import { qrString } from '@utils/utils'
 import React from 'react'
 import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -12,7 +13,7 @@ export default function Receive() {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
   const localProfile = useHybridData<ProfileT>(profileQuery, 'profile')
   const profile = profileQuery.data?.data || localProfile?.data
-  const qrCodeString = `${profile?.username}@Masth`
+  const qrCodeString = qrString(profile?.username || '')
 
   return (
     <View>
