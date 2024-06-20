@@ -2,12 +2,13 @@ import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { PaddingBottom } from '@components/SafePadding'
 import SwapGreen from '@icons/transaction-green.svg'
 import SwapRed from '@icons/transaction-red.svg'
-import { DatumT, get_wallet_transactions_f } from '@query/api'
+import { DatumT, WalletTransactionT, get_wallet_transactions_f } from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
+import { WINDOWS } from 'nativewind/dist/utils/selector'
 import React, { useEffect, useState } from 'react'
-import { FlatList, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 
 const transactions = [
   {
@@ -89,7 +90,7 @@ export default function Transactions({ navigation }: { navigation: StackNav }) {
         renderItem={({ item }) => <TransactionCard {...fun1(item)} navigation={navigation} />}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0, paddingBottom: 50 }}
-        ListHeaderComponent={<ListHeader />}
+        ListHeaderComponent={<ListHeader pages={data?.pages} />}
         ListFooterComponent={<PaddingBottom />}
         onEndReached={loadNext}
       />
@@ -117,13 +118,21 @@ function fun1(item: DatumT): TransactionCardT {
   }
 }
 
-function ListHeader() {
+const { height, width } = Dimensions.get('window')
+
+function ListHeader({ pages }: { pages: WalletTransactionT[] | undefined }) {
   return (
     <>
       <Text className='text-neutral-500' style={{ fontSize: 27 }}>
         Your,{' '}
       </Text>
       <Text style={{ fontSize: 27 }}>Transactions</Text>
+
+      {pages?.at(-1)?.data?.data.length === 0 && (
+        <View style={{ height: height * 0.4 }} className='items-center justify-center'>
+          <Text className='text-center text-neutral-500 '>No transactions</Text>
+        </View>
+      )}
     </>
   )
 }

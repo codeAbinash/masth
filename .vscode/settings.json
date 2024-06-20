@@ -21,5 +21,6 @@
   "search.exclude": {
     "**/src/assets/icons/src/**": true,
     "**/src/assets/images/src/**": true
-  }
+  },
+  "files.autoSave": "onFocusChange"
 }
