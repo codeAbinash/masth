@@ -10,59 +10,6 @@ import { WINDOWS } from 'nativewind/dist/utils/selector'
 import React, { useEffect, useState } from 'react'
 import { Dimensions, FlatList, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 
-const transactions = [
-  {
-    green: false,
-    message: 'Sent to John Doe. This is a very very long message. This is too long ',
-    date: new Date(),
-    amount: 0.001,
-  },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: false, message: 'Sent to John Doe', date: new Date(), amount: 0.001 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  {
-    green: false,
-    message: 'Sent to John Doe. This is a very very long message. This is too long ',
-    date: new Date(),
-    amount: 0.001,
-  },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: false, message: 'Sent to John Doe', date: new Date(), amount: 0.001 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  {
-    green: false,
-    message: 'Sent to John Doe. This is a very very long message. This is too long ',
-    date: new Date(),
-    amount: 0.001,
-  },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: false, message: 'Sent to John Doe', date: new Date(), amount: 0.001 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  {
-    green: false,
-    message: 'Sent to John Doe. This is a very very long message. This is too long ',
-    date: new Date(),
-    amount: 0.001,
-  },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: false, message: 'Sent to John Doe', date: new Date(), amount: 0.001 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  {
-    green: false,
-    message: 'Sent to John Doe. This is a very very long message. This is too long ',
-    date: new Date(),
-    amount: 0.001,
-  },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-  { green: false, message: 'Sent to John Doe', date: new Date(), amount: 0.001 },
-  { green: true, message: 'Received from John Doe', date: new Date(), amount: 0.10002 },
-]
-
 export default function Transactions({ navigation }: { navigation: StackNav }) {
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
     queryKey: ['transactions'],

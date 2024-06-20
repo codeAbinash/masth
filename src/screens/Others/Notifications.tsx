@@ -1,114 +1,41 @@
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { PaddingBottom } from '@components/SafePadding'
 import NotificationBellIcon from '@icons/bell.svg'
+import { DatumT, Notification, get_notifications_f, marked_as_read_notifications_f } from '@query/api'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
-import React from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { log } from '@utils/utils'
+import React, { useEffect, useState } from 'react'
+import { FlatList, NativeTouchEvent, Text, TouchableOpacity, View } from 'react-native'
 
 type TransactionType = {
   message: string
   date: Date
 }
 
-const transactions: TransactionType[] = [
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-  {
-    message: '@codeAbinash just joined using your referral link',
-    date: new Date(),
-  },
-  {
-    message: 'You just received 0.001 MST from @codeAbinash',
-    date: new Date(),
-  },
-]
-
 export default function Notifications({ navigation }: { navigation: StackNav }) {
+  const notification = useQuery({ queryKey: ['notification'], queryFn: get_notifications_f })
+  const markAsRead = useMutation({
+    mutationKey: ['markAsRead'],
+    mutationFn: marked_as_read_notifications_f,
+    onSuccess: () => {},
+  })
+
+  useEffect(() => {
+    log(JSON.stringify(notification.data, null, 2))
+  }, [notification])
+
+  useEffect(() => {
+    markAsRead.mutate()
+  }, [])
+
   return (
     <View className='flex-1 bg-bgSecondary'>
       <BackHeader navigation={navigation} title='' RightComponent={<RightSettingIcon navigation={navigation} />} />
       <FlatList
-        data={transactions}
+        data={notification.data?.data.notifications || []}
         renderItem={({ item }) => <NotificationCard {...item} navigation={navigation} />}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0, paddingBottom: 50 }}
         ListHeaderComponent={<ListHeader />}
         ListFooterComponent={<PaddingBottom />}
@@ -128,31 +55,34 @@ function ListHeader() {
   )
 }
 
-function NotificationCard({ message, date, navigation }: { message?: string; date: Date; navigation: StackNav }) {
+function NotificationCard({ id, title, subtitle, navigation }: Notification & { navigation: StackNav }) {
+  const [clicked, setClicked] = useState(false)
   return (
     <TouchableOpacity
       activeOpacity={0.6}
       className='flex-row items-center justify-between rounded-2xl bg-white p-2.5 pr-4'
-      onPress={() =>
-        navigation.navigate('NotificationDetails', {
-          message: message || 'No message',
-          date,
-        })
-      }
+      onPress={() => setClicked(!clicked)}
     >
       <View className='flex-row gap-3' style={{ flex: 1 }}>
         <View style={{ backgroundColor: '#ffeed5' }} className='rounded-xl p-3'>
           <NotificationBellIcon width={23} height={23} />
         </View>
         <View style={{ flex: 1 }}>
-          <Text className='text-base' numberOfLines={1}>
-            {message}
-          </Text>
-          <Text className='text-neutral-500'>
-            {date?.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-            {', '}
-            {date?.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
-          </Text>
+          {clicked ? (
+            <>
+              <Text className='text-base'>{title}</Text>
+              <Text className='text-sm'>{subtitle}</Text>
+            </>
+          ) : (
+            <>
+              <Text className='text-base' numberOfLines={1}>
+                {title}
+              </Text>
+              <Text className='text-sm' numberOfLines={1}>
+                {subtitle}
+              </Text>
+            </>
+          )}
         </View>
       </View>
     </TouchableOpacity>

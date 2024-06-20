@@ -47,7 +47,7 @@ export function RightSideSmallProfile({ navigation }: { navigation: StackNav }) 
       <TouchableOpacity
         className='p-2'
         onPress={() => {
-          // navigation.navigate('Notifications')
+          navigation.navigate('Notifications')
         }}
       >
         <NotificationIcon height={20} width={20} />
