@@ -77,7 +77,6 @@ export async function userDetail_f(username: string) {
   return await postApi<UserDetailT>('wallet/getNameByUsername', { username })
 }
 
-
 type SignUpAPI = {
   username: string
   dob: string
@@ -185,6 +184,55 @@ export interface Profile {
 
 export async function get_referred_members_f({ pageParam }: { pageParam: number }) {
   return await postApi<ReferredUserT>(`refer/get_referred_members?page=${pageParam}`, null)
+}
+
+// Have to check the type of the data that is
+export interface WalletTransactionT {
+  status: boolean
+  data: Data
+  message: string
+}
+
+export interface Data {
+  current_page: number
+  data: DatumT[]
+  first_page_url: string
+  from: number
+  last_page: number
+  last_page_url: string
+  links: Link[]
+  next_page_url: string
+  path: string
+  per_page: number
+  prev_page_url: null
+  to: number
+  total: number
+}
+
+export interface DatumT {
+  coin: string
+  transaction_type: TransactionType
+  description: string
+  transaction_id: string
+  status: Status
+  created_at: string
+}
+
+export enum Status {
+  Success = 'success',
+}
+
+export enum TransactionType {
+  Credit = 'credit',
+}
+
+export interface Link {
+  url: null | string
+  label: string
+  active: boolean
+}
+export async function get_wallet_transactions_f({ pageParam }: { pageParam: number }) {
+  return await postApi<WalletTransactionT>(`wallet/getTransaction?page=${pageParam}`, null)
 }
 
 export interface MiningStatusT {

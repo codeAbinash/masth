@@ -15,7 +15,7 @@ export type TransactionDetailsParamList = {
   green: boolean
   message: string
   date: string
-  amount: number
+  amount: string
 }
 
 export default function TransactionDetails({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'TransactionDetails'> }) {
