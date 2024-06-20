@@ -3,6 +3,7 @@ import { DefaultTransparent } from '@components/StatusBar'
 import FlashLightIcon from '@icons/flashlight.svg'
 import { Name } from '@utils/constants'
 import type { NavProp } from '@utils/types'
+import { getUserNameFromQR } from '@utils/utils'
 import React from 'react'
 import { Alert, Dimensions, TouchableOpacity, View } from 'react-native'
 import { RNCamera } from 'react-native-camera'
@@ -24,7 +25,7 @@ export default function QRScanner({ navigation }: NavProp) {
     }
     const data = e.data
     if (data.endsWith(`@${Name}`)) {
-      setQR(data)
+      setQR(getUserNameFromQR(data))
       navigation.goBack()
     } else {
       Alert.alert('Invalid QR Code', 'This QR code does not belong to ' + Name + '. Please scan a valid QR code to proceed.')
