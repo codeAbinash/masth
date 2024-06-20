@@ -9,6 +9,7 @@ import { Currency } from '@utils/constants'
 import type { StackNav } from '@utils/types'
 import React, { useEffect } from 'react'
 import { Alert, Image, StyleSheet, Text, View } from 'react-native'
+import TouchID from 'react-native-touch-id'
 
 type ParamList = {
   SendingDetails: SendingParamList
@@ -18,6 +19,26 @@ export type SendingParamList = {
   amount: number
   receiver: string
 }
+
+enum AuthState {
+  NOT_CHECKED,
+  NOT_AVAILABLE,
+  NOT_AUTHENTICATED,
+  AUTHENTICATED,
+}
+
+const optionalConfigObject = {
+  title: 'Authentication to send money',
+  imageColor: 'gray',
+  imageErrorColor: '#ff0000',
+  sensorDescription: 'Touch sensor',
+  sensorErrorDescription: 'Failed to authenticate',
+  cancelText: 'Cancel',
+  fallbackLabel: 'Show Passcode',
+  unifiedErrors: false,
+  passcodeFallback: true,
+}
+
 export default function Sending({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'SendingDetails'> }) {
   const { amount, receiver } = route.params
 
@@ -35,15 +56,44 @@ export default function Sending({ navigation, route }: { navigation: StackNav; r
   }, [navigation, userQuery.data])
 
   function handelSendMoney() {
-    Alert.alert('Are you sure?', `Do you want to send ${amount} ${Currency} to ${receiver}?`, [
-      { text: 'No', style: 'cancel' },
-      {
-        text: 'Yes',
-        onPress: () => {
-          navigation.replace('SendingMoney', { amount, receiver })
+    // Alert.alert('Are you sure?', `Do you want to send ${amount} ${Currency} to ${receiver}?`, [
+    //   { text: 'No', style: 'cancel' },
+    //   {
+    //     text: 'Yes',
+    //     onPress: handelAuth,
+    //   },
+    // ])
+    handelAuth()
+  }
+
+  function handelAuth() {
+    TouchID.isSupported(optionalConfigObject)
+      .then(() => {
+        TouchID.authenticate('Authenticate with Touch ID', optionalConfigObject)
+          .then(() => next())
+          .catch((e: any) => console.log('TouchID Error', e))
+      })
+      .catch(() => {
+        notAvailableContinue()
+      })
+  }
+
+  function notAvailableContinue() {
+    Alert.alert(
+      'Touch ID not available',
+      'It is recommended to use Touch ID to send money. Touch ID is not available on this device. It may be less secure to send money without Touch ID. Do you want to continue without Touch ID?',
+      [
+        { text: 'No', style: 'cancel' },
+        {
+          text: 'Yes',
+          onPress: () => next(),
         },
-      },
-    ])
+      ],
+    )
+  }
+
+  function next() {
+    navigation.replace('SendingMoney', { amount, receiver })
   }
 
   return (

@@ -1,12 +1,12 @@
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
 import { PaddingBottom } from '@components/SafePadding'
 import NotificationBellIcon from '@icons/bell.svg'
-import { DatumT, Notification, get_notifications_f, marked_as_read_notifications_f } from '@query/api'
+import { Notification, get_notifications_f, marked_as_read_notifications_f } from '@query/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import { log } from '@utils/utils'
 import React, { useEffect, useState } from 'react'
-import { FlatList, NativeTouchEvent, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native'
 
 type TransactionType = {
   message: string
@@ -33,24 +33,31 @@ export default function Notifications({ navigation }: { navigation: StackNav }) 
     <View className='flex-1 bg-bgSecondary'>
       <BackHeader navigation={navigation} title='' RightComponent={<RightSettingIcon navigation={navigation} />} />
       <FlatList
-        data={notification.data?.data.notifications || []}
+        data={notification?.data?.data?.notifications || []}
         renderItem={({ item }) => <NotificationCard {...item} navigation={navigation} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => item.id || index.toString()}
         contentContainerStyle={{ paddingHorizontal: 20, gap: 10, marginTop: 0, paddingBottom: 50 }}
-        ListHeaderComponent={<ListHeader />}
+        ListHeaderComponent={<ListHeader length={notification?.data?.data?.notifications?.length || 0} />}
         ListFooterComponent={<PaddingBottom />}
       />
     </View>
   )
 }
 
-function ListHeader() {
+const { height } = Dimensions.get('window')
+
+function ListHeader({ length }: { length: number }) {
   return (
     <>
       <Text className='text-neutral-500' style={{ fontSize: 27 }}>
         Your,{' '}
       </Text>
       <Text style={{ fontSize: 27 }}>Notifications</Text>
+      {length === 0 && (
+        <View style={{ height: height * 0.4 }} className='items-center justify-center'>
+          <Text className='text-center text-neutral-500 '>No notifications</Text>
+        </View>
+      )}
     </>
   )
 }

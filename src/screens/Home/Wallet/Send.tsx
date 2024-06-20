@@ -49,7 +49,7 @@ export default function Send({ navigation }: { navigation: StackNav }) {
     if (!receiver) return Alert.alert('Error', 'Please enter receiver address')
     // eslint-disable-next-line radix
     const a = parseInt(amount)
-    const r = receiver.trim()
+    const r = receiver.trim().toLocaleLowerCase()
     if (isNaN(a) || a <= 0) return Alert.alert('Error', 'Please enter valid amount')
     if (r.length < 5) return Alert.alert('Error', 'Please enter valid receiver address')
     navigation.navigate('SendingDetails', { amount: a, receiver: r })
