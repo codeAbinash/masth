@@ -146,7 +146,9 @@ function TransactionCard({ green = true, message, date, amount, navigation, tran
           {clicked ? (
             <>
               <Text className='text-base'>{message}</Text>
-              <Text className='text-sm text-neutral-500' selectable 
+              <Text
+                className='text-sm text-neutral-500'
+                selectable
                 onPress={() => {
                   Clipboard.setString(transactionId || '')
                   ToastAndroid.show('Transaction ID copied', ToastAndroid.SHORT)
