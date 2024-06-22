@@ -18,9 +18,9 @@ import React, { useEffect } from 'react'
 import { Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { default as Icon } from 'react-native-vector-icons/Feather'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import MaintenanceNavigation, { useBannedNavigation } from './Mining/ExtraNavs'
 import MiningOrWalletBalance from './Mining/MiningOrWalletBalance'
 import PopupUi from './Mining/PopupUi'
-import MaintenanceNavigation, { useBannedNavigation } from './Mining/ExtraNavs'
 
 const { width } = Dimensions.get('window')
 // const adUnitId = TestIds.REWARDED

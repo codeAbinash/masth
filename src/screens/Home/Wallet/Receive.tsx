@@ -4,7 +4,7 @@ import QR_CODE from '@components/QRCode'
 import { profile_f, ProfileT } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
-import { qrString } from '@utils/utils'
+import { getUserNameFromQR, qrString } from '@utils/utils'
 import React from 'react'
 import { Text, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -23,11 +23,11 @@ export default function Receive() {
         </View>
         <View className='mt-5 flex-row items-center justify-center gap-x-5'>
           <View className='items-center justify-center'>
-            <CopyButton str={qrCodeString} />
+            <CopyButton str={getUserNameFromQR(qrCodeString)} />
             <Text className='mt-1'>Copy</Text>
           </View>
           <View className='items-center justify-center'>
-            <ShareButton str={qrCodeString} />
+            <ShareButton str={getUserNameFromQR(qrCodeString)} />
             <Text className='mt-1'>Share</Text>
           </View>
         </View>

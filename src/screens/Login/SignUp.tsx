@@ -5,18 +5,19 @@ import { Input } from '@components/Input'
 import { SmallLoadingWrapped } from '@components/Loading'
 import { PaddingTop } from '@components/SafePadding'
 import { Select } from '@components/Select'
-import { signUpApi_f } from '@query/api'
+import { check_username_f, signUpApi_f } from '@query/api'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { useMutation } from '@tanstack/react-query'
 import { StackNav } from '@utils/types'
 import { formattedDate, niceDate, removePlusBeforeCountryCode } from '@utils/utils'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import IconM from 'react-native-vector-icons/MaterialIcons'
 import CountryCodeSelector from './CountryCodeSelector'
 import { isValidFullName, isValidPhoneNumber, isValidUserName } from './utils'
 import BottomText from './BottomText'
+import { colors } from '@utils/colors'
 
 const appIconSize = 0.1
 const aspectRatio = 1060 / 188
@@ -37,6 +38,37 @@ const LANGUAGES_UPCOMING = [
   { id: 10, name: 'Australian' },
 ]
 
+enum UsernameState {
+  AVAILABLE,
+  NOT_AVAILABLE,
+  CHECKING,
+  NOT_CHECKING,
+}
+function getUsernameStateColor(state: UsernameState) {
+  switch (state) {
+    case UsernameState.AVAILABLE:
+      return 'green'
+    case UsernameState.NOT_AVAILABLE:
+      return 'red'
+    case UsernameState.CHECKING:
+      return 'gray'
+    case UsernameState.NOT_CHECKING:
+      return 'gray'
+  }
+}
+function getUsernameStateString(state: UsernameState) {
+  switch (state) {
+    case UsernameState.AVAILABLE:
+      return 'Username is available'
+    case UsernameState.NOT_AVAILABLE:
+      return 'Username is not available'
+    case UsernameState.CHECKING:
+      return 'Checking availability...'
+    case UsernameState.NOT_CHECKING:
+      return 'Username must be at least 5 characters long'
+  }
+}
+
 export default function SignUp({ navigation }: { navigation: StackNav }) {
   const sheet = React.useRef<BottomSheetRefProps>(null)
   const languageSheet = React.useRef<BottomSheetRefProps>(null)
@@ -47,6 +79,7 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
   const [phone, setPhone] = React.useState('')
   const [username, setUsername] = React.useState('')
   const [name, setName] = React.useState('')
+  const [usernameState, setUsernameState] = useState<UsernameState>(UsernameState.NOT_CHECKING)
 
   function setLowercaseUsername(text: string) {
     setUsername(text.toLowerCase())
@@ -86,6 +119,25 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
     signUpMutation.mutate()
   }
 
+  useEffect(() => {
+    if (username.trim().length < 5) {
+      setUsernameState(UsernameState.NOT_CHECKING)
+      return
+    }
+    const timer = setTimeout(async () => {
+      setUsernameState(UsernameState.CHECKING)
+      const res = await check_username_f({ username: username.trim().toLocaleLowerCase() })
+      console.log(res)
+      if (!res.status) {
+        // Because returns false if username is available to use
+        setUsernameState(UsernameState.NOT_AVAILABLE)
+      } else {
+        setUsernameState(UsernameState.AVAILABLE)
+      }
+    }, 200)
+    return () => clearTimeout(timer)
+  }, [username])
+
   return (
     <>
       <ScrollView className='bg-white'>
@@ -105,9 +157,14 @@ export default function SignUp({ navigation }: { navigation: StackNav }) {
               <Input
                 placeholder='Username'
                 LeftUI={<Icon name='at' size={20} color='black' />}
-                onChangeText={setLowercaseUsername}
+                onChangeText={setUsername}
                 value={username}
+                error={usernameState === UsernameState.NOT_AVAILABLE}
               />
+              {/* </View> */}
+              <Text className='-mb-1 -mt-2.5 pl-2 text-sm text-gray-500' style={{ color: getUsernameStateColor(usernameState) }}>
+                {getUsernameStateString(usernameState)}
+              </Text>
               <Input placeholder='Full Name' LeftUI={<Icon name='account-outline' size={20} color='black' />} onChangeText={setName} value={name} />
               <View className='flex flex-row items-center justify-center' style={{ gap: 10 }}>
                 <Select

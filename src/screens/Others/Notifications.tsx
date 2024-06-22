@@ -27,6 +27,7 @@ export default function Notifications({ navigation }: { navigation: StackNav }) 
 
   useEffect(() => {
     markAsRead.mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

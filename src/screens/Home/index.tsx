@@ -3,8 +3,6 @@ import GameZoneIconSvgOutline from '@icons/game-outline.svg'
 import GameZoneIconSvg from '@icons/game.svg'
 import HomeIconSvgOutline from '@icons/home-outline.svg'
 import HomeIconSvg from '@icons/home.svg'
-import ProfileIconSvgOutline from '@icons/profile-outline.svg'
-import ProfileIconSvg from '@icons/profile.svg'
 import WalletIconSvgOutline from '@icons/wallet-outline.svg'
 import WalletIconSvg from '@icons/wallet.svg'
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -13,9 +11,11 @@ import React from 'react'
 import { StatusBar, TouchableOpacity, View } from 'react-native'
 import GameZone from './GameZone'
 import HomeScreen from './Home'
-import EditProfile from './Profile/EditProfile'
 import Wallet from './Wallet/Wallet'
-import type { StackNav } from '@utils/types'
+
+import ReferIconSvgOutline from '@icons/refer-outline.svg'
+import ReferIconSvg from '@icons/refer.svg'
+import Refer from '@screens/Refer/Refer'
 
 function HomeIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
@@ -33,13 +33,13 @@ function GameZoneIcon(props: { focused: boolean; color: string; size: number }) 
   )
 }
 
-function ProfileIcon(props: { focused: boolean; color: string; size: number }) {
-  return props.focused ? (
-    <ProfileIconSvg {...props} height={props.size} width={props.size} />
-  ) : (
-    <ProfileIconSvgOutline {...props} height={props.size} width={props.size} />
-  )
-}
+// function ProfileIcon(props: { focused: boolean; color: string; size: number }) {
+//   return props.focused ? (
+//     <ProfileIconSvg {...props} height={props.size} width={props.size} />
+//   ) : (
+//     <ProfileIconSvgOutline {...props} height={props.size} width={props.size} />
+//   )
+// }
 
 function WalletIcon(props: { focused: boolean; color: string; size: number }) {
   return props.focused ? (
@@ -48,6 +48,15 @@ function WalletIcon(props: { focused: boolean; color: string; size: number }) {
     <WalletIconSvgOutline {...props} height={props.size} width={props.size} />
   )
 }
+
+function ReferIcon(props: { focused: boolean; color: string; size: number }) {
+  return props.focused ? (
+    <ReferIconSvg {...props} height={props.size} width={props.size} />
+  ) : (
+    <ReferIconSvgOutline {...props} height={props.size} width={props.size} />
+  )
+}
+
 const Tab = createBottomTabNavigator()
 
 function BottomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
@@ -131,6 +140,15 @@ const Home = () => {
           }}
         />
         <Tab.Screen
+          name='Refer'
+          component={Refer}
+          options={{
+            tabBarLabel: 'Refer',
+            headerShown: false,
+            tabBarIcon: ReferIcon,
+          }}
+        />
+        <Tab.Screen
           name='GameZone'
           component={GameZone}
           options={{
@@ -139,34 +157,25 @@ const Home = () => {
             tabBarIcon: GameZoneIcon,
           }}
         />
-        <Tab.Screen
-          name='Profile'
-          component={WrappedEditProfile}
-          options={{
-            tabBarLabel: 'Profile',
-            headerShown: false,
-            tabBarIcon: ProfileIcon,
-          }}
-        />
       </Tab.Navigator>
     </>
   )
 }
 
-function WrappedEditProfile({ navigation }: { navigation: StackNav }) {
-  return (
-    <EditProfile
-      navigation={navigation}
-      route={{
-        key: 'EditProfile',
-        name: 'EditProfile',
-        params: {
-          isMigration: false,
-          isShowHeader: false,
-        },
-      }}
-    />
-  )
-}
+// function WrappedEditProfile({ navigation }: { navigation: StackNav }) {
+//   return (
+//     <EditProfile
+//       navigation={navigation}
+//       route={{
+//         key: 'EditProfile',
+//         name: 'EditProfile',
+//         params: {
+//           isMigration: false,
+//           isShowHeader: false,
+//         },
+//       }}
+//     />
+//   )
+// }
 
 export default Home

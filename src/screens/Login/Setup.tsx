@@ -2,33 +2,38 @@ import icons from '@assets/icons/icons'
 import { PaddingBottom, PaddingTop } from '@components/SafePadding'
 import { profile_f } from '@query/api'
 import { useQuery } from '@tanstack/react-query'
-import { ONE_SIGNAL_APP_ID } from '@utils/constants'
+import { ONESIGNAL_APP_ID } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import { useEffect } from 'react'
-import { Image, Text, View } from 'react-native'
-import { OneSignal } from 'react-native-onesignal'
+import { Alert, Image, Text, View } from 'react-native'
+import { LogLevel, OneSignal } from 'react-native-onesignal'
 
 export function oneSignalInit() {
-  OneSignal.initialize(ONE_SIGNAL_APP_ID)
+  OneSignal.initialize(ONESIGNAL_APP_ID)
 }
 
 export default function Setup({ navigation }: { navigation: StackNav }) {
   const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
 
   useEffect(() => {
-    // Remove this method to stop OneSignal Debugging
-    // OneSignal.Debug.setLogLevel(LogLevel.Verbose)
-    // OneSignal Initialization
-    oneSignalInit()
-    // requestPermission will show the native iOS or Android notification permission prompt.
-    // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-    OneSignal.Notifications.requestPermission(true)
-    // Method for listening for notification clicks
-    // OneSignal.Notifications.addEventListener('click', (event) => {
-    //   console.log('OneSignal: notification clicked:', event)
-    // })
-
     if (profileQuery.data) {
+      // Remove this method to stop OneSignal Debugging
+      // OneSignal.Debug.setLogLevel(6)
+      // OneSignal Initialization
+      oneSignalInit()
+      // We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+      OneSignal.Notifications.requestPermission(true).then((accepted) => {
+        // if (accepted) {
+        //   Alert.alert('Notification permission accepted')
+        // } else {
+        //   Alert.alert('Notification permission denied')
+        // }
+      })
+      // requestPermission will show the native iOS or Android notification permission prompt.
+      // Method for listening for notification clicks
+      // OneSignal.Notifications.addEventListener('click', (event) => {
+      //   console.log('OneSignal: notification clicked:', event)
+      // })
       const phone = (profileQuery?.data?.data?.country_code || '') + profileQuery.data?.data?.phone_number
       OneSignal.login(phone)
       console.log('OneSignal: logged in:', phone)
