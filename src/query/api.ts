@@ -169,11 +169,11 @@ export interface ReferredUserT {
 
 export interface List {
   current_page: number
-  data: Datum[]
+  data: Games[]
   next_page_url: null
 }
 
-export interface Datum {
+export interface Games {
   user_id: string
   coins_earn: string
   profile: Profile[]
@@ -333,4 +333,28 @@ export function marked_as_read_notifications_f() {
 
 export function check_username_f({ username }: { username: string }) {
   return postApi<ServerResponse>('auth/check_username', { username })
+}
+
+export interface GamesData {
+  carousal?: Carousal[]
+  data?: Games[]
+  message: string
+  status: boolean
+}
+
+export interface Carousal {
+  imgSrc?: string
+  name?: string
+}
+
+export interface Games {
+  category?: string
+  gameName?: string
+  gameWebLink?: string
+  rewardCoins?: number
+  thumbnail?: string
+}
+
+export function get_games_f() {
+  return postApi<GamesData>('gameZone/getGames/Featured', null)
 }

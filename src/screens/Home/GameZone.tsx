@@ -1,36 +1,35 @@
-import { ArcadeIcon, Cancel01Icon, DrawingModeSolidIcon, PuzzleSolidIcon, SimulationIcon, ThunderIcon } from '@assets/icons/icons'
+import { ArcadeIcon, Cancel01Icon, MWhiteIcon, PeopleIcon, PuzzleSolidIcon, SimulationIcon, ThunderIcon } from '@assets/icons/icons'
 import Gradient from '@components/Gradient'
+import Loading from '@components/Loading'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import ComingSoon2Svg from '@icons/coming-soon-2.svg'
 import ComingSoonSvg from '@icons/coming-soon.svg'
+import { get_games_f, type Games, type GamesData } from '@query/api'
+import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
-import React from 'react'
-import { Dimensions, ScrollView, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, Image, ScrollView, Text, View } from 'react-native'
 import { TouchableOpacity, type TouchableOpacityProps } from 'react-native-gesture-handler'
-import DataTablePagination from 'react-native-paper/lib/typescript/components/DataTable/DataTablePagination'
 import Carousel from 'react-native-reanimated-carousel'
 import type { SvgProps } from 'react-native-svg'
 
+type GameCategories = 'Featured' | 'Puzzle' | 'Arcade' | 'Simulation'
+
+const { width, height } = Dimensions.get('window')
+
 export default function GameZone({ navigation }: { navigation: StackNav }) {
+  const [category, setCategory] = useState<GameCategories>('Featured')
+
   return (
     <View className='flex-1'>
       <PaddingTop />
       {/* <Notification /> */}
-      <ScrollView style={{ flex: 1, backgroundColor: colors.bgSecondary }}>
-        <View>
+      <ScrollView style={{ flex: 1, backgroundColor: colors.bgSecondary }} contentContainerStyle={{ paddingBottom: 50 }}>
+        <View className='flex-1'>
           <View className='p-5'>
             <SmallProfile RightSide={<RightSideSmallProfile navigation={navigation} />} />
-            {/* <View>
-          <Tabs
-          tabs={[
-            { title: 'GameZone', UI: <ComingSoonGameZone /> },
-            { title: 'Giveaway', UI: <ComingSoonGiveAway /> },
-            ]}
-            />
-            </View>
-            <PaddingBottom /> */}
           </View>
 
           <ScrollView
@@ -39,32 +38,132 @@ export default function GameZone({ navigation }: { navigation: StackNav }) {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
           >
-            <TabsOption title='Featured' Icon={ThunderIcon} />
-            <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
-            <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
-            <TabsOption title='Simulation' Icon={SimulationIcon} secondary />
+            <TabsOption onPress={() => setCategory('Featured')} title='Featured' Icon={ThunderIcon} secondary={category !== 'Featured'} />
+            <TabsOption onPress={() => setCategory('Puzzle')} title='Puzzle' Icon={PuzzleSolidIcon} secondary={category !== 'Puzzle'} />
+            <TabsOption onPress={() => setCategory('Arcade')} title='Arcade' Icon={ArcadeIcon} secondary={category !== 'Arcade'} />
+            <TabsOption onPress={() => setCategory('Simulation')} title='Simulation' Icon={SimulationIcon} secondary={category !== 'Simulation'} />
           </ScrollView>
-          <View style={{ flex: 1 }}>
-            <Carousel
-              loop
-              width={width}
-              height={width / 1.8}
-              autoPlay={true}
-              data={[...new Array(6).keys()]}
-              scrollAnimationDuration={1000}
-              onSnapToItem={(index) => console.log('current index:', index)}
-              renderItem={({ index }) => (
-                <View className='flex-1 justify-center p-5'>
-                  <View className='flex-1 items-center justify-center rounded-2xl bg-white'>
-                    <Text style={{ textAlign: 'center', fontSize: 30 }}>{index}</Text>
-                  </View>
-                </View>
-              )}
-            />
-          </View>
         </View>
+        <MainContent category={category} />
       </ScrollView>
     </View>
+  )
+}
+
+function MainContent({ category }: { category: GameCategories }) {
+  const [games, setGames] = useState<Games[]>([])
+
+  const filteredGames = games.filter((game) => game.category === category)
+
+  const { isPending, data, error } = useQuery({
+    queryKey: ['games'],
+    queryFn: () => get_games_f(),
+  })
+
+  useEffect(() => {
+    setGames(data?.data || [])
+    console.log(JSON.stringify(data, null, 2))
+  }, [data])
+
+  if (!data || isPending)
+    return (
+      <View style={{ height: height * 0.75 }} className='items-center justify-center p-5'>
+        <Loading />
+      </View>
+    )
+
+  return (
+    <>
+      <Carousal data={data} />
+      <Games filteredGames={filteredGames} category={category} />
+    </>
+  )
+}
+
+function Games({ filteredGames, category }: { filteredGames: Games[]; category: GameCategories }) {
+  return (
+    <View>
+      {filteredGames.length === 0 && (
+        <View className='h-60 flex-1 items-center justify-center px-5'>
+          <Text className='text-center text-xl'>No Games Available for the category '{category}'</Text>
+        </View>
+      )}
+      <View className='mt-3'>
+        {filteredGames.map((game, i) => (
+          <TouchableOpacity key={i} className='relative aspect-video w-full p-5' activeOpacity={0.8}>
+            <View className='absolute m-5 aspect-video w-full rounded-3xl bg-gray-200'>
+              <Image source={{ uri: game.thumbnail }} className='aspect-video w-full rounded-3xl' />
+            </View>
+            <View className='aspect-video w-full justify-between p-5'>
+              <View className='flex-row justify-between'>
+                <View className='flex-row items-center gap-x-2'>
+                  <View className='h-3 w-3 rounded-full bg-red-500' />
+                  <Text className='text-base text-white'>LIVE</Text>
+                </View>
+                <View className='flex-row gap-x-2 rounded-full bg-white/20 py-2 pl-1 pr-5'>
+                  <PeopleIcon width={20} height={20} />
+                  <Text className='text-base text-white'>3k</Text>
+                </View>
+              </View>
+              <View className='flex-row justify-between'>
+                <View className='justify-center gap-y-2'>
+                  <Text className='text-lg font-bold text-white'>{game.gameName}</Text>
+                  <View className='flex-row items-center gap-x-2'>
+                    <View className='flex-row items-center gap-x-1 rounded-full border border-white px-2 py-2'>
+                      <MWhiteIcon width={12} height={12} />
+                      <Text className='text-sm text-white'>
+                        {game.rewardCoins}
+                        <Text className='text-xs'>/min</Text>
+                      </Text>
+                    </View>
+                    <Text className='text-white'>X</Text>
+                    <View className='flex-row items-center rounded-full border border-white p-2 px-3'>
+                      <Text className='text-sm text-white'>2X</Text>
+                    </View>
+                  </View>
+                </View>
+                <View className='items-center justify-center'>
+                  <TouchableOpacity className='rounded-xl bg-white/20 px-7 py-3'>
+                    <Text className='text-base text-white'>Play Now</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  )
+}
+
+function Carousal({ data }: { data: GamesData }) {
+  const [page, setPage] = useState(0)
+
+  return (
+    <>
+      <View style={{ flex: 1 }} className='mb-4 mt-5'>
+        <Carousel
+          loop
+          width={width}
+          height={width * 0.45}
+          autoPlay={true}
+          data={data?.carousal || []}
+          scrollAnimationDuration={1000}
+          autoPlayInterval={5000}
+          renderItem={({ index }) => (
+            <View className='flex-1 justify-center px-5'>
+              <Image source={{ uri: data?.carousal?.[index].imgSrc }} className='flex-1 rounded-3xl' />
+            </View>
+          )}
+          onProgressChange={(_, p) => setPage(Math.floor(p))}
+        />
+      </View>
+      <View className='flex-row items-center justify-center' style={{ gap: 5 }}>
+        {(data?.carousal || []).map((_, i) => (
+          <View className={`${i === page ? 'bg-black' : 'bg-gray-200'} h-1 w-5 rounded-full`} key={i} />
+        ))}
+      </View>
+    </>
   )
 }
 
@@ -119,8 +218,6 @@ function TabsOption({ title, secondary, Icon, ...rest }: TabsOptionProps) {
     </TouchableOpacity>
   )
 }
-
-const { width } = Dimensions.get('window')
 
 function ComingSoonGiveAway() {
   return (
