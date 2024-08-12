@@ -1,4 +1,4 @@
-import { ArcadeIcon, Cancel01Icon, DrawingModeSolidIcon, PuzzleSolidIcon, ThunderIcon } from '@assets/icons/icons'
+import { ArcadeIcon, Cancel01Icon, DrawingModeSolidIcon, PuzzleSolidIcon, SimulationIcon, ThunderIcon } from '@assets/icons/icons'
 import Gradient from '@components/Gradient'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
@@ -42,12 +42,7 @@ export default function GameZone({ navigation }: { navigation: StackNav }) {
             <TabsOption title='Featured' Icon={ThunderIcon} />
             <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
             <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
-            <TabsOption title='Featured' Icon={DrawingModeSolidIcon} secondary />
-            <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
-            <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
-            <TabsOption title='Featured' Icon={DrawingModeSolidIcon} />
-            <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
-            <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
+            <TabsOption title='Simulation' Icon={SimulationIcon} secondary />
           </ScrollView>
           <View style={{ flex: 1 }}>
             <Carousel
@@ -119,7 +114,7 @@ function TabsOption({ title, secondary, Icon, ...rest }: TabsOptionProps) {
       activeOpacity={0.7}
       {...rest}
     >
-      <Icon width={20} height={20} color={secondary ? 'black' : 'white'} />
+      <Icon width={18} height={18} color={secondary ? 'black' : 'white'} />
       <Text className={`text-base ${!secondary ? 'text-white' : 'text-black'}`}>{title}</Text>
     </TouchableOpacity>
   )
