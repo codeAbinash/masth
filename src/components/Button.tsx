@@ -109,3 +109,19 @@ export function ShareButton({ str }: { str: string }) {
     </RoundButton>
   )
 }
+
+type ClaimRoundButtonProps = TouchableOpacityProps & {
+  title: string
+}
+export function ClaimRoundButton({ title, disabled, ...rest }: ClaimRoundButtonProps) {
+  return (
+    <TouchableOpacity
+      {...rest}
+      className={`${disabled ? 'bg-zinc-300' : 'bg-black'} rounded-full p-2.5 px-5`}
+      activeOpacity={0.7}
+      disabled={disabled}
+    >
+      <Text className={`${disabled ? 'text-white' : 'text-white'} text-center text-lg font-bold`}>{title}</Text>
+    </TouchableOpacity>
+  )
+}

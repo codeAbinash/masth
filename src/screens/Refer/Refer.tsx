@@ -1,5 +1,5 @@
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
-import { Button } from '@components/Button'
+import { Button, ClaimRoundButton, RoundButton, SmallButton } from '@components/Button'
 import Loading from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import Tabs from '@components/Tabs'
@@ -12,10 +12,11 @@ import { PLAY_STORE_LINK } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import { shareText } from '@utils/utils'
 import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
 import Miner from './Miner'
+import Images from '@assets/images/images'
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
   const { data, fetchNextPage, isLoading } = useInfiniteQuery({
@@ -62,6 +63,7 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
             ListHeaderComponent={
               <View className='pb-1'>
                 <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
+                <InviteArea />
                 <ReferCard bonus={data?.pages.at(-1)?.referred_bonus || '0'} />
                 <Tabs
                   tabs={[
@@ -92,6 +94,32 @@ export default function Refer({ navigation }: { navigation: StackNav }) {
         </View>
       </View>
     </>
+  )
+}
+
+function InviteArea() {
+  return (
+    <View className=' mt-5 rounded-2xl bg-white p-4' style={{ gap: 15 }}>
+      <View className='flex-row items-center justify-between' style={{ gap: 15 }}>
+        <Image source={Images.pig} className='h-20 w-20 rounded-2xl bg-bgSecondary' />
+        <View className='flex-1'>
+          <Text className='text-lg text-gray-500'>Invite 5 more</Text>
+          <Text className='text-lg'>10,000 MST</Text>
+        </View>
+        <View>
+          <ClaimRoundButton title='Claim' disabled />
+        </View>
+      </View>
+      <View>
+        <View className='overflow-hidden rounded-full bg-bgSecondary'>
+          <View className='h-2 w-3/4 rounded-full bg-green-400' />
+        </View>
+        <View className='mt-1 flex-row justify-between'>
+          <Text className='text-gray-500'>3 Miner</Text>
+          <Text className='text-gray-500'>5 Miner</Text>
+        </View>
+      </View>
+    </View>
   )
 }
 

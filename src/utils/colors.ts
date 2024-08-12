@@ -12,4 +12,9 @@ export const colors = {
   accentYellow: '#f99b05',
   gray: '#444444',
   orange_500: '#FF6D00',
+  btnGrad1: '#FFD185',
+  btnGrad2: '#F79C06',
 }
+
+
+export default colors
