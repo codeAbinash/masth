@@ -14,7 +14,7 @@ export default function PopupUi() {
 
   useEffect(() => {
     if (popupImage.data?.banner_image) {
-      setModalVisible(true)
+      !__DEV__ && setModalVisible(true)
     }
   }, [popupImage.data])
 

@@ -1,4 +1,4 @@
-import { ArcadeIcon, Cancel01Icon, DrawingModeSolidIcon, PuzzleSolidIcon } from '@assets/icons/icons'
+import { ArcadeIcon, Cancel01Icon, DrawingModeSolidIcon, PuzzleSolidIcon, ThunderIcon } from '@assets/icons/icons'
 import Gradient from '@components/Gradient'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
@@ -9,24 +9,15 @@ import { StackNav } from '@utils/types'
 import React from 'react'
 import { Dimensions, ScrollView, Text, View } from 'react-native'
 import { TouchableOpacity, type TouchableOpacityProps } from 'react-native-gesture-handler'
+import DataTablePagination from 'react-native-paper/lib/typescript/components/DataTable/DataTablePagination'
+import Carousel from 'react-native-reanimated-carousel'
 import type { SvgProps } from 'react-native-svg'
 
 export default function GameZone({ navigation }: { navigation: StackNav }) {
   return (
     <View className='flex-1'>
       <PaddingTop />
-      <View className='bg-white p-5 pt-3' style={{ gap: 10 }}>
-        <TouchableOpacity className='items-end'>
-          <Cancel01Icon width={22} height={22} className='p-2.5 text-black' />
-        </TouchableOpacity>
-        <View className='flex-row items-center justify-between'>
-          <View>
-            <Text className='text-left text-xl font-bold'>Instagram</Text>
-            <Text className='text-lg'>Have you check our new Instagram post</Text>
-          </View>
-          <GradientBtn title='Follow' />
-        </View>
-      </View>
+      {/* <Notification /> */}
       <ScrollView style={{ flex: 1, backgroundColor: colors.bgSecondary }}>
         <View>
           <View className='p-5'>
@@ -48,18 +39,53 @@ export default function GameZone({ navigation }: { navigation: StackNav }) {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
           >
-            <TabsOption title='Featured' Icon={DrawingModeSolidIcon} />
+            <TabsOption title='Featured' Icon={ThunderIcon} />
             <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
             <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
-            <TabsOption title='Featured' Icon={DrawingModeSolidIcon} />
+            <TabsOption title='Featured' Icon={DrawingModeSolidIcon} secondary />
             <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
             <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
             <TabsOption title='Featured' Icon={DrawingModeSolidIcon} />
             <TabsOption title='Puzzle' Icon={PuzzleSolidIcon} secondary />
             <TabsOption title='Arcade' Icon={ArcadeIcon} secondary />
           </ScrollView>
+          <View style={{ flex: 1 }}>
+            <Carousel
+              loop
+              width={width}
+              height={width / 1.8}
+              autoPlay={true}
+              data={[...new Array(6).keys()]}
+              scrollAnimationDuration={1000}
+              onSnapToItem={(index) => console.log('current index:', index)}
+              renderItem={({ index }) => (
+                <View className='flex-1 justify-center p-5'>
+                  <View className='flex-1 items-center justify-center rounded-2xl bg-white'>
+                    <Text style={{ textAlign: 'center', fontSize: 30 }}>{index}</Text>
+                  </View>
+                </View>
+              )}
+            />
+          </View>
         </View>
       </ScrollView>
+    </View>
+  )
+}
+
+function Notification() {
+  return (
+    <View className='p-5 pt-3' style={{ gap: 10 }}>
+      <TouchableOpacity className='items-end'>
+        <Cancel01Icon width={22} height={22} className='p-2.5 text-black' />
+      </TouchableOpacity>
+      <View className='flex-row items-center justify-between'>
+        <View>
+          <Text className='text-left text-xl font-bold'>Instagram</Text>
+          <Text className='text-lg'>Have you check our new Instagram post</Text>
+        </View>
+        <GradientBtn title='Follow' />
+      </View>
     </View>
   )
 }
