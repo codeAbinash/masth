@@ -48,7 +48,7 @@ export default function Playing({ navigation, route }: { navigation: StackNav; r
 
   return (
     <>
-      <StatusBar barStyle='light-content' backgroundColor='transparent' />
+      <StatusBar barStyle='dark-content' backgroundColor='transparent' />
       <SafeAreaView className='flex-1 bg-white'>
         <LoadingUI isLoaded={isLoaded} />
         <WebView
