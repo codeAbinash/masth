@@ -1,5 +1,5 @@
 import { check_version_f } from '@query/api'
-import { Share } from 'react-native'
+import { Dimensions, Share } from 'react-native'
 import { Alert } from 'react-native'
 import { APP_V_CODE, Name } from './constants'
 import type { StackNav } from './types'
@@ -72,3 +72,5 @@ export function qrString(username: string) {
 export function getUserNameFromQR(qr: string) {
   return qr.split(`@${Name}`)[0]
 }
+
+export const { height, width } = Dimensions.get('window')

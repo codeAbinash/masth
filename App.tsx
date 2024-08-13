@@ -32,6 +32,7 @@ import { PaperProvider } from 'react-native-paper'
 import './src/ignoreWarnings'
 import { setAuthToken, showErr } from './src/query/api'
 import SendingMoney, { type SendingMoneyParamList } from '@screens/Home/Wallet/SendingMoney'
+import Playing, { type PlayingParamList } from '@screens/Playing/Playing'
 
 export type RootStackParamList = {
   navigationDecider: undefined
@@ -60,6 +61,7 @@ export type RootStackParamList = {
   QR: undefined
   SendingDetails: SendingParamList
   SendingMoney: SendingMoneyParamList
+  Playing: PlayingParamList
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -195,6 +197,7 @@ function Navigation() {
           cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
         }}
       />
+      <Stack.Screen name='Playing' component={Playing} />
     </Stack.Navigator>
   )
 }

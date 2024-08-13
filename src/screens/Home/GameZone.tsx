@@ -6,6 +6,7 @@ import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import ComingSoon2Svg from '@icons/coming-soon-2.svg'
 import ComingSoonSvg from '@icons/coming-soon.svg'
 import { get_games_f, type Games, type GamesData } from '@query/api'
+import { useNavigation } from '@react-navigation/native'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
@@ -112,6 +113,7 @@ function TimeArea({ text, progress, grad, timeString }: TimeAreaProps) {
 }
 
 function Games({ filteredGames, category }: { filteredGames: Games[]; category: GameCategories }) {
+  const navigation = useNavigation<StackNav>()
   return (
     <View>
       {filteredGames.length === 0 && (
@@ -121,7 +123,12 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
       )}
       <View>
         {filteredGames.map((game, i) => (
-          <TouchableOpacity key={i} className='relative aspect-video w-full p-5' activeOpacity={0.8}>
+          <TouchableOpacity
+            key={i}
+            className='relative aspect-video w-full p-5'
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
+          >
             <View className='absolute m-5 aspect-video w-full rounded-3xl bg-gray-200'>
               <Image source={{ uri: game.thumbnail }} className='aspect-video w-full rounded-3xl' />
             </View>
