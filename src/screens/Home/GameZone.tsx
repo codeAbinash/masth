@@ -112,6 +112,8 @@ function TimeArea({ text, progress, grad, timeString }: TimeAreaProps) {
   )
 }
 
+const aspect = 1.55
+
 function Games({ filteredGames, category }: { filteredGames: Games[]; category: GameCategories }) {
   const navigation = useNavigation<StackNav>()
   return (
@@ -125,44 +127,47 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
         {filteredGames.map((game, i) => (
           <TouchableOpacity
             key={i}
-            className='relative aspect-video w-full p-5'
+            className='relative w-full p-5'
             activeOpacity={0.8}
             onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
           >
-            <View className='absolute m-5 aspect-video w-full rounded-3xl bg-gray-200'>
-              <Image source={{ uri: game.thumbnail }} className='aspect-video w-full rounded-3xl' />
+            <View className='absolute m-5 w-full rounded-3xl bg-gray-200'>
+              <Image source={{ uri: game.thumbnail }} className='w-full rounded-3xl' style={{ aspectRatio: aspect }} />
             </View>
-            <View className='aspect-video w-full justify-between p-5'>
+            <View className='w-full justify-between p-4' style={{ aspectRatio: aspect }}>
               <View className='flex-row justify-between'>
                 <View className='flex-row items-center gap-x-2'>
-                  <View className='h-3 w-3 rounded-full bg-red-500' />
-                  <Text className='text-base text-white'>LIVE</Text>
+                  <View className='h-2 w-2 rounded-full bg-red-500' />
+                  <Text className='text-sm text-white'>LIVE</Text>
                 </View>
-                <View className='flex-row gap-x-2 rounded-full bg-white/20 py-2 pl-1 pr-5'>
-                  <PeopleIcon width={20} height={20} />
-                  <Text className='text-base text-white'>3k</Text>
+                <View className='flex-row gap-x-1 rounded-full bg-white/20 py-1.5 pl-1 pr-3'>
+                  <PeopleIcon width={14} height={14} />
+                  <Text className='text-xs text-white'>3K</Text>
                 </View>
               </View>
-              <View className='flex-row justify-between'>
+              <View className='flex-row items-end justify-between'>
                 <View className='justify-center gap-y-2'>
                   <Text className='text-lg font-bold text-white'>{game.gameName}</Text>
                   <View className='flex-row items-center gap-x-2'>
-                    <View className='flex-row items-center gap-x-1 rounded-full border border-white px-2 py-2'>
-                      <MWhiteIcon width={12} height={12} />
-                      <Text className='text-sm text-white'>
+                    <View className='flex-row items-center gap-x-0.5 rounded-full border border-white/50 px-2 py-1.5'>
+                      <MWhiteIcon width={10} height={10} />
+                      <Text className='text-xs text-white'>
                         {game.rewardCoins}
                         <Text className='text-xs'>/min</Text>
                       </Text>
                     </View>
                     <Text className='text-white'>X</Text>
-                    <View className='flex-row items-center rounded-full border border-white p-2 px-3'>
-                      <Text className='text-sm text-white'>2X</Text>
+                    <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
+                      <Text className='text-xs text-white'>2X</Text>
                     </View>
                   </View>
                 </View>
                 <View className='items-center justify-center'>
-                  <TouchableOpacity className='rounded-xl bg-white/20 px-7 py-3'>
-                    <Text className='text-base text-white'>Play Now</Text>
+                  <TouchableOpacity
+                    className='rounded-xl bg-white/20 px-10 py-3'
+                    onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
+                  >
+                    <Text className='text-sm text-white'>Play Now</Text>
                   </TouchableOpacity>
                 </View>
               </View>
