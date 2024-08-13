@@ -16,5 +16,4 @@ export const colors = {
   btnGrad2: '#F79C06',
 }
 
-
 export default colors

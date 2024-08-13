@@ -1,5 +1,5 @@
-import { ArcadeIcon, Cancel01Icon, MWhiteIcon, PeopleIcon, PuzzleSolidIcon, SimulationIcon, ThunderIcon } from '@assets/icons/icons'
-import Gradient from '@components/Gradient'
+import { ArcadeIcon, Cancel01Icon, Clock01SolidIcon, MWhiteIcon, PeopleIcon, PuzzleSolidIcon, SimulationIcon, ThunderIcon } from '@assets/icons/icons'
+import Gradient, { LRGradient } from '@components/Gradient'
 import Loading from '@components/Loading'
 import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
@@ -62,7 +62,6 @@ function MainContent({ category }: { category: GameCategories }) {
 
   useEffect(() => {
     setGames(data?.data || [])
-    console.log(JSON.stringify(data, null, 2))
   }, [data])
 
   if (!data || isPending)
@@ -75,8 +74,40 @@ function MainContent({ category }: { category: GameCategories }) {
   return (
     <>
       <Carousal data={data} />
+      <TimeArea progress={37} timeString='10 minutes left' />
       <Games filteredGames={filteredGames} category={category} />
     </>
+  )
+}
+type TimeAreaProps = {
+  text?: string
+  progress?: number
+  timeString?: string
+  grad?: Array<string>
+}
+const defaultGrad = ['#F9A61E', '#FFD185']
+function TimeArea({ text, progress, grad, timeString }: TimeAreaProps) {
+  return (
+    <View className='p-5'>
+      <View className='flex-row justify-between rounded-3xl bg-white p-4' style={{ gap: 15 }}>
+        <Gradient grad={grad || defaultGrad} className='h-16 w-16 flex-row items-center justify-center rounded-2xl'>
+          <ThunderIcon height={25} width={25} className='text-black' />
+          <Text className='text-2xl font-bold'>
+            2<Text className='font-normal'>x</Text>
+          </Text>
+        </Gradient>
+        <View className='flex-1 justify-between' style={{ gap: 5 }}>
+          <Text className='text-lg'>{text || 'Play More & Earn More'}</Text>
+          <View className='w-full rounded-full bg-bgSecondary'>
+            <LRGradient grad={grad || defaultGrad} className='h-2 rounded-full' style={{ width: progress + '%' }} />
+          </View>
+          <View className='flex-row items-center' style={{ gap: 5 }}>
+            <Clock01SolidIcon width={16} height={16} className='text-zinc-500' />
+            <Text className='text-zinc-500'>{timeString}</Text>
+          </View>
+        </View>
+      </View>
+    </View>
   )
 }
 
@@ -88,7 +119,7 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
           <Text className='text-center text-xl'>No Games Available for the category '{category}'</Text>
         </View>
       )}
-      <View className='mt-3'>
+      <View>
         {filteredGames.map((game, i) => (
           <TouchableOpacity key={i} className='relative aspect-video w-full p-5' activeOpacity={0.8}>
             <View className='absolute m-5 aspect-video w-full rounded-3xl bg-gray-200'>
