@@ -7,6 +7,7 @@ import ComingSoon2Svg from '@icons/coming-soon-2.svg'
 import ComingSoonSvg from '@icons/coming-soon.svg'
 import { get_games_f, type Games, type GamesData } from '@query/api'
 import { useNavigation } from '@react-navigation/native'
+import { Bold, Medium, Regular, SemiBold } from '@screens/fonts'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
@@ -93,18 +94,18 @@ function TimeArea({ text, progress, grad, timeString }: TimeAreaProps) {
       <View className='flex-row justify-between rounded-3xl bg-white p-4' style={{ gap: 15 }}>
         <Gradient grad={grad || defaultGrad} className='h-16 w-16 flex-row items-center justify-center rounded-2xl'>
           <ThunderIcon height={25} width={25} className='text-black' />
-          <Text className='text-2xl font-bold'>
-            2<Text className='font-normal'>x</Text>
-          </Text>
+          <Bold className='text-2xl'>
+            2<Medium className='font-normal'>x</Medium>
+          </Bold>
         </Gradient>
         <View className='flex-1 justify-between' style={{ gap: 5 }}>
-          <Text className='text-lg'>{text || 'Play More & Earn More'}</Text>
+          <SemiBold className='text-base'>{text || 'Play More & Earn More'}</SemiBold>
           <View className='w-full rounded-full bg-bgSecondary'>
             <LRGradient grad={grad || defaultGrad} className='h-2 rounded-full' style={{ width: progress + '%' }} />
           </View>
           <View className='flex-row items-center' style={{ gap: 5 }}>
             <Clock01SolidIcon width={16} height={16} className='text-zinc-500' />
-            <Text className='text-zinc-500'>{timeString}</Text>
+            <Medium className='text-zinc-500'>{timeString}</Medium>
           </View>
         </View>
       </View>
@@ -120,7 +121,7 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
     <View>
       {filteredGames.length === 0 && (
         <View className='h-60 flex-1 items-center justify-center px-5'>
-          <Text className='text-center text-xl'>No Games Available for the category '{category}'</Text>
+          <Medium className='text-center text-xl'>No Games Available for the category '{category}'</Medium>
         </View>
       )}
       <View>
@@ -138,27 +139,27 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
               <View className='flex-row justify-between'>
                 <View className='flex-row items-center gap-x-2'>
                   <View className='h-2 w-2 rounded-full bg-red-500' />
-                  <Text className='text-sm text-white'>LIVE</Text>
+                  <Medium className='text-sm text-white'>LIVE</Medium>
                 </View>
                 <View className='flex-row gap-x-1 rounded-full bg-white/20 py-1.5 pl-1 pr-3'>
                   <PeopleIcon width={14} height={14} />
-                  <Text className='text-xs text-white'>3K</Text>
+                  <Medium className='text-xs text-white'>3K</Medium>
                 </View>
               </View>
               <View className='flex-row items-end justify-between'>
                 <View className='justify-center gap-y-2'>
-                  <Text className='text-lg font-bold text-white'>{game.gameName}</Text>
+                  <Bold className='text-lg text-white'>{game.gameName}</Bold>
                   <View className='flex-row items-center gap-x-2'>
                     <View className='flex-row items-center gap-x-0.5 rounded-full border border-white/50 px-2 py-1.5'>
                       <MWhiteIcon width={10} height={10} />
-                      <Text className='text-xs text-white'>
+                      <Bold className='text-xs text-white'>
                         {game.rewardCoins}
-                        <Text className='text-xs'>/min</Text>
-                      </Text>
+                        <Regular className='text-xs'>/min</Regular>
+                      </Bold>
                     </View>
-                    <Text className='text-white'>X</Text>
+                    <Medium className='text-white'>X</Medium>
                     <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
-                      <Text className='text-xs text-white'>2X</Text>
+                      <Medium className='text-xs text-white'>2X</Medium>
                     </View>
                   </View>
                 </View>
@@ -167,7 +168,7 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
                     className='rounded-xl bg-white/20 px-10 py-3'
                     onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
                   >
-                    <Text className='text-sm text-white'>Play Now</Text>
+                    <Bold className='text-sm text-white'>Play Now</Bold>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -218,8 +219,8 @@ function Notification() {
       </TouchableOpacity>
       <View className='flex-row items-center justify-between'>
         <View>
-          <Text className='text-left text-xl font-bold'>Instagram</Text>
-          <Text className='text-lg'>Have you check our new Instagram post</Text>
+          <SemiBold className='text-left text-xl'>Instagram</SemiBold>
+          <Medium className='text-lg'>Have you check our new Instagram post</Medium>
         </View>
         <GradientBtn title='Follow' />
       </View>
@@ -237,7 +238,7 @@ function GradientBtn({ disabled, Left, title, ...rest }: GradientBtnProps) {
     <TouchableOpacity {...rest} activeOpacity={0.7} disabled={disabled}>
       <Gradient className='rounded-full p-2 px-5'>
         {Left}
-        <Text className={`${disabled ? 'text-white' : 'text-black'} text-center text-lg font-bold`}>{title}</Text>
+        <SemiBold className={`${disabled ? 'text-white' : 'text-black'} text-center text-lg font-bold`}>{title}</SemiBold>
       </Gradient>
     </TouchableOpacity>
   )
@@ -257,7 +258,7 @@ function TabsOption({ title, secondary, Icon, ...rest }: TabsOptionProps) {
       {...rest}
     >
       <Icon width={18} height={18} color={secondary ? 'black' : 'white'} />
-      <Text className={`text-base ${!secondary ? 'text-white' : 'text-black'}`}>{title}</Text>
+      <SemiBold className={`text-sm ${!secondary ? 'text-white' : 'text-black'}`}>{title}</SemiBold>
     </TouchableOpacity>
   )
 }
@@ -266,10 +267,10 @@ function ComingSoonGiveAway() {
   return (
     <View className='mt-5 flex-1 items-center justify-center'>
       <ComingSoon2Svg width={width * 0.85} />
-      <Text className='mt-5 text-2xl'>Coming Soon</Text>
-      <Text className='mt-2 px-5 text-center text-neutral-600' style={{ fontSize: 16 }}>
+      <SemiBold className='mt-5 text-2xl'>Coming Soon</SemiBold>
+      <Medium className='mt-2 px-5 text-center text-neutral-600' style={{ fontSize: 16 }}>
         Giveaway feature is under development and will be available soon. Stay tuned!
-      </Text>
+      </Medium>
     </View>
   )
 }
@@ -277,10 +278,10 @@ function ComingSoonGameZone() {
   return (
     <View className='mt-5 flex-1 items-center justify-center'>
       <ComingSoonSvg width={width * 0.85} />
-      <Text className='mt-5 text-2xl'>Coming Soon</Text>
-      <Text className='mt-2 px-5 text-center text-neutral-600' style={{ fontSize: 16 }}>
+      <SemiBold className='mt-5 text-2xl'>Coming Soon</SemiBold>
+      <Medium className='mt-2 px-5 text-center text-neutral-600' style={{ fontSize: 16 }}>
         GameZone feature is under development and will be available soon. Stay tuned!
-      </Text>
+      </Medium>
     </View>
   )
 }
