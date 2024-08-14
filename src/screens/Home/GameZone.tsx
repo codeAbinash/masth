@@ -121,7 +121,7 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
     <View>
       {filteredGames.length === 0 && (
         <View className='h-60 flex-1 items-center justify-center px-5'>
-          <Medium className='text-center text-xl'>No Games Available for the category '{category}'</Medium>
+          <Medium className='text-center text-lg'>No Games Available for the category '{category}'</Medium>
         </View>
       )}
       <View>
@@ -159,7 +159,7 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
                     </View>
                     <Medium className='text-white'>X</Medium>
                     <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
-                      <Medium className='text-xs text-white'>2X</Medium>
+                      <SemiBold className='text-xs text-white'>X</SemiBold>
                     </View>
                   </View>
                 </View>
