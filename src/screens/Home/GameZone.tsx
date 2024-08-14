@@ -95,7 +95,7 @@ function TimeArea({ text, progress, grad, timeString }: TimeAreaProps) {
         <Gradient grad={grad || defaultGrad} className='h-16 w-16 flex-row items-center justify-center rounded-2xl'>
           <ThunderIcon height={25} width={25} className='text-black' />
           <Bold className='text-2xl'>
-            2<Medium className='font-normal'>x</Medium>
+            10<Medium className='font-normal'>x</Medium>
           </Bold>
         </Gradient>
         <View className='flex-1 justify-between' style={{ gap: 5 }}>
@@ -159,7 +159,7 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
                     </View>
                     <Medium className='text-white'>X</Medium>
                     <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
-                      <SemiBold className='text-xs text-white'>X</SemiBold>
+                      <SemiBold className='text-xs text-white'>10X</SemiBold>
                     </View>
                   </View>
                 </View>
