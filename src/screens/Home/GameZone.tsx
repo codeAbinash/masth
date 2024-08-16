@@ -126,56 +126,71 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
       )}
       <View>
         {filteredGames.map((game, i) => (
-          <TouchableOpacity
-            key={i}
-            className='relative w-full p-5'
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
-          >
-            <View className='absolute m-5 w-full rounded-3xl bg-gray-200'>
-              <Image source={{ uri: game.thumbnail }} className='w-full rounded-3xl' style={{ aspectRatio: aspect }} />
-            </View>
-            <View className='w-full justify-between p-4' style={{ aspectRatio: aspect }}>
-              <View className='flex-row justify-between'>
-                <View className='flex-row items-center gap-x-2'>
-                  <View className='h-2 w-2 rounded-full bg-red-500' />
-                  <Medium className='text-sm text-white'>LIVE</Medium>
-                </View>
-                <View className='flex-row gap-x-1 rounded-full bg-white/20 py-1.5 pl-1 pr-3'>
-                  <PeopleIcon width={14} height={14} />
-                  <Medium className='text-xs text-white'>3K</Medium>
-                </View>
-              </View>
-              <View className='flex-row items-end justify-between'>
-                <View className='justify-center gap-y-2'>
-                  <Bold className='text-lg text-white'>{game.gameName}</Bold>
-                  <View className='flex-row items-center gap-x-2'>
-                    <View className='flex-row items-center gap-x-0.5 rounded-full border border-white/50 px-2 py-1.5'>
-                      <MWhiteIcon width={10} height={10} />
-                      <Bold className='text-xs text-white'>
-                        {game.rewardCoins}
-                        <Regular className='text-xs'>/min</Regular>
-                      </Bold>
-                    </View>
-                    <Medium className='text-white'>X</Medium>
-                    <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
-                      <SemiBold className='text-xs text-white'>10X</SemiBold>
-                    </View>
-                  </View>
-                </View>
-                <View className='items-center justify-center'>
-                  <TouchableOpacity
-                    className='rounded-xl bg-white/20 px-10 py-3'
-                    onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
-                  >
-                    <Bold className='text-sm text-white'>Play Now</Bold>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
+          <Game key={i} game={game} navigation={navigation} />
         ))}
       </View>
+    </View>
+  )
+}
+
+function Game({ game, navigation }: { game: Games; navigation: StackNav }) {
+  return (
+    <TouchableOpacity
+      className='relative w-full p-5'
+      activeOpacity={0.8}
+      onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
+    >
+      <View className='absolute m-5 w-full rounded-3xl bg-gray-200'>
+        <Image source={{ uri: game.thumbnail }} className='w-full rounded-3xl' style={{ aspectRatio: aspect }} />
+      </View>
+      <View className='w-full justify-between p-4' style={{ aspectRatio: aspect }}>
+        <View className='flex-row justify-between'>
+          <View className='flex-row items-center gap-x-2'>
+            <View className='h-2 w-2 rounded-full bg-red-500' />
+            <Medium className='text-sm text-white'>LIVE</Medium>
+          </View>
+          <View className='flex-row gap-x-1 rounded-full bg-white/20 py-1.5 pl-1 pr-3'>
+            <PeopleIcon width={14} height={14} />
+            <Medium className='text-xs text-white'>3K</Medium>
+          </View>
+        </View>
+        <View className='justify-between'>
+          <Bold className='text-lg text-white' numberOfLines={1}>
+            {game.gameName}
+          </Bold>
+          <View className='mt-1.5 flex-row justify-between'>
+            <RewardCoins coins={game.rewardCoins || 0} />
+            <PlayNowButton game={game} navigation={navigation} />
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  )
+}
+
+function RewardCoins({ coins }: { coins: number }) {
+  return (
+    <View className='flex-row items-center gap-x-2'>
+      <View className='flex-row items-center gap-x-0.5 rounded-full border border-white/50 px-2 py-1.5'>
+        <MWhiteIcon width={10} height={10} />
+        <Bold className='text-xs text-white'>
+          {coins}
+          <Regular className='text-xs'>/min</Regular>
+        </Bold>
+      </View>
+      <Medium className='text-white'>X</Medium>
+      <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
+        <SemiBold className='text-xs text-white'>10X</SemiBold>
+      </View>
+    </View>
+  )
+}
+function PlayNowButton({ game, navigation }: { game: Games; navigation: StackNav }) {
+  return (
+    <View className='items-center justify-center'>
+      <TouchableOpacity className='rounded-xl bg-white px-10 py-3' onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}>
+        <Bold className='text-sm text-black'>Play Now</Bold>
+      </TouchableOpacity>
     </View>
   )
 }
