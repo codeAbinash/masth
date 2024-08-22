@@ -33,6 +33,7 @@ import './src/ignoreWarnings'
 import { setAuthToken, showErr } from './src/query/api'
 import SendingMoney, { type SendingMoneyParamList } from '@screens/Home/Wallet/SendingMoney'
 import Playing, { type PlayingParamList } from '@screens/Playing/Playing'
+import Claim from '@screens/Claim'
 
 export type RootStackParamList = {
   navigationDecider: undefined
@@ -62,6 +63,7 @@ export type RootStackParamList = {
   SendingDetails: SendingParamList
   SendingMoney: SendingMoneyParamList
   Playing: PlayingParamList
+  Claim: undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -169,6 +171,8 @@ function Navigation() {
       {/* <Stack.Screen name='Unity' component={Unity} /> */}
 
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
+      {/* <Stack.Screen name='navigationDecider' component={Masth} options={NO_ANIMATION} /> */}
+      <Stack.Screen name='Claim' component={Claim} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
       <Stack.Screen name='CheckRefer' component={CheckRefer} />
       <Stack.Screen name='Home' component={Home} options={NO_ANIMATION} />

@@ -16,6 +16,17 @@ export const BoldS = {
 export const LightS = {
   fontFamily: 'Montserrat-Light',
 }
+export const PumpkinGames = {
+  fontFamily: 'Pumpkin Games',
+}
+
+export function Pumpkin({ children, style, ...props }: TextProps) {
+  return (
+    <Text style={[PumpkinGames, style]} {...props}>
+      {children}
+    </Text>
+  )
+}
 
 export function Medium({ children, style, ...props }: TextProps) {
   return (
