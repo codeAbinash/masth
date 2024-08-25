@@ -368,6 +368,7 @@ export interface GamesData {
   data?: Games[]
   message: string
   status: boolean
+  playTime: number
 }
 
 export interface Carousal {

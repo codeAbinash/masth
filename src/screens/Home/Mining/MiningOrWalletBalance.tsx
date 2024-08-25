@@ -14,14 +14,11 @@ import { AppState, Dimensions, Modal, StyleSheet, Text, View } from 'react-nativ
 import UnityAds from 'react-native-unity-ads-monetization'
 import { useBannedNavigation } from './ExtraNavs'
 import { log } from '@utils/utils'
+import { AdState } from '@utils/types'
 
 const { height, width } = Dimensions.get('window')
 
-enum AdState {
-  NOT_LOADED,
-  LOADED,
-  FAILED,
-}
+
 
 export default function MiningOrWalletBalance({ profile, profileQuery }: { profile: ProfileT | null; profileQuery: ReturnType<typeof useQuery> }) {
   const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
