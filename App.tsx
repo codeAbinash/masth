@@ -30,10 +30,10 @@ import { Dimensions, SafeAreaView, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider } from 'react-native-paper'
 import './src/ignoreWarnings'
-import { setAuthToken, showErr } from './src/query/api'
+import { setAuthToken, showErr, type CheckClaim } from './src/query/api'
 import SendingMoney, { type SendingMoneyParamList } from '@screens/Home/Wallet/SendingMoney'
 import Playing, { type PlayingParamList } from '@screens/Playing/Playing'
-import Claim from '@screens/Claim'
+import Claim, { type ClaimParamList } from '@screens/Claim'
 
 export type RootStackParamList = {
   navigationDecider: undefined
@@ -63,7 +63,7 @@ export type RootStackParamList = {
   SendingDetails: SendingParamList
   SendingMoney: SendingMoneyParamList
   Playing: PlayingParamList
-  Claim: undefined
+  Claim: ClaimParamList
 }
 
 const Stack = createStackNavigator<RootStackParamList>()

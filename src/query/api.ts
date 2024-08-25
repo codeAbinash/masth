@@ -368,7 +368,7 @@ export interface GamesData {
   data?: Games[]
   message: string
   status: boolean
-  playTime: number
+  playTime?: number
 }
 
 export interface Carousal {
@@ -391,4 +391,17 @@ export function get_games_f() {
 
 export function gameActivity_f({ gameId }: { gameId: string }) {
   return postApi<ServerResponse>('gameZone/gameActivity', { gameId })
+}
+
+export type CheckClaim = {
+  canClaimCoin?: number
+  message?: string
+  status?: boolean
+  thumbnail?: string
+  ranking?: number
+  coinsPerMin?: number
+}
+
+export function check_claim_f() {
+  return postApi<CheckClaim>('gameZone/checkClaim', null)
 }

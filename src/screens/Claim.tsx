@@ -8,11 +8,19 @@ import type { TouchableOpacityProps } from 'react-native-gesture-handler'
 import { Bold, Medium, Pumpkin, SemiBold } from './fonts'
 import { UNITY_GAME_ID } from '@utils/constants'
 import UnityAds from 'react-native-unity-ads-monetization'
-import { AdState } from '@utils/types'
+import { AdState, type StackNav } from '@utils/types'
 import ViewShot from 'react-native-view-shot'
 import Share from 'react-native-share'
+import type { RouteProp } from '@react-navigation/native'
+import type { CheckClaim } from '@query/api'
 
-export default function Claim() {
+type ParamList = {
+  Claim: ClaimParamList
+}
+
+export type ClaimParamList = CheckClaim & { x: number }
+
+export default function Claim({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'Claim'> }) {
   const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
   const shotRef = React.useRef<ViewShot>(null)
 
@@ -92,24 +100,24 @@ export default function Claim() {
             <Pumpkin className='mt-10 text-center text-amber-500' style={{ fontSize: 50 }}>
               Earned
             </Pumpkin>
-            <SemiBold className='mt-2 text-center text-4xl text-black'>20 MST</SemiBold>
+            <SemiBold className='mt-2 text-center text-4xl text-black'>{route.params.canClaimCoin} MST</SemiBold>
           </View>
           <View className='mt-5'>
             <View className='flex-row justify-between'>
-              <Medium className='text-lg text-black'>Claimed</Medium>
-              <Bold className='text-lg text-black'>20 MST</Bold>
+              <Medium className='text-lg text-black'>Claim</Medium>
+              <Bold className='text-lg text-black'>{route.params.canClaimCoin} MST</Bold>
             </View>
             <View className='flex-row justify-between'>
               <Medium className='text-lg text-black'>Boost Level</Medium>
-              <Bold className='text-lg text-black'>2X</Bold>
+              <Bold className='text-lg text-black'>{route.params.x}X</Bold>
             </View>
             <View className='flex-row justify-between'>
               <Medium className='text-lg text-black'>Global Ranking</Medium>
-              <Bold className='text-lg text-amber-500'>#19</Bold>
+              <Bold className='text-lg text-amber-500'>#{route.params.ranking}</Bold>
             </View>
             <View className='flex-row justify-between'>
-              <Medium className='text-lg text-black'>Coin/Minutes</Medium>
-              <Bold className='text-lg text-amber-500'>2 MST</Bold>
+              <Medium className='text-lg text-black'>Coins/Minutes</Medium>
+              <Bold className='text-lg text-amber-500'>{route.params.coinsPerMin} MST</Bold>
             </View>
           </View>
         </ViewShot>
@@ -142,7 +150,7 @@ type GradientButtonProps = TouchableOpacityProps
 function GradientButton({ children, ...props }: GradientButtonProps) {
   return (
     <TouchableOpacity activeOpacity={0.7} {...props}>
-      <Gradient className='items-center justify-center rounded-xl border py-3.5'>{children}</Gradient>
+      <Gradient className='items-center justify-center rounded-xl border py-3'>{children}</Gradient>
     </TouchableOpacity>
   )
 }

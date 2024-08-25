@@ -5,10 +5,10 @@ import { PaddingTop } from '@components/SafePadding'
 import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import ComingSoon2Svg from '@icons/coming-soon-2.svg'
 import ComingSoonSvg from '@icons/coming-soon.svg'
-import { get_games_f, type Games, type GamesData } from '@query/api'
+import { check_claim_f, get_games_f, type Games, type GamesData } from '@query/api'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { Bold, Medium, Regular, SemiBold } from '@screens/fonts'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
 import { defaultGrad, getPlayDuration, getProgressColor } from '@utils/utils'
@@ -47,16 +47,37 @@ export default function GameZone({ navigation }: { navigation: StackNav }) {
             <TabsOption onPress={() => setCategory('Simulation')} title='Simulation' Icon={SimulationIcon} secondary={category !== 'Simulation'} />
           </ScrollView>
         </View>
-        <MainContent category={category} />
+        <MainContent category={category} navigation={navigation} />
       </ScrollView>
     </View>
   )
 }
 
-function MainContent({ category }: { category: GameCategories }) {
+function MainContent({ category, navigation }: { category: GameCategories; navigation: StackNav }) {
   const [games, setGames] = useState<Games[]>([])
-  const isFocused = useIsFocused()
   const filteredGames = games.filter((game) => game.category === category)
+  const isFocused = useIsFocused()
+  const { data: claimCheckData, mutate } = useMutation({
+    mutationKey: ['checkClaim'],
+    mutationFn: check_claim_f,
+  })
+
+  useEffect(() => {
+    if (claimCheckData?.status === true) {
+      navigation.navigate('Claim', { ...claimCheckData, x: status.x })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [claimCheckData])
+
+  useEffect(() => {
+    mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // useEffect(() => {
+  //   if (isFocused) mutate()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isFocused])
 
   const { isPending, data, error, refetch } = useQuery({
     queryKey: ['games'],
@@ -202,6 +223,7 @@ function RewardCoins({ coins, x }: { coins: number; x: number }) {
     </View>
   )
 }
+
 function PlayNowButton({ game, navigation }: { game: Games; navigation: StackNav }) {
   return (
     <View className='items-center justify-center'>
