@@ -9,9 +9,12 @@ import WebView from 'react-native-webview'
 import NoInternet from './NoInternet'
 import Images from '@assets/images/images'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useMutation } from '@tanstack/react-query'
+import { gameActivity_f } from '@query/api'
 
 export type PlayingParamList = {
   url: string
+  gameID: string
 }
 
 type ParamList = {
@@ -24,6 +27,22 @@ export default function Playing({ navigation, route }: { navigation: StackNav; r
   const netInfo = useNetInfo()
   const [canGoBack, setCanGoBack] = React.useState(false)
   const bottom = useSafeAreaInsets().bottom
+
+  const { mutate } = useMutation({
+    mutationKey: ['gameActivity'],
+    mutationFn: () => gameActivity_f({ gameId: route.params.gameID }),
+    onSuccess: (d) => {
+      console.log(d)
+    },
+  })
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      mutate()
+    }, 60000)
+    return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onAndroidBackPress = useCallback((): boolean => {
     if (!canGoBack) return false // let the default behavior happen

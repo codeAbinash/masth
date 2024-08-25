@@ -381,9 +381,14 @@ export interface Games {
   gameName?: string
   gameWebLink?: string
   rewardCoins?: number
+  gameId?: string
   thumbnail?: string
 }
 
 export function get_games_f() {
   return postApi<GamesData>('gameZone/getGames/Featured', null)
+}
+
+export function gameActivity_f({ gameId }: { gameId: string }) {
+  return postApi<ServerResponse>('gameZone/gameActivity', { gameId })
 }

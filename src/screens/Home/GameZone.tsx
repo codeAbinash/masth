@@ -6,11 +6,12 @@ import SmallProfile, { RightSideSmallProfile } from '@components/SmallProfile'
 import ComingSoon2Svg from '@icons/coming-soon-2.svg'
 import ComingSoonSvg from '@icons/coming-soon.svg'
 import { get_games_f, type Games, type GamesData } from '@query/api'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { Bold, Medium, Regular, SemiBold } from '@screens/fonts'
 import { useQuery } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { StackNav } from '@utils/types'
+import { defaultGrad, getPlayDuration, getProgressColor } from '@utils/utils'
 import React, { useEffect, useState } from 'react'
 import { Dimensions, Image, ScrollView, Text, View } from 'react-native'
 import { TouchableOpacity, type TouchableOpacityProps } from 'react-native-gesture-handler'
@@ -54,16 +55,25 @@ export default function GameZone({ navigation }: { navigation: StackNav }) {
 
 function MainContent({ category }: { category: GameCategories }) {
   const [games, setGames] = useState<Games[]>([])
-
+  const isFocused = useIsFocused()
   const filteredGames = games.filter((game) => game.category === category)
 
-  const { isPending, data, error } = useQuery({
+  const { isPending, data, error, refetch } = useQuery({
     queryKey: ['games'],
     queryFn: () => get_games_f(),
   })
 
+  const status = getPlayDuration(data?.playTime || 0)
+
+  useEffect(() => {
+    if (isFocused) {
+      refetch()
+    }
+  }, [isFocused, refetch])
+
   useEffect(() => {
     setGames(data?.data || [])
+    console.log(data?.playTime)
   }, [data])
 
   if (!data || isPending)
@@ -76,32 +86,39 @@ function MainContent({ category }: { category: GameCategories }) {
   return (
     <>
       <Carousal data={data} />
-      <TimeArea progress={37} timeString='10 minutes left' />
+      <TimeArea
+        x={status.x}
+        progress={status.progress * 10}
+        timeString={`${10 - status.progress} minutes left`}
+        colors={getProgressColor(status.progress)}
+      />
       <Games filteredGames={filteredGames} category={category} />
     </>
   )
 }
+
 type TimeAreaProps = {
   text?: string
   progress?: number
   timeString?: string
-  grad?: Array<string>
+  colors: Array<string>
+  x: number
 }
-const defaultGrad = ['#F9A61E', '#FFD185']
-function TimeArea({ text, progress, grad, timeString }: TimeAreaProps) {
+function TimeArea({ text, progress = 1, timeString, colors: Colors, x }: TimeAreaProps) {
   return (
     <View className='p-5'>
       <View className='flex-row justify-between rounded-3xl bg-white p-4' style={{ gap: 15 }}>
-        <Gradient grad={grad || defaultGrad} className='h-16 w-16 flex-row items-center justify-center rounded-2xl'>
+        <Gradient grad={Colors || defaultGrad} className='h-16 w-16 flex-row items-center justify-center rounded-2xl'>
           <ThunderIcon height={25} width={25} className='text-black' />
           <Bold className='text-2xl'>
-            10<Medium className='font-normal'>x</Medium>
+            {x || 0}
+            <Medium className='font-normal'>x</Medium>
           </Bold>
         </Gradient>
         <View className='flex-1 justify-between' style={{ gap: 5 }}>
           <SemiBold className='text-base'>{text || 'Play More & Earn More'}</SemiBold>
           <View className='w-full rounded-full bg-bgSecondary'>
-            <LRGradient grad={grad || defaultGrad} className='h-2 rounded-full' style={{ width: progress + '%' }} />
+            <LRGradient grad={Colors || defaultGrad} className='h-2 rounded-full' style={{ width: progress + '%' }} />
           </View>
           <View className='flex-row items-center' style={{ gap: 5 }}>
             <Clock01SolidIcon width={16} height={16} className='text-zinc-500' />
@@ -138,7 +155,7 @@ function Game({ game, navigation }: { game: Games; navigation: StackNav }) {
     <TouchableOpacity
       className='relative w-full p-5'
       activeOpacity={0.8}
-      onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}
+      onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '', gameID: game.gameId || '' })}
     >
       <View className='absolute m-5 w-full rounded-3xl bg-gray-200'>
         <Image source={{ uri: game.thumbnail }} className='w-full rounded-3xl' style={{ aspectRatio: aspect }} />
@@ -188,7 +205,10 @@ function RewardCoins({ coins }: { coins: number }) {
 function PlayNowButton({ game, navigation }: { game: Games; navigation: StackNav }) {
   return (
     <View className='items-center justify-center'>
-      <TouchableOpacity className='rounded-xl bg-white px-10 py-3' onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '' })}>
+      <TouchableOpacity
+        className='rounded-xl bg-white px-10 py-3'
+        onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '', gameID: game.gameId || '' })}
+      >
         <Bold className='text-sm text-black'>Play Now</Bold>
       </TouchableOpacity>
     </View>

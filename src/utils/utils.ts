@@ -78,3 +78,20 @@ export function lastActiveDays(date: Date) {
   const diff = new Date().getTime() - new Date(date).getTime()
   return Math.floor(diff / (1000 * 60 * 60 * 24))
 }
+
+export function getPlayDuration(min: number) {
+  const n = Math.floor(min / 10) + 1
+  const m = min % 10
+  return {
+    x: n,
+    progress: m,
+  }
+}
+
+export const defaultGrad = ['#F9A61E', '#FFD185']
+
+export function getProgressColor(progress: number) {
+  if (progress < 4) return ['#2ED283', '#2ED283']
+  if (progress < 10) return defaultGrad
+  return ['#F2F706', '#FE1905']
+}
