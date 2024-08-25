@@ -69,17 +69,17 @@ function MainContent({ category, navigation }: { category: GameCategories; navig
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [claimCheckData])
 
-  useEffect(() => {
-    mutate()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   // useEffect(() => {
-  //   if (isFocused) mutate()
+  //   mutate()
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isFocused])
+  // }, [])
 
-  const { isPending, data, error, refetch } = useQuery({
+  useEffect(() => {
+    if (isFocused) mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused])
+
+  const { isPending, data, refetch } = useQuery({
     queryKey: ['games'],
     queryFn: () => get_games_f(),
   })
