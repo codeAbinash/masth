@@ -92,7 +92,7 @@ function MainContent({ category }: { category: GameCategories }) {
         timeString={`${10 - status.progress} minutes left`}
         colors={getProgressColor(status.progress)}
       />
-      <Games filteredGames={filteredGames} category={category} />
+      <Games filteredGames={filteredGames} category={category} x={status.x} />
     </>
   )
 }
@@ -132,7 +132,7 @@ function TimeArea({ text, progress = 1, timeString, colors: Colors, x }: TimeAre
 
 const aspect = 1.55
 
-function Games({ filteredGames, category }: { filteredGames: Games[]; category: GameCategories }) {
+function Games({ filteredGames, category, x }: { filteredGames: Games[]; category: GameCategories; x: number }) {
   const navigation = useNavigation<StackNav>()
   return (
     <View>
@@ -143,14 +143,14 @@ function Games({ filteredGames, category }: { filteredGames: Games[]; category: 
       )}
       <View>
         {filteredGames.map((game, i) => (
-          <Game key={i} game={game} navigation={navigation} />
+          <Game key={i} game={game} navigation={navigation} x={x} />
         ))}
       </View>
     </View>
   )
 }
 
-function Game({ game, navigation }: { game: Games; navigation: StackNav }) {
+function Game({ game, navigation, x }: { game: Games; navigation: StackNav; x: number }) {
   return (
     <TouchableOpacity
       className='relative w-full p-5'
@@ -176,7 +176,7 @@ function Game({ game, navigation }: { game: Games; navigation: StackNav }) {
             {game.gameName}
           </Bold>
           <View className='mt-1.5 flex-row justify-between'>
-            <RewardCoins coins={game.rewardCoins || 0} />
+            <RewardCoins coins={game.rewardCoins || 0} x={x} />
             <PlayNowButton game={game} navigation={navigation} />
           </View>
         </View>
@@ -185,19 +185,19 @@ function Game({ game, navigation }: { game: Games; navigation: StackNav }) {
   )
 }
 
-function RewardCoins({ coins }: { coins: number }) {
+function RewardCoins({ coins, x }: { coins: number; x: number }) {
   return (
     <View className='flex-row items-center gap-x-2'>
       <View className='flex-row items-center gap-x-0.5 rounded-full border border-white/50 px-2 py-1.5'>
         <MWhiteIcon width={10} height={10} />
-        <Bold className='text-xs text-white'>
+        <Bold className='pl-1 text-xs text-white'>
           {coins}
-          <Regular className='text-xs'>/min</Regular>
+          <Regular className='text-xs'> / min</Regular>
         </Bold>
       </View>
       <Medium className='text-white'>X</Medium>
       <View className='flex-row items-center rounded-full border border-white/50 px-2 py-1.5'>
-        <SemiBold className='text-xs text-white'>10X</SemiBold>
+        <SemiBold className='text-xs text-white'>{x}X</SemiBold>
       </View>
     </View>
   )
