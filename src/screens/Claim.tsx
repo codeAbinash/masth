@@ -2,18 +2,18 @@ import Gradient from '@components/Gradient'
 import { PaddingBottom } from '@components/SafePadding'
 import MasthGames from '@icons/MasthGames.svg'
 import SendIcon from '@icons/sendIcon.svg'
+import { claim_reward_f, profile_f, type CheckClaim } from '@query/api'
+import type { RouteProp } from '@react-navigation/native'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { UNITY_GAME_ID } from '@utils/constants'
+import { AdState, type StackNav } from '@utils/types'
 import React, { useEffect } from 'react'
 import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import type { TouchableOpacityProps } from 'react-native-gesture-handler'
-import { Bold, Medium, Pumpkin, SemiBold } from './fonts'
-import { UNITY_GAME_ID } from '@utils/constants'
-import UnityAds from 'react-native-unity-ads-monetization'
-import { AdState, type StackNav } from '@utils/types'
-import ViewShot from 'react-native-view-shot'
 import Share from 'react-native-share'
-import type { RouteProp } from '@react-navigation/native'
-import { claim_refer_f, claim_reward_f, type CheckClaim } from '@query/api'
-import { useMutation } from '@tanstack/react-query'
+import UnityAds from 'react-native-unity-ads-monetization'
+import ViewShot from 'react-native-view-shot'
+import { Bold, Medium, Pumpkin, SemiBold } from './fonts'
 
 type ParamList = {
   Claim: ClaimParamList
@@ -24,13 +24,23 @@ export type ClaimParamList = CheckClaim & { x: number }
 export default function Claim({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'Claim'> }) {
   const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
   const shotRef = React.useRef<ViewShot>(null)
+  const profileQuery = useQuery({ queryKey: ['profile'], queryFn: profile_f })
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['claim'],
     mutationFn: claim_reward_f,
     onSuccess(data) {
       if (!data.status) Alert.alert('Failed', data.message)
-      else Alert.alert('Success', data.message, [{ text: 'OK', onPress: () => navigation.goBack() }])
+      else
+        Alert.alert('Success', data.message, [
+          {
+            text: 'OK',
+            onPress: () => {
+              profileQuery.refetch()
+              navigation.goBack()
+            },
+          },
+        ])
     },
   })
 
