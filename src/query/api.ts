@@ -399,9 +399,13 @@ export type CheckClaim = {
   status?: boolean
   thumbnail?: string
   ranking?: number
-  coinsPerMin?: number
+  coinPerMinute?: number
 }
 
 export function check_claim_f() {
   return postApi<CheckClaim>('gameZone/checkClaim', null)
+}
+
+export function claim_reward_f() {
+  return postApi<ServerResponse>('gameZone/claimReward', null)
 }

@@ -90,8 +90,8 @@ export function getPlayDuration(min: number) {
 
 export const defaultGrad = ['#F9A61E', '#FFD185']
 
-export function getProgressColor(progress: number) {
-  if (progress < 4) return ['#2ED283', '#2ED283']
-  if (progress < 10) return defaultGrad
+export function getProgressColor(x: number) {
+  if (x < 4) return ['#2ED283', '#2ED283']
+  if (x < 10) return defaultGrad
   return ['#F2F706', '#FE1905']
 }

@@ -111,7 +111,7 @@ function MainContent({ category, navigation }: { category: GameCategories; navig
         x={status.x}
         progress={status.progress * 10}
         timeString={`${10 - status.progress} minutes left`}
-        colors={getProgressColor(status.progress)}
+        colors={getProgressColor(status.x)}
       />
       <Games filteredGames={filteredGames} category={category} x={status.x} />
     </>

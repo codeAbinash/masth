@@ -3,7 +3,7 @@ import { PaddingBottom } from '@components/SafePadding'
 import MasthGames from '@icons/MasthGames.svg'
 import SendIcon from '@icons/sendIcon.svg'
 import React, { useEffect } from 'react'
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import type { TouchableOpacityProps } from 'react-native-gesture-handler'
 import { Bold, Medium, Pumpkin, SemiBold } from './fonts'
 import { UNITY_GAME_ID } from '@utils/constants'
@@ -12,7 +12,8 @@ import { AdState, type StackNav } from '@utils/types'
 import ViewShot from 'react-native-view-shot'
 import Share from 'react-native-share'
 import type { RouteProp } from '@react-navigation/native'
-import type { CheckClaim } from '@query/api'
+import { claim_refer_f, claim_reward_f, type CheckClaim } from '@query/api'
+import { useMutation } from '@tanstack/react-query'
 
 type ParamList = {
   Claim: ClaimParamList
@@ -23,6 +24,15 @@ export type ClaimParamList = CheckClaim & { x: number }
 export default function Claim({ navigation, route }: { navigation: StackNav; route: RouteProp<ParamList, 'Claim'> }) {
   const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
   const shotRef = React.useRef<ViewShot>(null)
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['claim'],
+    mutationFn: claim_reward_f,
+    onSuccess(data) {
+      if (!data.status) Alert.alert('Failed', data.message)
+      else Alert.alert('Success', data.message, [{ text: 'OK', onPress: () => navigation.goBack() }])
+    },
+  })
 
   function loadAd() {
     console.log('Loading ad')
@@ -40,12 +50,15 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
     UnityAds.setOnUnityAdsShowListener({
       onShowStart: (placementId: string) => {
         console.log(`UnityAds.onShowStart: ${placementId}`)
+        mutate()
       },
       onShowComplete: (placementId: string, state: 'SKIPPED' | 'COMPLETED') => {
         console.log(`UnityAds.onShowComplete: ${placementId}, ${state}`)
       },
       onShowFailed: (placementId: string, message: string) => {
         console.error(`UnityAds.onShowFailed: ${placementId}, ${message}`)
+        // Claim
+        mutate()
       },
       onShowClick: (placementId: string) => {
         console.log(`UnityAds.onShowClick: ${placementId}`)
@@ -65,6 +78,8 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
     if (adState === AdState.LOADED) {
       showAd()
     }
+    // TODO: Disable when built
+    mutate()
   }
 
   function handleSend() {
@@ -117,14 +132,14 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
             </View>
             <View className='flex-row justify-between'>
               <Medium className='text-lg text-black'>Coins/Minutes</Medium>
-              <Bold className='text-lg text-amber-500'>{route.params.coinsPerMin} MST</Bold>
+              <Bold className='text-lg text-amber-500'>{route.params.coinPerMinute} MST</Bold>
             </View>
           </View>
         </ViewShot>
         <View className='flex-row px-5 pb-10' style={{ gap: 10 }}>
-          <GradientButton className='flex-1' onPress={handleClaim}>
+          <GradientButton className='flex-1' onPress={handleClaim} disabled={isPending}>
             <Pumpkin className='text-center text-2xl text-white' style={styles.fontOutline}>
-              Claim
+              {isPending ? 'Claiming...' : 'Claim'}
             </Pumpkin>
           </GradientButton>
           <GradientButton onPress={handleSend}>
