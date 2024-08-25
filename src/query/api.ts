@@ -160,34 +160,62 @@ export async function skip_refer_f() {
   return await postApi<ServerResponse>('refer/skip', null)
 }
 
-export interface ReferredUserT {
+export type ReferStatsT = {
   status: boolean
-  referred_bonus?: string
-  coins_earned?: number
-  list?: List
+  referred_bonus: string
+  coins_earned: number
+}
+export async function get_referred_stats_f() {
+  return await postApi<ReferStatsT>('refer/get_referred_stats', null)
 }
 
-export interface List {
+export type ReferredActiveUserT = {
+  status: boolean
+  activeUsers: ActiveUsers
+}
+
+export type ReferredInactiveUserT = {
+  status: boolean
+  inactiveUsers: ActiveUsers
+}
+
+export type ActiveUsers = {
   current_page: number
-  data: Games[]
+  data: Datum[]
+  first_page_url: string
+  from: number
+  last_page: number
+  last_page_url: string
+  links: PageLink[]
   next_page_url: null
+  path: string
+  per_page: number
+  prev_page_url: null
+  to: number
+  total: number
 }
 
-export interface Games {
-  user_id: string
-  coins_earn: string
-  profile: Profile[]
-}
-
-export interface Profile {
-  id: number
-  name: string
+export type Datum = {
   profile_pic: string
+  name: string
+  phone_number: string
+  country_code: string
+  last_active_time: Date
   username: string
 }
 
-export async function get_referred_members_f({ pageParam }: { pageParam: number }) {
-  return await postApi<ReferredUserT>(`refer/get_referred_members?page=${pageParam}`, null)
+export type PageLink = {
+  url: null | string
+  label: string
+  active: boolean
+}
+
+export async function get_referred_inactive_members_f({ pageParam }: { pageParam: number }) {
+  return await postApi<ReferredInactiveUserT>(`refer/get_referred_members/inactive?page=${pageParam}`, null)
+}
+
+export async function get_referred_active_members_f({ pageParam }: { pageParam: number }) {
+  return await postApi<ReferredActiveUserT>(`refer/get_referred_members/active?page=${pageParam}`, null)
 }
 
 // Have to check the type of the data that is

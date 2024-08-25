@@ -1,9 +1,17 @@
+import Images from '@assets/images/images'
 import BackHeader, { RightSettingIcon } from '@components/BackHeader'
-import { Button, ClaimRoundButton, RoundButton, SmallButton } from '@components/Button'
+import { Button, ClaimRoundButton } from '@components/Button'
 import Loading from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
-import Tabs from '@components/Tabs'
-import { get_referred_members_f, profile_f, type ProfileT } from '@query/api'
+import { FixedTab } from '@components/Tabs'
+import {
+  get_referred_active_members_f,
+  get_referred_inactive_members_f,
+  get_referred_stats_f,
+  profile_f,
+  type ProfileT,
+  type ReferStatsT,
+} from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
 import InterstitialAd from '@screens/Ads/InterstitialAd'
 import { useInfiniteQuery, useQuery, type UseQueryResult } from '@tanstack/react-query'
@@ -11,88 +19,138 @@ import { colors } from '@utils/colors'
 import { PLAY_STORE_LINK } from '@utils/constants'
 import { StackNav } from '@utils/types'
 import { shareText } from '@utils/utils'
-import React, { useEffect, useState } from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import Miner from './Miner'
-import Images from '@assets/images/images'
+
+function Load() {
+  return (
+    <View className='flex-1 bg-bgSecondary'>
+      <View className='flex-1 px-5'>
+        <Loading />
+      </View>
+    </View>
+  )
+}
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
-  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ['referredUsers'],
-    queryFn: get_referred_members_f,
-    getNextPageParam: (lastPage, _pages) => {
-      if (!lastPage.list?.next_page_url) return undefined
-      return lastPage.list.current_page + 1
-    },
-    initialPageParam: 1,
+  const [activeTab, setActiveTab] = useState(0)
+  const { data, isLoading } = useQuery({
+    queryKey: ['ReferredStats'],
+    queryFn: () => get_referred_stats_f(),
   })
 
-  useEffect(() => {
-    console.log(JSON.stringify(data, null, 2))
-  }, [data])
-
-  const loadNext = () => {
-    fetchNextPage()
-  }
-
-  if (isLoading)
-    return (
-      <View className='flex-1 bg-bgSecondary'>
-        <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
-        <View className='flex-1 px-5'>
-          <Loading />
-        </View>
-      </View>
-    )
+  if (isLoading || !data) return <Load />
 
   return (
     <>
       {!__DEV__ && <InterstitialAd />}
       <View className='flex-1 bg-bgSecondary'>
         <BackHeader navigation={navigation} title='Refer' RightComponent={<RightSettingIcon navigation={navigation} />} />
-        <View>
-          <FlatList
-            contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}
-            data={data?.pages.map((page) => page.list?.data || []).flat()}
-            renderItem={({ item }) => <Miner {...item.profile[0]} />}
-            keyExtractor={(item) => item.profile[0].username}
-            onEndReached={loadNext}
-            onEndReachedThreshold={0.3}
-            ListHeaderComponent={
-              <View className='pb-1'>
-                <TotalEarned earned={data?.pages.at(-1)?.coins_earned || 0} />
-                <InviteArea />
-                <ReferCard bonus={data?.pages.at(-1)?.referred_bonus || '0'} />
-                <Tabs
-                  tabs={[
-                    {
-                      title: 'Active Miners',
-                      UI: null,
-                    },
-                    {
-                      title: 'Inactive Miners',
-                      UI: null,
-                    },
-                  ]}
-                />
-                {!data?.pages.at(-1)?.list?.data.length && (
-                  <View className='flex-1 items-center justify-center py-24'>
-                    <Text className='text-center text-neutral-600'>No Miners</Text>
-                  </View>
-                )}
-              </View>
-            }
-            ListFooterComponent={
-              <View className='pb-32'>
-                <PaddingBottom />
-              </View>
-            }
-          />
+        <View className={`${activeTab === 0 ? 'flex' : 'hidden'} h-screen`}>
+          <ActiveMiner refer={data} setActiveTab={setActiveTab} />
+        </View>
+        <View className={`${activeTab === 1 ? 'flex' : 'hidden'} h-screen`}>
+          <InactiveMiner refer={data} setActiveTab={setActiveTab} />
+        </View>
+        <View className='pb-32'>
+          <PaddingBottom />
         </View>
       </View>
     </>
+  )
+}
+
+/* {!data?.pages.at(-1)?.list?.data.length && (
+<View className='flex-1 items-center justify-center py-24'>
+<Text className='text-center text-neutral-600'>No Miners</Text>
+</View>
+)} */
+
+function ActiveMiner({ refer, setActiveTab }: { refer: ReferStatsT; setActiveTab: (index: number) => void }) {
+  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
+    queryKey: ['referredActiveUsers'],
+    queryFn: get_referred_active_members_f,
+    getNextPageParam: (lastPage, _pages) => {
+      if (!lastPage?.activeUsers?.next_page_url === null) return undefined
+      return lastPage.activeUsers.current_page + 1
+    },
+    initialPageParam: 1,
+  })
+
+  const loadNext = () => {
+    if (data?.pages.at(-1)?.activeUsers?.next_page_url === null) return
+    fetchNextPage()
+  }
+
+  if (isLoading) return <Load />
+
+  return (
+    <View className='mt-5'>
+      <FlatList
+        contentContainerStyle={{ gap: 10, paddingHorizontal: 20, paddingBottom: 150 }}
+        data={data?.pages.map((page) => page.activeUsers.data || []).flat()}
+        renderItem={({ item }) => <Miner name={item.name} username={item.username} profile_pic={item.profile_pic} />}
+        keyExtractor={(item) => item.username}
+        onEndReached={loadNext}
+        onEndReachedThreshold={0.3}
+        ListHeaderComponent={<HeaderArea data={refer} setActiveTab={setActiveTab} active={0} />}
+        ListEmptyComponent={<NoMiner />}
+      />
+    </View>
+  )
+}
+
+function NoMiner() {
+  return (
+    <View className='flex-1 items-center justify-center py-24'>
+      <Text className='text-center text-neutral-600'>No Miners</Text>
+    </View>
+  )
+}
+
+function InactiveMiner({ refer, setActiveTab }: { refer: ReferStatsT; setActiveTab: (index: number) => void }) {
+  const { data, fetchNextPage, isLoading } = useInfiniteQuery({
+    queryKey: ['referredInactiveUsers'],
+    queryFn: get_referred_inactive_members_f,
+    getNextPageParam: (lastPage, _pages) => {
+      if (!lastPage?.inactiveUsers?.next_page_url === null) return undefined
+      return lastPage.inactiveUsers.current_page + 1
+    },
+    initialPageParam: 1,
+  })
+
+  const loadNext = () => {
+    if (data?.pages.at(-1)?.inactiveUsers?.next_page_url === null) return
+    fetchNextPage()
+  }
+
+  if (isLoading) return <Load />
+
+  return (
+    <View className='mt-5'>
+      <FlatList
+        contentContainerStyle={{ gap: 10, paddingHorizontal: 20, paddingBottom: 150 }}
+        data={data?.pages.map((page) => page.inactiveUsers.data || []).flat()}
+        renderItem={({ item }) => (
+          <Miner
+            name={item.name}
+            username={item.username}
+            profile_pic={item.profile_pic}
+            bellIcon
+            country_code={item.country_code}
+            phone={item.phone_number}
+            lastActive={item.last_active_time}
+          />
+        )}
+        keyExtractor={(item) => item.username}
+        onEndReached={loadNext}
+        onEndReachedThreshold={0.3}
+        ListHeaderComponent={<HeaderArea data={refer} setActiveTab={setActiveTab} active={1} />}
+        ListEmptyComponent={<NoMiner />}
+      />
+    </View>
   )
 }
 
@@ -118,6 +176,29 @@ function InviteArea() {
           <Text className='text-gray-500'>5 Miner</Text>
         </View>
       </View>
+    </View>
+  )
+}
+
+function HeaderArea({ data, setActiveTab, active }: { data: ReferStatsT; setActiveTab: (index: number) => void; active: number }) {
+  return (
+    <View className='pb-1'>
+      <TotalEarned earned={data?.coins_earned || 0} />
+      <InviteArea />
+      <ReferCard bonus={data?.referred_bonus || '0'} />
+      <FixedTab
+        activeTab={active}
+        tabs={[
+          {
+            title: 'Active Miners',
+            onPress: () => setActiveTab(0),
+          },
+          {
+            title: 'Inactive Miners',
+            onPress: () => setActiveTab(1),
+          },
+        ]}
+      />
     </View>
   )
 }

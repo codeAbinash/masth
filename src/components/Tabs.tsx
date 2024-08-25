@@ -40,3 +40,39 @@ export default function Tabs({ tabs }: TabsProps) {
     </>
   )
 }
+
+interface FixedTab {
+  title: string
+  disabled?: boolean
+  onPress?: () => void
+}
+
+interface FixedTabsProps {
+  tabs: FixedTab[]
+  activeTab: number
+}
+
+export function FixedTab({ tabs, activeTab }: FixedTabsProps) {
+  return (
+    <>
+      <View className='mt-5 flex-row items-center justify-between rounded-2xl bg-neutral-200 p-1' style={{ gap: 5 }}>
+        {tabs.map((tab, index) => (
+          <View style={{ flex: 1 }} key={index}>
+            <TouchableOpacity
+              disabled={tab.disabled}
+              activeOpacity={0.5}
+              onPress={() => {
+                tab.onPress && tab.onPress()
+              }}
+              className={`rounded-xl ${activeTab === index ? 'bg-bgSecondary' : ''} p-2`}
+            >
+              <Text className={`text-center ${activeTab === index ? 'font-bold' : 'opacity-50'}`} style={{ fontSize: 16 }}>
+                {tab.title}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+    </>
+  )
+}

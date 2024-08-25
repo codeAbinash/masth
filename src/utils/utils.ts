@@ -1,6 +1,5 @@
 import { check_version_f } from '@query/api'
-import { Dimensions, Share } from 'react-native'
-import { Alert } from 'react-native'
+import { Alert, Dimensions, Share } from 'react-native'
 import { APP_V_CODE, Name } from './constants'
 import type { StackNav } from './types'
 
@@ -74,3 +73,8 @@ export function getUserNameFromQR(qr: string) {
 }
 
 export const { height, width } = Dimensions.get('window')
+
+export function lastActiveDays(date: Date) {
+  const diff = new Date().getTime() - new Date(date).getTime()
+  return Math.floor(diff / (1000 * 60 * 60 * 24))
+}

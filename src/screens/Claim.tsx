@@ -13,7 +13,9 @@ export default function Claim() {
       <View>
         <MasthGames className='mx-auto mt-10' height={150} width={150} />
         <Image source={{ uri: 'https://wallpaperaccess.com/full/306739.jpg' }} className='aspect-video w-full rounded-2xl' />
-        <Pumpkin className='mt-10 text-center text-4xl text-amber-500'>Earned</Pumpkin>
+        <Pumpkin className='mt-10 text-center text-amber-500' style={{ fontSize: 50 }}>
+          Earned
+        </Pumpkin>
         <SemiBold className='mt-2 text-center text-4xl text-black'>20 MST</SemiBold>
       </View>
       <View className='mt-5'>
