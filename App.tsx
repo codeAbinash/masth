@@ -170,9 +170,9 @@ function Navigation() {
     >
       {/* <Stack.Screen name='Unity' component={Unity} /> */}
 
+      <Stack.Screen name='Claim' component={Claim} options={NO_ANIMATION} />
       <Stack.Screen name='navigationDecider' component={NavigationDecider} options={NO_ANIMATION} />
       {/* <Stack.Screen name='navigationDecider' component={Masth} options={NO_ANIMATION} /> */}
-      <Stack.Screen name='Claim' component={Claim} options={NO_ANIMATION} />
       <Stack.Screen name='Login' component={Login} options={NO_ANIMATION} />
       <Stack.Screen name='CheckRefer' component={CheckRefer} />
       <Stack.Screen name='Home' component={Home} options={NO_ANIMATION} />

@@ -14,7 +14,6 @@ import Share from 'react-native-share'
 
 export default function Claim() {
   const [adState, setAdState] = React.useState<AdState>(AdState.NOT_LOADED)
-  const [imageUri, setImageUri] = React.useState<string>()
   const shotRef = React.useRef<ViewShot>(null)
 
   function loadAd() {
@@ -51,7 +50,7 @@ export default function Claim() {
   }
 
   useEffect(() => {
-    loadAd()
+    // loadAd()
   }, [])
 
   function handleClaim() {
@@ -65,50 +64,56 @@ export default function Claim() {
 
     shotRef.current?.capture &&
       shotRef.current?.capture().then((uri) => {
-        // Handle the captured URI
-        setImageUri(uri)
         Share.open({ url: uri, message: 'Hey there! I just earned some MST on MasthGames. Check it out!' })
       })
   }
 
   return (
-    <>
-      <ViewShot
-        ref={shotRef}
+    <View className='flex-1 bg-white'>
+      <View
         style={{
           flex: 1,
-          backgroundColor: 'white',
-          justifyContent: 'space-between',
-          padding: 20,
+          marginTop: 40,
         }}
       >
-        <View>
-          <MasthGames className='mx-auto mt-10' height={150} width={150} />
-          <Image source={{ uri: 'https://wallpaperaccess.com/full/306739.jpg' }} className='aspect-video w-full rounded-2xl' />
-          <Pumpkin className='mt-10 text-center text-amber-500' style={{ fontSize: 50 }}>
-            Earned
-          </Pumpkin>
-          <SemiBold className='mt-2 text-center text-4xl text-black'>20 MST</SemiBold>
-        </View>
-        <View className='mt-5'>
-          <View className='flex-row justify-between'>
-            <Medium className='text-lg text-black'>Claimed</Medium>
-            <Bold className='text-lg text-black'>20 MST</Bold>
+        <ViewShot
+          ref={shotRef}
+          style={{
+            flex: 1,
+            paddingHorizontal: 20,
+            paddingBottom: 40,
+            backgroundColor: 'white',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View>
+            <MasthGames className='mx-auto' height={150} width={150} />
+            <Image source={{ uri: 'https://wallpaperaccess.com/full/306739.jpg' }} className='aspect-video w-full rounded-2xl' />
+            <Pumpkin className='mt-10 text-center text-amber-500' style={{ fontSize: 50 }}>
+              Earned
+            </Pumpkin>
+            <SemiBold className='mt-2 text-center text-4xl text-black'>20 MST</SemiBold>
           </View>
-          <View className='flex-row justify-between'>
-            <Medium className='text-lg text-black'>Boost Level</Medium>
-            <Bold className='text-lg text-black'>2X</Bold>
+          <View className='mt-5'>
+            <View className='flex-row justify-between'>
+              <Medium className='text-lg text-black'>Claimed</Medium>
+              <Bold className='text-lg text-black'>20 MST</Bold>
+            </View>
+            <View className='flex-row justify-between'>
+              <Medium className='text-lg text-black'>Boost Level</Medium>
+              <Bold className='text-lg text-black'>2X</Bold>
+            </View>
+            <View className='flex-row justify-between'>
+              <Medium className='text-lg text-black'>Global Ranking</Medium>
+              <Bold className='text-lg text-amber-500'>#19</Bold>
+            </View>
+            <View className='flex-row justify-between'>
+              <Medium className='text-lg text-black'>Coin/Minutes</Medium>
+              <Bold className='text-lg text-amber-500'>2 MST</Bold>
+            </View>
           </View>
-          <View className='flex-row justify-between'>
-            <Medium className='text-lg text-black'>Global Ranking</Medium>
-            <Bold className='text-lg text-amber-500'>#19</Bold>
-          </View>
-          <View className='flex-row justify-between'>
-            <Medium className='text-lg text-black'>Coin/Minutes</Medium>
-            <Bold className='text-lg text-amber-500'>2 MST</Bold>
-          </View>
-        </View>
-        <View className='mt-5 flex-row pb-10' style={{ gap: 10 }}>
+        </ViewShot>
+        <View className='flex-row px-5 pb-10' style={{ gap: 10 }}>
           <GradientButton className='flex-1' onPress={handleClaim}>
             <Pumpkin className='text-center text-2xl text-white' style={styles.fontOutline}>
               Claim
@@ -119,8 +124,8 @@ export default function Claim() {
           </GradientButton>
           <PaddingBottom />
         </View>
-      </ViewShot>
-    </>
+      </View>
+    </View>
   )
 }
 
