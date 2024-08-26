@@ -60,14 +60,13 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
     UnityAds.setOnUnityAdsShowListener({
       onShowStart: (placementId: string) => {
         console.log(`UnityAds.onShowStart: ${placementId}`)
-        mutate()
       },
       onShowComplete: (placementId: string, state: 'SKIPPED' | 'COMPLETED') => {
         console.log(`UnityAds.onShowComplete: ${placementId}, ${state}`)
+        mutate()
       },
       onShowFailed: (placementId: string, message: string) => {
         console.error(`UnityAds.onShowFailed: ${placementId}, ${message}`)
-        // Claim
         mutate()
       },
       onShowClick: (placementId: string) => {
@@ -77,11 +76,11 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
   }
 
   function showAd() {
-    UnityAds.showAd('Rewarded_Android')
+    UnityAds.showAd('Interstitial_Android')
   }
 
   useEffect(() => {
-    // loadAd()
+    loadAd()
   }, [])
 
   function handleClaim() {
@@ -89,7 +88,7 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
       showAd()
     }
     // TODO: Disable when built
-    mutate()
+    // mutate()
   }
 
   function handleSend() {
@@ -147,9 +146,9 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
           </View>
         </ViewShot>
         <View className='flex-row px-5 pb-10' style={{ gap: 10 }}>
-          <GradientButton className='flex-1' onPress={handleClaim} disabled={isPending}>
+          <GradientButton className='flex-1' onPress={handleClaim} disabled={isPending || adState === AdState.NOT_LOADED}>
             <Pumpkin className='text-center text-2xl text-white' style={styles.fontOutline}>
-              {isPending ? 'Claiming...' : 'Claim'}
+              {isPending || adState === AdState.NOT_LOADED ? 'Claiming...' : 'Claim'}
             </Pumpkin>
           </GradientButton>
           <GradientButton onPress={handleSend}>
