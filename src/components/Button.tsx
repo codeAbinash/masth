@@ -121,7 +121,7 @@ export function ClaimRoundButton({ title, disabled, ...rest }: ClaimRoundButtonP
       activeOpacity={0.7}
       disabled={disabled}
     >
-      <Text className={`${disabled ? 'text-white' : 'text-white'} text-center text-lg font-bold`}>{title}</Text>
+      <Text className={`${disabled ? 'text-white' : 'text-white'} text-center text-base font-bold`}>{title}</Text>
     </TouchableOpacity>
   )
 }

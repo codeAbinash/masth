@@ -228,7 +228,7 @@ function PlayNowButton({ game, navigation }: { game: Games; navigation: StackNav
   return (
     <View className='items-center justify-center'>
       <TouchableOpacity
-        className='rounded-xl bg-white px-10 py-3'
+        className='rounded-xl bg-white/70 px-10 py-3'
         onPress={() => navigation.navigate('Playing', { url: game.gameWebLink || '', gameID: game.gameId || '' })}
       >
         <Bold className='text-sm text-black'>Play Now</Bold>

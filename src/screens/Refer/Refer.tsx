@@ -185,10 +185,10 @@ function InviteArea({ data }: { data: ReferStatsT }) {
   return (
     <View className=' mt-5 rounded-2xl bg-white p-4' style={{ gap: 15 }}>
       <View className='flex-row items-center justify-between' style={{ gap: 15 }}>
-        <Image source={Images.pig} className='h-20 w-20 rounded-2xl bg-bgSecondary' />
+        <Image source={Images.pig} className='h-16 w-16 rounded-2xl bg-bgSecondary' />
         <View className='flex-1'>
-          <Text className='text-lg text-gray-500'>Invite {right} more</Text>
-          <Text className='text-lg'>{data.totalUnclaimed + 500} MST</Text>
+          <Text className='text-gray-500'>Invite {right} more to earn</Text>
+          <Text className='text-base'>{data.totalUnclaimed + 500} MST</Text>
         </View>
         <View>
           <ClaimRoundButton title={isPending ? 'Claiming...' : 'Claim'} disabled={data.totalReferred < 5 || isPending} onPress={() => mutate()} />

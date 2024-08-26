@@ -148,7 +148,7 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
         <View className='flex-row px-5 pb-10' style={{ gap: 10 }}>
           <GradientButton className='flex-1' onPress={handleClaim} disabled={isPending || adState === AdState.NOT_LOADED}>
             <Pumpkin className='text-center text-2xl text-white' style={styles.fontOutline}>
-              {isPending || adState === AdState.NOT_LOADED ? 'Claiming...' : 'Claim'}
+              {getButtonText(adState, isPending)}
             </Pumpkin>
           </GradientButton>
           <GradientButton onPress={handleSend}>
@@ -159,6 +159,12 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
       </View>
     </View>
   )
+}
+
+function getButtonText(adState: AdState, isPending: boolean) {
+  if (isPending) return 'Claiming...'
+  if (adState === AdState.NOT_LOADED) return 'Loading...'
+  return 'Claim'
 }
 
 const styles = StyleSheet.create({
