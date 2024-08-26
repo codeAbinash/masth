@@ -5,6 +5,7 @@ import Loading from '@components/Loading'
 import { PaddingBottom } from '@components/SafePadding'
 import { FixedTab } from '@components/Tabs'
 import {
+  claim_refer_task_f,
   get_referred_active_members_f,
   get_referred_inactive_members_f,
   get_referred_stats_f,
@@ -14,15 +15,16 @@ import {
 } from '@query/api'
 import Clipboard from '@react-native-community/clipboard'
 import InterstitialAd from '@screens/Ads/InterstitialAd'
-import { useInfiniteQuery, useQuery, type UseQueryResult } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { colors } from '@utils/colors'
 import { PLAY_STORE_LINK } from '@utils/constants'
 import { StackNav } from '@utils/types'
-import { shareText } from '@utils/utils'
-import React, { useState } from 'react'
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
+import { getReferredProgress, print, shareText } from '@utils/utils'
+import React, { useEffect, useState } from 'react'
+import { Alert, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import Miner from './Miner'
+import { useIsFocused } from '@react-navigation/native'
 
 function Load() {
   return (
@@ -36,10 +38,16 @@ function Load() {
 
 export default function Refer({ navigation }: { navigation: StackNav }) {
   const [activeTab, setActiveTab] = useState(0)
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['ReferredStats'],
     queryFn: () => get_referred_stats_f(),
   })
+
+  useEffect(() => {
+    if (data) {
+      print(data)
+    }
+  }, [data])
 
   if (isLoading || !data) return <Load />
 
@@ -154,25 +162,44 @@ function InactiveMiner({ refer, setActiveTab }: { refer: ReferStatsT; setActiveT
   )
 }
 
-function InviteArea() {
+// function get
+
+function InviteArea({ data }: { data: ReferStatsT }) {
+  const { coins, progress, left, right } = getReferredProgress(data.totalReferred)
+  const { refetch } = useQuery({
+    queryKey: ['ReferredStats'],
+    queryFn: () => get_referred_stats_f(),
+  })
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['claimRefer'],
+    mutationFn: claim_refer_task_f,
+    onSuccess: (res) => {
+      console.log(res)
+      if (!res.status) Alert.alert('Failed', res.message)
+      Alert.alert('Success', res.message)
+      refetch()
+    },
+  })
+
   return (
     <View className=' mt-5 rounded-2xl bg-white p-4' style={{ gap: 15 }}>
       <View className='flex-row items-center justify-between' style={{ gap: 15 }}>
         <Image source={Images.pig} className='h-20 w-20 rounded-2xl bg-bgSecondary' />
         <View className='flex-1'>
-          <Text className='text-lg text-gray-500'>Invite 5 more</Text>
-          <Text className='text-lg'>10,000 MST</Text>
+          <Text className='text-lg text-gray-500'>Invite {right} more</Text>
+          <Text className='text-lg'>{data.totalUnclaimed + 500} MST</Text>
         </View>
         <View>
-          <ClaimRoundButton title='Claim' disabled />
+          <ClaimRoundButton title={isPending ? 'Claiming...' : 'Claim'} disabled={data.totalReferred < 5 || isPending} onPress={() => mutate()} />
         </View>
       </View>
       <View>
         <View className='overflow-hidden rounded-full bg-bgSecondary'>
-          <View className='h-2 w-3/4 rounded-full bg-green-400' />
+          <View style={{ width: `${progress}%` }} className='h-2 rounded-full bg-green-400' />
         </View>
         <View className='mt-1 flex-row justify-between'>
-          <Text className='text-gray-500'>3 Miner</Text>
+          <Text className='text-gray-500'>{left} Miner</Text>
           <Text className='text-gray-500'>5 Miner</Text>
         </View>
       </View>
@@ -184,7 +211,7 @@ function HeaderArea({ data, setActiveTab, active }: { data: ReferStatsT; setActi
   return (
     <View className='pb-1'>
       <TotalEarned earned={data?.coins_earned || 0} />
-      <InviteArea />
+      <InviteArea data={data} />
       <ReferCard bonus={data?.referred_bonus || '0'} />
       <FixedTab
         activeTab={active}

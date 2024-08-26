@@ -164,6 +164,9 @@ export type ReferStatsT = {
   status: boolean
   referred_bonus: string
   coins_earned: number
+  totalUnclaimed: number
+  totalReferred: number
+  claimAvailable: boolean
 }
 export async function get_referred_stats_f() {
   return await postApi<ReferStatsT>('refer/get_referred_stats', null)
@@ -408,4 +411,8 @@ export function check_claim_f() {
 
 export function claim_reward_f() {
   return postApi<ServerResponse>('gameZone/claimReward', null)
+}
+
+export function claim_refer_task_f() {
+  return postApi<ServerResponse>('refer/claimReferTask', null)
 }

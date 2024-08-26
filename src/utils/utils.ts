@@ -88,10 +88,26 @@ export function getPlayDuration(min: number) {
   }
 }
 
+export function getReferredProgress(totalReferred: number) {
+  const extra = totalReferred % 5
+  const progress = (extra * 100) / 5
+  const n = Math.floor(totalReferred / 5)
+  return {
+    coins: (n + 1) * 500,
+    progress,
+    left: extra,
+    right: 5 - extra,
+  }
+}
+
 export const defaultGrad = ['#F9A61E', '#FFD185']
 
 export function getProgressColor(x: number) {
   if (x < 4) return ['#2ED283', '#2ED283']
   if (x < 10) return defaultGrad
   return ['#F2F706', '#FE1905']
+}
+
+export function print(data: any) {
+  console.log(JSON.stringify(data, null, 2))
 }
