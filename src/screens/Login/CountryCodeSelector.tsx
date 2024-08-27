@@ -1,6 +1,6 @@
 import { Input } from '@components/Input'
 import { countries as ALL_COUNTRIES } from '@utils/countryCode'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -16,13 +16,7 @@ function searchFn(search: string) {
   return ALL_COUNTRIES.filter((country) => country.name.toLowerCase().includes(search.toLowerCase()) || country.dial_code.includes(search))
 }
 
-export default function CountryCodeSelector({
-  setCountryCode,
-  closeFn,
-}: {
-  setCountryCode: React.Dispatch<React.SetStateAction<string>>
-  closeFn: () => void
-}) {
+function CountryCodeSelector({ setCountryCode, closeFn }: { setCountryCode: React.Dispatch<React.SetStateAction<string>>; closeFn: () => void }) {
   const [search, setSearch] = useState('')
   const [countries, setCountries] = useState<Country[]>([])
 
@@ -68,3 +62,5 @@ export default function CountryCodeSelector({
     </View>
   )
 }
+
+export default React.memo(CountryCodeSelector)

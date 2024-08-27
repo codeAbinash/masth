@@ -196,11 +196,11 @@ function InviteArea({ data }: { data: ReferStatsT }) {
       </View>
       <View>
         <View className='overflow-hidden rounded-full bg-bgSecondary'>
-          <View style={{ width: `${progress}%` }} className='h-2 rounded-full bg-green-400' />
+          <View style={{ width: `${data.totalReferred < 5 ? progress : 100}%` }} className='h-2 rounded-full bg-green-400' />
         </View>
         <View className='mt-1 flex-row justify-between'>
-          <Text className='text-gray-500'>{left} Miner</Text>
-          <Text className='text-gray-500'>5 Miner</Text>
+          <Text className='text-gray-500'>{data.totalReferred > 5 ? '0' : left} Miner</Text>
+          <Text className='text-gray-500'>{data.totalReferred < 5 ? '5 Miners' : data.totalReferred + ' Miners'}</Text>
         </View>
       </View>
     </View>
