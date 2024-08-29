@@ -30,19 +30,16 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
     mutationKey: ['claim'],
     mutationFn: claim_reward_f,
     onSuccess(data) {
-      if (!data.status) Alert.alert('Failed', data.message)
-      else
-        Alert.alert('Success', data.message, [
-          {
-            text: 'OK',
-            onPress: () => {
-              profileQuery.refetch()
-              navigation.pop(-2)
-            },
-          },
-        ])
+      if (!data.status) Alert.alert('Failed', data.message, [{ text: 'OK', onPress: backAndRefetch }])
+      else Alert.alert('Success', data.message, [{ text: 'OK', onPress: backAndRefetch }])
     },
   })
+
+  function backAndRefetch() {
+    console.log('Going Back')
+    profileQuery.refetch()
+    setTimeout(() => navigation.goBack(), 100)
+  }
 
   function loadAd() {
     console.log('Loading ad')
