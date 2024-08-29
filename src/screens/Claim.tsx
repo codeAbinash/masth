@@ -37,7 +37,7 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
             text: 'OK',
             onPress: () => {
               profileQuery.refetch()
-              navigation.goBack()
+              navigation.pop(-2)
             },
           },
         ])
@@ -67,7 +67,6 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
       },
       onShowFailed: (placementId: string, message: string) => {
         console.error(`UnityAds.onShowFailed: ${placementId}, ${message}`)
-        mutate()
       },
       onShowClick: (placementId: string) => {
         console.log(`UnityAds.onShowClick: ${placementId}`)
@@ -87,13 +86,9 @@ export default function Claim({ navigation, route }: { navigation: StackNav; rou
     if (adState === AdState.LOADED) {
       showAd()
     }
-    // TODO: Disable when built
-    // mutate()
   }
 
   function handleSend() {
-    console.log('Sending...')
-
     shotRef.current?.capture &&
       shotRef.current?.capture().then((uri) => {
         Share.open({ url: uri, message: 'Hey there! I just earned some MST on MasthGames. Check it out!' })
