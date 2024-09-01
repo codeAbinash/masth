@@ -19,12 +19,11 @@ import { useInfiniteQuery, useMutation, useQuery, type UseQueryResult } from '@t
 import { colors } from '@utils/colors'
 import { PLAY_STORE_LINK } from '@utils/constants'
 import { StackNav } from '@utils/types'
-import { getReferredProgress, print, shareText } from '@utils/utils'
+import { print, shareText } from '@utils/utils'
 import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import Miner from './Miner'
-import { useIsFocused } from '@react-navigation/native'
 
 function Load() {
   return (
@@ -165,7 +164,7 @@ function InactiveMiner({ refer, setActiveTab }: { refer: ReferStatsT; setActiveT
 // function get
 
 function InviteArea({ data }: { data: ReferStatsT }) {
-  const { coins, progress, left, right } = getReferredProgress(data.totalReferred)
+  // const { coins, progress, left, right } = getReferredProgress(data.totalReferred)
   const { refetch } = useQuery({
     queryKey: ['ReferredStats'],
     queryFn: () => get_referred_stats_f(),
@@ -182,25 +181,29 @@ function InviteArea({ data }: { data: ReferStatsT }) {
     },
   })
 
+  const upperBound = Math.floor(data.totalReferred / 5) * 5 + 5
+  const referLeft = upperBound - data.totalReferred
+  const percentage = (data.totalReferred / upperBound) * 100
+
   return (
     <View className=' mt-5 rounded-2xl bg-white p-4' style={{ gap: 15 }}>
       <View className='flex-row items-center justify-between' style={{ gap: 15 }}>
         <Image source={Images.pig} className='h-16 w-16 rounded-2xl bg-bgSecondary' />
         <View className='flex-1'>
-          <Text className='text-gray-500'>Invite {right} more to earn</Text>
+          <Text className='text-gray-500'>Invite {referLeft} more to earn</Text>
           <Text className='text-base'>{data.totalUnclaimed + 500} MST</Text>
         </View>
         <View>
-          <ClaimRoundButton title={isPending ? 'Claiming...' : 'Claim'} disabled={data.totalReferred < 5 || isPending} onPress={() => mutate()} />
+          <ClaimRoundButton title={isPending ? 'Claiming...' : 'Claim'} disabled={data.totalReferred < 1 || isPending} onPress={() => mutate()} />
         </View>
       </View>
       <View>
         <View className='overflow-hidden rounded-full bg-bgSecondary'>
-          <View style={{ width: `${data.totalReferred < 5 ? progress : 100}%` }} className='h-2 rounded-full bg-green-400' />
+          <View style={{ width: `${percentage}%` }} className='h-2 rounded-full bg-green-400' />
         </View>
         <View className='mt-1 flex-row justify-between'>
-          <Text className='text-gray-500'>{data.totalReferred > 5 ? '0' : left} Miner</Text>
-          <Text className='text-gray-500'>{data.totalReferred < 5 ? '5 Miners' : data.totalReferred + ' Miners'}</Text>
+          <Text className='text-gray-500'>{data.totalReferred} Miner</Text>
+          <Text className='text-gray-500'>{upperBound + ' Miners'}</Text>
         </View>
       </View>
     </View>
