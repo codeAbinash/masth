@@ -194,7 +194,7 @@ function InviteArea({ data }: { data: ReferStatsT }) {
           <Text className='text-base'>{data.totalUnclaimed + 500} MST</Text>
         </View>
         <View>
-          <ClaimRoundButton title={isPending ? 'Claiming...' : 'Claim'} disabled={data.totalReferred < 1 || isPending} onPress={() => mutate()} />
+          <ClaimRoundButton title={isPending ? 'Claiming...' : 'Claim'} disabled={data.totalReferred < 5 || isPending} onPress={() => mutate()} />
         </View>
       </View>
       <View>
