@@ -1,39 +1,14 @@
-name: Android CI
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+on: [push]
 jobs:
-  build:
-
+  react_native_ci_job:
     runs-on: ubuntu-latest
-
+    name: React Native CI Build
     steps:
-    - uses: actions/checkout@v4
-    - name: set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
-      
-    - uses: actions/checkout@v3
-    - name: Install npm dependencies
-      run: |
-        npm install
-        
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Build Android Release
-      run: |
-        cd android && ./gradlew assembleRelease
-        
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: app-release.apk
-        path: android/app/build/outputs/apk/release/
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: React Native CI
+        uses: aslamanver/react-native-docker@v1
+      - name: Install NPM Dependencies
+        run: npm install
+      - name: Run NX Dev Android Build
+        run: npx nx build-android mobile
