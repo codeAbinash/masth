@@ -99,7 +99,7 @@ android {
         applicationId "com.crypto.miner.masth"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
+        versionCode 9
         versionName "4.1"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
