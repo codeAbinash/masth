@@ -29,9 +29,19 @@ jobs:
       - name: Build Android Release
         run: |
           cd android && ./gradlew assembleRelease
-
+          
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
+          name: masth
           path: android/app/build/outputs/apk/release/
+    
+      - name: Bundle Apk
+        run: |
+          cd android && ./gradlew bundleRelease
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: masth-bundle
+          path: android/app/build/outputs/bundle/
