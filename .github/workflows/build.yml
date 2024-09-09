@@ -44,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: masth-bundle
-          path: android/app/build/outputs/bundle/
+          path: android/app/build/outputs/bundle/release/
